@@ -1,0 +1,75 @@
+status = "supported"
+summary = "Shell-command hooks that fire on session, prompt, tool, file, and shell lifecycle events, defined in hooks/hooks.json inside plugin directories following the Open Plugins hooks specification."
+events = [
+  "SessionStart", "SessionEnd",
+  "Stop",
+  "UserPromptSubmit",
+  "PreToolUse", "PostToolUse", "PostToolUseFailure",
+  "BeforeReadFile", "AfterFileEdit",
+  "BeforeShellExecution", "AfterShellExecution",
+]
+docs = "https://block.github.io/goose/docs/guides/context-engineering/hooks"
+notes = [
+  "Hooks belong to a plugin: a directory with plugin.json and hooks/hooks.json, placed under ~/.agents/plugins/<name>/ (user) or <project>/.agents/plugins/<name>/ (project).",
+  "Commands run via sh -c and receive the event payload (event, session_id, matcher_context, tool_name, tool_input, message, working_dir, ...) as JSON on stdin.",
+  "${PLUGIN_ROOT} in a command references the plugin directory; it is also set in the hook's environment.",
+  "The matcher is a regex tested against the event's most relevant string (tool name, prompt text, file path, or shell command).",
+  "AfterFileEdit and AfterShellExecution only run after successful tool calls; use PostToolUseFailure for failures. SubagentStart/SubagentStop are not currently emitted.",
+  "Hook failures and timeouts are logged but never crash goose. Disable a plugin via disabledPlugins in ~/.config/goose/settings.json (or <project>/.config/goose/settings.json).",
+]
+
+[[files]]
+path = "~/.agents/plugins/<plugin-name>/hooks/hooks.json"
+scope = "global"
+format = "json"
+key = "hooks"
+note = "User plugins, available across projects."
+
+[[files]]
+path = ".agents/plugins/<plugin-name>/hooks/hooks.json"
+scope = "project"
+format = "json"
+key = "hooks"
+note = "Project plugins, loaded when goose starts from that project."
+
+[[fields]]
+name = "matcher"
+type = "string"
+description = "Regular expression deciding whether the rule runs for the event; omitted means the rule runs for every event of that type."
+
+[[fields]]
+name = "hooks[].type"
+type = "\"command\""
+description = "Action type. Only command is currently supported; defaults to command when omitted."
+
+[[fields]]
+name = "hooks[].command"
+type = "string"
+required = true
+description = "Shell command to run (via sh -c). Receives the event payload as JSON on stdin."
+
+[[fields]]
+name = "hooks[].timeout"
+type = "number"
+description = "Timeout in seconds for the command. Defaults to 30."
+
+[[examples]]
+title = "Format files after goose edits them"
+language = "json"
+code = '''
+{
+  "hooks": {
+    "AfterFileEdit": [
+      {
+        "matcher": "\\.(ts|tsx|js|jsx|json|md)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${PLUGIN_ROOT}/scripts/prettier.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
+'''

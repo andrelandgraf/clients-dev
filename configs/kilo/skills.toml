@@ -1,26 +1,95 @@
 status = "supported"
-summary = "SKILL.md skills following the open Agent Skills standard."
-invocation = ["/skill-name"]
-notes = ["Skill discovery paths from the open skills CLI (vercel-labs/skills)."]
+summary = "Agent Skills (SKILL.md packages) loaded from .kilo/skills/ (project) and ~/.kilo/skills/ (global), plus cross-agent compatibility directories and extra paths/URLs configured in kilo.jsonc."
+invocation = [
+  "automatic (request matches skill description)",
+  "skill tool (explicit load, e.g. \"use the api-design skill\")",
+]
+docs = "https://kilocode.ai/docs/customize/skills"
+notes = [
+  "Progressive disclosure: only name/description metadata is scanned at session start; the full SKILL.md loads on demand via the skill tool.",
+  "Project skills override global skills with the same name.",
+  "Compatibility directories: .agents/skills/ is loaded by default; .claude/skills/ when Claude Code Compatibility is enabled.",
+  "Extra locations via skills.paths (absolute, ~/, or project-relative) and skills.urls (remote directories serving an index.json manifest) in kilo.jsonc.",
+  "Skills can bundle scripts/, references/, and assets/ directories alongside SKILL.md.",
+]
 
 [[files]]
-path = ".kilocode/skills/<name>/SKILL.md"
+path = ".kilo/skills/<name>/SKILL.md"
 scope = "project"
 format = "markdown"
+note = "Project skills, shareable via version control."
 
 [[files]]
-path = "~/.kilocode/skills/<name>/SKILL.md"
+path = "~/.kilo/skills/<name>/SKILL.md"
 scope = "global"
 format = "markdown"
+note = "Personal skills available in all projects."
+
+[[files]]
+path = ".agents/skills/<name>/SKILL.md"
+scope = "project"
+format = "markdown"
+note = "Cross-agent compatibility directory, loaded by default."
+
+[[files]]
+path = ".claude/skills/<name>/SKILL.md"
+scope = "project"
+format = "markdown"
+note = "Claude Code compatibility directory, loaded when Claude Code Compatibility is enabled."
 
 [[fields]]
 name = "name"
 type = "string"
 required = true
-description = "Skill identifier (required by the Agent Skills standard)."
+description = "Max 64 characters; lowercase letters, numbers, and hyphens only; must not start or end with a hyphen. Must match the parent directory name."
 
 [[fields]]
 name = "description"
 type = "string"
 required = true
-description = "What the skill does and when to use it."
+description = "Max 1024 characters. Describes what the skill does and when to use it; the agent matches requests against this text."
+
+[[fields]]
+name = "license"
+type = "string"
+description = "License name or reference to a bundled license file."
+
+[[fields]]
+name = "compatibility"
+type = "string"
+description = "Environment requirements (intended product, system packages, network access, etc.)."
+
+[[fields]]
+name = "metadata"
+type = "record<string, string>"
+description = "Arbitrary key-value mapping for additional metadata."
+
+[[examples]]
+title = "SKILL.md"
+language = "markdown"
+code = '''
+---
+name: api-design
+description: REST API design best practices and conventions
+---
+
+# API Design Guidelines
+
+When designing REST APIs, follow these conventions:
+
+## URL Structure
+- Use plural nouns for resources: /users, /orders
+- Use kebab-case for multi-word resources: /order-items
+'''
+
+[[examples]]
+title = "Extra skill paths and remote URLs (kilo.jsonc)"
+language = "jsonc"
+code = '''
+{
+  "skills": {
+    "paths": ["/path/to/shared/skills", "~/my-skills"],
+    "urls": ["https://example.com/.well-known/skills/"]
+  }
+}
+'''

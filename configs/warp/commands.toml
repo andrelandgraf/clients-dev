@@ -1,0 +1,34 @@
+status = "supported"
+summary = "Slash commands in Agent Mode combine built-in static commands (/init, /agent, /model, /add-mcp, ...) with user-defined Agent Prompts saved in Warp Drive and skills invoked as /{skill-name}."
+invocation = ["/command-name", "/skill-name", "command palette"]
+docs = "https://docs.warp.dev/agent-platform/capabilities/slash-commands/"
+notes = [
+  "Built-in static commands include /agent, /new, /init, /index, /model, /add-mcp, /add-prompt, /add-rule, /prompts, /queue, /create-environment, and more.",
+  "Custom reusable prompts are Warp Drive Prompts — parameterized natural-language queries stored in Warp Drive (cloud objects, not local files) and runnable from the slash menu, Command Palette, or Warp Drive.",
+  "Prompt arguments use {{argument}} placeholders, typed text or enum, with optional descriptions and default values; SHIFT-TAB cycles through arguments.",
+  "Skills are also user-invocable as slash commands with argument support (see Skills).",
+  "Slash command availability in the terminal input is controlled by the terminal.input.enable_slash_commands_in_terminal setting.",
+]
+
+[[fields]]
+name = "name"
+type = "string"
+required = true
+description = "Prompt name shown in the slash menu and used for search."
+
+[[fields]]
+name = "description"
+type = "string"
+description = "Meaningful description, indexed for search."
+
+[[fields]]
+name = "arguments"
+type = "array"
+description = "Prompt arguments created via {{argument}} placeholders; each has a type (text or enum), optional description, and default value."
+
+[[examples]]
+title = "Parameterized Warp Drive prompt"
+language = "text"
+code = '''
+Summarize the git log since {{ref}} and highlight breaking changes for {{audience}}.
+'''

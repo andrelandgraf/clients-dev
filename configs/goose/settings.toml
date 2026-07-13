@@ -1,0 +1,90 @@
+status = "supported"
+summary = "Primary configuration lives in ~/.config/goose/config.yaml: provider and model, tool-execution mode, extensions, slash commands, and general settings."
+docs = "https://block.github.io/goose/docs/guides/config-files"
+notes = [
+  "Environment variables take precedence over config file settings, which take precedence over defaults.",
+  "Companion files in ~/.config/goose/: permission.yaml (tool permission levels via goose configure), secrets.yaml (only with file-based secret storage), permissions/tool_permissions.json (auto-managed), and prompts/ (custom prompt templates).",
+  "Store secrets in the system keyring, not in config.yaml.",
+  "Many settings can also be managed via `goose configure` (CLI) or the Desktop Settings page.",
+]
+
+[[files]]
+path = "~/.config/goose/config.yaml"
+scope = "global"
+format = "yaml"
+note = "macOS/Linux. On Windows: %APPDATA%/Block/goose/config/config.yaml."
+
+[[fields]]
+name = "GOOSE_PROVIDER"
+type = "string"
+required = true
+description = "Primary LLM provider (e.g. anthropic, openai)."
+
+[[fields]]
+name = "GOOSE_MODEL"
+type = "string"
+required = true
+description = "Default model to use."
+
+[[fields]]
+name = "GOOSE_MODE"
+type = "string"
+description = "Tool execution behavior."
+values = ["auto", "approve", "chat", "smart_approve"]
+
+[[fields]]
+name = "GOOSE_TEMPERATURE"
+type = "number"
+description = "Model response randomness, between 0.0 and 1.0."
+
+[[fields]]
+name = "GOOSE_MAX_TURNS"
+type = "number"
+description = "Maximum number of turns allowed without user input (default 1000)."
+
+[[fields]]
+name = "GOOSE_AUTO_COMPACT_THRESHOLD"
+type = "number"
+description = "Context-usage fraction (0.0-1.0) that triggers automatic session summarization; 0.0 disables it (default 0.8)."
+
+[[fields]]
+name = "GOOSE_RECIPE_GITHUB_REPO"
+type = "string"
+description = "GitHub repository (org/repo) to load recipes from."
+
+[[fields]]
+name = "GOOSE_SEARCH_PATHS"
+type = "string[]"
+description = "Extra directories prepended to PATH when running extension commands."
+
+[[fields]]
+name = "GOOSE_ALLOWLIST"
+type = "string"
+description = "URL for the allowed-extensions list."
+
+[[fields]]
+name = "extensions"
+type = "object"
+description = "MCP extension configuration (see the mcp surface)."
+
+[[fields]]
+name = "slash_commands"
+type = "array"
+description = "Custom slash-command to recipe mappings (see the commands surface)."
+
+[[examples]]
+title = "Basic config.yaml"
+language = "yaml"
+code = '''
+GOOSE_PROVIDER: "anthropic"
+GOOSE_MODEL: "claude-4.5-sonnet"
+GOOSE_MODE: "smart_approve"
+
+extensions:
+  developer:
+    bundled: true
+    enabled: true
+    name: developer
+    timeout: 300
+    type: builtin
+'''

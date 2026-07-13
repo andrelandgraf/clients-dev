@@ -1,0 +1,129 @@
+status = "supported"
+summary = "MCP servers configured under mcpServers in a project .roo/mcp.json or the global mcp_settings.json. Supports STDIO, Streamable HTTP, and legacy SSE transports."
+transports = ["stdio", "http", "sse"]
+auth = ["headers", "env"]
+docs = "https://docs.roocode.com/features/mcp/using-mcp-in-roo"
+notes = [
+  "Project-level servers take precedence over global servers with the same name.",
+  "System environment variables can be referenced in args and env via ${env:VARIABLE_NAME}.",
+  "SSE is legacy; Streamable HTTP (type = \"streamable-http\") is recommended for remote servers. URL-based configs must set type explicitly.",
+  "Per-tool auto-approval via alwaysAllow plus the global 'Use MCP servers' auto-approve setting.",
+]
+
+[[files]]
+path = ".roo/mcp.json"
+scope = "project"
+format = "json"
+key = "mcpServers"
+note = "Committed project-level servers; created via 'Edit Project MCP' in the MCP settings view."
+
+[[files]]
+path = "mcp_settings.json"
+scope = "global"
+format = "json"
+key = "mcpServers"
+note = "Global servers; stored in VS Code extension global storage and opened via 'Edit Global MCP' in the MCP settings view."
+
+[[fields]]
+name = "command"
+type = "string"
+required = true
+description = "Executable to run for a STDIO server (e.g. node, python, npx, or an absolute path). Required for stdio servers."
+
+[[fields]]
+name = "args"
+type = "string[]"
+description = "Arguments passed to the command. Supports ${env:VARIABLE_NAME} interpolation."
+
+[[fields]]
+name = "cwd"
+type = "string"
+description = "Working directory to launch the server process from. Defaults to the first workspace folder."
+
+[[fields]]
+name = "env"
+type = "record<string, string>"
+description = "Environment variables set for the server process."
+
+[[fields]]
+name = "type"
+type = "\"stdio\" | \"streamable-http\" | \"sse\""
+description = "Transport type. Defaults to stdio for command-based configs; required for URL-based configs."
+values = ["stdio", "streamable-http", "sse"]
+
+[[fields]]
+name = "url"
+type = "string"
+description = "Endpoint URL for a remote Streamable HTTP or SSE server."
+
+[[fields]]
+name = "headers"
+type = "record<string, string>"
+description = "Custom HTTP headers for remote servers (e.g. authentication tokens)."
+
+[[fields]]
+name = "alwaysAllow"
+type = "string[]"
+description = "Tool names from this server to auto-approve."
+
+[[fields]]
+name = "disabledTools"
+type = "string[]"
+description = "Tool names to disable from this server."
+
+[[fields]]
+name = "disabled"
+type = "boolean"
+description = "Set true to disable this server configuration."
+
+[[fields]]
+name = "timeout"
+type = "number"
+description = "Per-server response timeout override in seconds (1-3600, default 60)."
+
+[[fields]]
+name = "watchPaths"
+type = "string[]"
+description = "File paths to watch; the server restarts automatically when they change (stdio servers)."
+
+[[capabilities]]
+name = "Tools"
+status = "supported"
+note = "Invoked via the use_mcp_tool tool."
+
+[[capabilities]]
+name = "Resources"
+status = "supported"
+note = "Accessed via the access_mcp_resource tool."
+
+[[examples]]
+title = "Local STDIO server"
+language = "json"
+code = '''
+{
+  "mcpServers": {
+    "local-server": {
+      "command": "node",
+      "args": ["server.js"],
+      "env": { "API_KEY": "your_api_key" },
+      "alwaysAllow": ["tool1"],
+      "disabled": false
+    }
+  }
+}
+'''
+
+[[examples]]
+title = "Remote Streamable HTTP server"
+language = "json"
+code = '''
+{
+  "mcpServers": {
+    "remote-server": {
+      "type": "streamable-http",
+      "url": "https://your-server.com/api/mcp-endpoint",
+      "headers": { "X-API-Key": "your-secure-api-key" }
+    }
+  }
+}
+'''

@@ -1,0 +1,86 @@
+status = "supported"
+summary = "kilo.jsonc is the primary config file, shared by the VS Code extension, CLI, and JetBrains. Global config at ~/.config/kilo/kilo.jsonc; project config at kilo.jsonc or .kilo/kilo.jsonc."
+docs = "https://kilocode.ai/docs/getting-started/settings"
+notes = [
+  "The Settings webview UI (gear icon) reads and writes the same JSONC files; the .kilo/kilo.jsonc version takes priority over root kilo.jsonc if both exist.",
+  "Settings can be exported/imported as kilo-settings.json from the About tab; files are plain text and portable between machines.",
+  "The agent has a built-in skill that understands the full kilo.jsonc schema and can edit config on request.",
+  "An auto-generated $schema in kilo.jsonc documents the full list of available options.",
+  "Avoid committing API keys (e.g. provider.*.options.apiKey); use environment variables for credentials.",
+]
+
+[[files]]
+path = "~/.config/kilo/kilo.jsonc"
+scope = "global"
+format = "jsonc"
+note = "Global config applying to all projects."
+
+[[files]]
+path = ".kilo/kilo.jsonc"
+scope = "project"
+format = "jsonc"
+note = "Preferred project config; takes priority over root kilo.jsonc."
+
+[[files]]
+path = "kilo.jsonc"
+scope = "project"
+format = "jsonc"
+note = "Project-root config alternative."
+
+[[fields]]
+name = "permission"
+type = "record<string, \"allow\" | ...>"
+description = "Auto-approval rules for tools, including MCP tools via namespaced {server}_{tool} keys and wildcards."
+
+[[fields]]
+name = "instructions"
+type = "string[]"
+description = "Paths, globs, or URLs of additional instruction files (see rules surface)."
+
+[[fields]]
+name = "mcp"
+type = "record<string, McpServer>"
+description = "MCP server definitions (see mcp surface)."
+
+[[fields]]
+name = "skills"
+type = "{ paths?: string[], urls?: string[] }"
+description = "Extra skill directories and remote skill URLs (see skills surface)."
+
+[[fields]]
+name = "hide_prompt_training_models"
+type = "boolean"
+description = "Hide Kilo Gateway models whose providers may use prompts for training (default false)."
+
+[[fields]]
+name = "auto_collapse_reasoning"
+type = "boolean"
+description = "Collapse reasoning blocks in the chat UI after the agent finishes writing them."
+
+[[fields]]
+name = "terminal_command_display"
+type = "string"
+description = "Whether terminal command blocks start expanded or collapsed."
+values = ["expanded", "collapsed"]
+
+[[fields]]
+name = "experimental"
+type = "object"
+description = "Advanced options not exposed in the UI (e.g. codebase_search, batch_tool, openTelemetry, mcp_timeout, speech_to_text_model)."
+
+[[examples]]
+title = "kilo.jsonc"
+language = "jsonc"
+code = '''
+{
+  "permission": {
+    "my_server_*": "allow"
+  },
+  "instructions": [".kilo/rules/*.md"],
+  "auto_collapse_reasoning": true,
+  "experimental": {
+    "codebase_search": true,
+    "mcp_timeout": 30000
+  }
+}
+'''

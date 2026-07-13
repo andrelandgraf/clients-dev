@@ -1,0 +1,38 @@
+status = "supported"
+summary = "Custom commands (saved prompts) as plain markdown files, invoked from the command palette with user:/project: prefixes and $NAME argument placeholders."
+invocation = ["command palette (Ctrl+P)"]
+docs = "https://github.com/charmbracelet/crush/blob/99edcbf1c17dbb1d74dc1a3f03a5e30bcfc58b39/COMMANDS.md"
+notes = [
+  "The docs URL is the official repo's draft COMMANDS.md, confirmed by maintainers in issue #2219; paths and behavior verified against the main-branch source (internal/commands).",
+  "The whole markdown file is the prompt; the file name (without extension) becomes the command name, prefixed with user: or project:.",
+  "Sub-directories namespace commands with colons, e.g. commands/git/commit.md becomes user:git:commit.",
+  "$NAME placeholders (uppercase letters, numbers, underscores) become required arguments that Crush prompts for when the command runs.",
+  "Prompts from connected MCP servers also appear as commands in the palette, and user-invocable skills surface alongside them.",
+]
+
+[[files]]
+path = ".crush/commands/<name>.md"
+scope = "project"
+format = "markdown"
+note = "Location follows options.data_directory (default .crush)."
+
+[[files]]
+path = "~/.config/crush/commands/<name>.md"
+scope = "global"
+format = "markdown"
+note = "$XDG_CONFIG_HOME/crush/commands/; Windows: %USERPROFILE%\\AppData\\Local\\crush\\commands\\."
+
+[[files]]
+path = "~/.crush/commands/<name>.md"
+scope = "global"
+format = "markdown"
+
+[[examples]]
+title = "Command with named arguments"
+language = "markdown"
+code = '''
+# Fetch Context for Issue $ISSUE_NUMBER
+
+RUN gh issue view $ISSUE_NUMBER --json title,body,comments
+RUN grep -R "$SEARCH_PATTERN" $DIRECTORY
+'''

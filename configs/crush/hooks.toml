@@ -1,0 +1,82 @@
+status = "partial"
+summary = "Shell-command hooks configured under the hooks key in crush.json. Preliminary support: currently only PreToolUse fires, with plans to add more events."
+events = ["PreToolUse"]
+docs = "https://github.com/charmbracelet/crush/tree/main/docs/hooks"
+notes = [
+  "Hooks are broadly Claude Code-compatible: the config shape, stdin payload, output envelope, and exit codes line up.",
+  "Hooks run in parallel through Crush's embedded POSIX shell but results compose in config order: deny wins over allow, updated_input patches shallow-merge in order.",
+  "Exit codes: 0 = success (stdout parsed as JSON envelope), 2 = block the tool call (stderr is the deny reason), 49 = halt the whole turn, anything else = non-blocking error.",
+  "The JSON output envelope supports decision (allow/deny), halt, reason, context, and updated_input; decision allow pre-approves the call and skips the permission prompt.",
+  "Hooks receive event data via stdin JSON and env vars like CRUSH_EVENT, CRUSH_TOOL_NAME, CRUSH_TOOL_INPUT_COMMAND, and CRUSH_TOOL_INPUT_FILE_PATH.",
+  "PreToolUse only fires on the top-level agent's tool calls; sub-agent tool calls are not intercepted.",
+  "Crush ships a builtin crush-hooks skill for writing and configuring hooks.",
+]
+
+[[files]]
+path = "crush.json"
+scope = "project"
+format = "json"
+key = "hooks"
+note = "Relative command paths resolve against the working directory."
+
+[[files]]
+path = "~/.config/crush/crush.json"
+scope = "global"
+format = "json"
+key = "hooks"
+note = "Use absolute paths or inline commands; relative paths resolve against the working directory, not the config file."
+
+[[fields]]
+name = "name"
+type = "string"
+description = "Friendly display name shown in the TUI. Falls back to command."
+
+[[fields]]
+name = "matcher"
+type = "string"
+description = "Regex tested against the tool name (e.g. ^bash$, ^mcp_). Omit to match all tools."
+
+[[fields]]
+name = "command"
+type = "string"
+required = true
+description = "Shell command or script path to run. Executed through Crush's embedded POSIX shell on all platforms."
+
+[[fields]]
+name = "timeout"
+type = "number"
+description = "Seconds before the hook is killed. Defaults to 30."
+
+[[examples]]
+title = "Block destructive commands"
+language = "json"
+code = '''
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "name": "no-rm-rf",
+        "matcher": "^bash$",
+        "command": "./hooks/no-rm-rf.sh",
+        "timeout": 10
+      }
+    ]
+  }
+}
+'''
+
+[[examples]]
+title = "Auto-approve read-only tools (inline)"
+language = "json"
+code = '''
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "^(view|ls|grep|glob)$",
+        "command": "echo '{\"decision\":\"allow\"}'"
+      }
+    ]
+  }
+}
+'''

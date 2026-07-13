@@ -1,0 +1,46 @@
+status = "supported"
+summary = "Persistent context via .goosehints and AGENTS.md files, loaded globally from the config directory and locally from the project hierarchy into every request's system prompt."
+docs = "https://block.github.io/goose/docs/guides/context-engineering/using-goosehints"
+notes = [
+  "By default goose looks for AGENTS.md then .goosehints at each level (both global and local); local hints take priority over global hints on conflict.",
+  "Nested hint files are supported in git repositories: files load from the working directory up to the repo root at session start, and from nested subdirectories as goose accesses them.",
+  "@filename.md syntax inside a hints file automatically inlines that file's content; plain references just point goose at files to read when needed.",
+  "The CONTEXT_FILE_NAMES environment variable (JSON array, default [\"AGENTS.md\", \".goosehints\"]) swaps in other rule filenames such as CLAUDE.md or .cursorrules.",
+  "Hints require the Developer extension to be enabled.",
+  "Hint files are plain text; markdown formatting is conventional but not required.",
+]
+
+[[files]]
+path = "~/.config/goose/.goosehints"
+scope = "global"
+format = "text"
+note = "Global hints applied to all sessions."
+
+[[files]]
+path = ".goosehints"
+scope = "project"
+format = "text"
+note = "Local hints at the project root and/or any directory in the hierarchy (nested hints supported)."
+
+[[files]]
+path = "AGENTS.md"
+scope = "project"
+format = "markdown"
+note = "Loaded by default alongside .goosehints, including nested AGENTS.md files."
+
+[[files]]
+path = "~/.config/goose/AGENTS.md"
+scope = "global"
+format = "markdown"
+note = "Configured context filenames are also loaded globally from ~/.config/goose/."
+
+[[examples]]
+title = "Local .goosehints"
+language = "markdown"
+code = '''
+This is a simple example JavaScript web application that uses the Express.js framework.
+
+Go through the @README.md for information on how to build and test it as needed.
+
+Run tests with `npm run test` ideally after each change.
+'''

@@ -1,0 +1,40 @@
+status = "partial"
+summary = "Agent-relevant settings live in the in-app settings UI (Cascade gitignore access, diff zones, terminal allow/deny lists, marketplace URL); there is no documented user-editable settings file for agent behavior. Enterprises can enforce settings centrally via OS-level policies."
+docs = "https://docs.devin.ai/desktop/enterprise-policies"
+notes = [
+  "User settings are managed via the settings UI (top-right dropdown or Command Palette > Open User Settings) rather than a documented config file.",
+  "Enterprise policy values override settings configured at any level (default, user, workspace).",
+  "Windows policies are read from the registry at Software\\Policies\\Windsurf\\{ProductName}; macOS uses .mobileconfig configuration profiles.",
+  "Documented policies include AllowedExtensions (JSON allowlist of extension publishers), UpdateMode, EnableTelemetry, and EnableFeedback.",
+]
+
+[[files]]
+path = "/etc/windsurf/policies/policy.json"
+scope = "enterprise"
+format = "json"
+note = "Linux JSON policy file deployed by IT. Windows uses registry-based group policy, macOS uses configuration profiles."
+
+[[fields]]
+name = "AllowedExtensions"
+type = "string (JSON)"
+description = "Allowlist of permitted extension publishers, e.g. {\"windsurf\": true, \"github\": true}."
+
+[[fields]]
+name = "UpdateMode"
+type = "string"
+description = "Controls how the editor updates (e.g. manual)."
+
+[[fields]]
+name = "EnableTelemetry"
+type = "boolean"
+description = "Enable or disable telemetry."
+
+[[examples]]
+title = "Linux policy file"
+language = "json"
+code = '''
+{
+  "AllowedExtensions": "{\"publisher1\": true, \"publisher2\": true}",
+  "UpdateMode": "manual"
+}
+'''

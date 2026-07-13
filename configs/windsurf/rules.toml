@@ -1,0 +1,69 @@
+status = "supported"
+summary = "User-defined rules at global, workspace, and system level, with per-rule activation modes (always_on, glob, model_decision, manual). AGENTS.md files are fed into the same rules engine with location-based scoping."
+invocation = ["@rule-name"]
+docs = "https://docs.devin.ai/desktop/cascade/memories"
+notes = [
+  "Newer builds prefer .devin/rules/*.md over .windsurf/rules/*.md; both are read (.devin takes precedence).",
+  "Rules are discovered in the workspace, its subdirectories, and parent directories up to the git root.",
+  "Workspace rule files are limited to 12,000 characters each; the global rules file to 6,000 characters.",
+  "Root-level AGENTS.md is always-on; AGENTS.md in a subdirectory becomes a glob rule for <directory>/**. agents.md (lowercase) also works.",
+  "Cascade also auto-generates Memories (stored locally in ~/.codeium/windsurf/memories/) that are retrieved when relevant; these are separate from user-defined rules.",
+]
+
+[[files]]
+path = ".windsurf/rules/*.md"
+scope = "project"
+format = "markdown"
+note = "One file per rule with frontmatter activation mode. .devin/rules/*.md is preferred in newer builds."
+
+[[files]]
+path = ".windsurfrules"
+scope = "project"
+format = "markdown"
+note = "Legacy single-file workspace rules at the repo root; still read."
+
+[[files]]
+path = "AGENTS.md"
+scope = "project"
+format = "markdown"
+note = "Root and any subdirectory. Root = always-on, subdirectory = auto-glob for that directory. No frontmatter."
+
+[[files]]
+path = "~/.codeium/windsurf/memories/global_rules.md"
+scope = "global"
+format = "markdown"
+note = "Single always-on file applied across all workspaces. Max 6,000 characters."
+
+[[files]]
+path = "/etc/windsurf/rules/*.md"
+scope = "enterprise"
+format = "markdown"
+note = "System rules deployed by IT (Linux path; macOS: /Library/Application Support/Windsurf/rules/, Windows: C:\\ProgramData\\Windsurf\\rules\\). Merged with user rules, read-only."
+
+[[fields]]
+name = "trigger"
+type = "string"
+description = "Activation mode declared in the rule's frontmatter."
+values = ["always_on", "model_decision", "glob", "manual"]
+
+[[fields]]
+name = "description"
+type = "string"
+description = "Shown in the system prompt for model_decision rules; Cascade reads the full rule when it decides the description is relevant."
+
+[[fields]]
+name = "globs"
+type = "string"
+description = "Glob pattern(s) for glob-triggered rules (e.g. **/*.test.ts); applied when Cascade reads or edits matching files."
+
+[[examples]]
+title = "Glob-scoped workspace rule"
+language = "markdown"
+code = '''
+---
+trigger: glob
+globs: **/*.test.ts
+---
+
+All test files must use `describe`/`it` blocks and mock external API calls.
+'''

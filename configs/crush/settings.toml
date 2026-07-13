@@ -1,0 +1,132 @@
+status = "supported"
+summary = "crush.json configures providers, models, LSPs, MCP servers, hooks, permissions, and options, at project and global scope with a published JSON schema."
+docs = "https://github.com/charmbracelet/crush#configuration"
+notes = [
+  "Config priority: .crush.json, then crush.json, then $HOME/.config/crush/crush.json. Schema: https://charm.land/crush.json.",
+  "Override the global config and data locations with CRUSH_GLOBAL_CONFIG and CRUSH_GLOBAL_DATA; ephemeral app state lives in ~/.local/share/crush/crush.json.",
+  "The --yolo flag skips all permission prompts entirely.",
+  "A .crushignore file (gitignore syntax) excludes additional files from context.",
+  "Opt out of pseudonymous metrics with options.disable_metrics, CRUSH_DISABLE_METRICS=1, or DO_NOT_TRACK=1.",
+  "Crush ships a builtin crush-config skill, so you can ask Crush to configure itself.",
+]
+
+[[files]]
+path = ".crush.json"
+scope = "project"
+format = "json"
+note = "Highest priority."
+
+[[files]]
+path = "crush.json"
+scope = "project"
+format = "json"
+
+[[files]]
+path = "~/.config/crush/crush.json"
+scope = "global"
+format = "json"
+note = "Windows: %LOCALAPPDATA%\\crush\\crush.json equivalent via env overrides."
+
+[[fields]]
+name = "providers"
+type = "object"
+description = "Custom provider configs (openai, openai-compat, anthropic, ollama, llamacpp, lmstudio, litellm, omlx) with base_url, api_key, and model definitions."
+
+[[fields]]
+name = "lsp"
+type = "object"
+description = "Language servers Crush uses for extra context, e.g. { \"go\": { \"command\": \"gopls\" } }."
+
+[[fields]]
+name = "mcp"
+type = "object"
+description = "MCP server definitions (see MCP surface)."
+
+[[fields]]
+name = "hooks"
+type = "object"
+description = "Lifecycle hook configuration (see Hooks surface)."
+
+[[fields]]
+name = "permissions"
+type = "{ allowed_tools?: string[] }"
+description = "Tools allowed to run without a permission prompt, e.g. view, ls, grep, or mcp_<server>_<tool>."
+
+[[fields]]
+name = "options.context_paths"
+type = "string[]"
+description = "Additional context file paths (see Rules surface)."
+
+[[fields]]
+name = "options.global_context_paths"
+type = "string[]"
+description = "Global context file/folder paths (see Rules surface)."
+
+[[fields]]
+name = "options.initialize_as"
+type = "string"
+description = "Context file name created during project initialization. Default AGENTS.md."
+
+[[fields]]
+name = "options.disabled_tools"
+type = "string[]"
+description = "Built-in tools to disable and hide from the agent entirely."
+
+[[fields]]
+name = "options.disabled_skills"
+type = "string[]"
+description = "Skills (builtin or discovered) to hide from the agent."
+
+[[fields]]
+name = "options.skills_paths"
+type = "string[]"
+description = "Additional skill discovery paths."
+
+[[fields]]
+name = "options.data_directory"
+type = "string"
+description = "Directory for per-project state such as the SQLite database. Default .crush."
+
+[[fields]]
+name = "options.attribution"
+type = "{ trailer_style?: string, generated_with?: boolean }"
+description = "Git commit/PR attribution. trailer_style: assisted-by (default), co-authored-by, or none."
+
+[[fields]]
+name = "options.disable_notifications"
+type = "boolean"
+description = "Disable desktop notifications for permission requests and finished turns."
+
+[[fields]]
+name = "options.disable_provider_auto_update"
+type = "boolean"
+description = "Disable automatic provider/model list updates from Catwalk."
+
+[[fields]]
+name = "options.disable_metrics"
+type = "boolean"
+description = "Opt out of pseudonymous usage metrics."
+
+[[fields]]
+name = "options.debug"
+type = "boolean"
+description = "Enable debug logging (also available via --debug)."
+
+[[examples]]
+title = "Providers, LSP, and permissions"
+language = "json"
+code = '''
+{
+  "$schema": "https://charm.land/crush.json",
+  "lsp": {
+    "go": { "command": "gopls" },
+    "typescript": { "command": "typescript-language-server", "args": ["--stdio"] }
+  },
+  "permissions": {
+    "allowed_tools": ["view", "ls", "grep", "edit"]
+  },
+  "options": {
+    "disabled_tools": ["sourcegraph"]
+  }
+}
+'''

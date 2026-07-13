@@ -1,0 +1,93 @@
+status = "supported"
+summary = "Layered settings.json files (system defaults, user, project, system overrides) organized into category objects like general, ui, model, context, tools, security, mcp, memory, and hooks. Legacy flat settings are migrated automatically."
+docs = "https://github.com/QwenLM/qwen-code/blob/main/docs/users/configuration/settings.md"
+notes = [
+  "Precedence (low to high): defaults, system defaults file, user, project, system settings file, environment variables, command-line arguments.",
+  "String values may reference environment variables with $VAR_NAME or ${VAR_NAME} syntax.",
+  "System paths can be overridden with QWEN_CODE_SYSTEM_SETTINGS_PATH and QWEN_CODE_SYSTEM_DEFAULTS_PATH.",
+  "Authentication (API keys, model providers) is configured separately; see the official auth docs.",
+]
+
+[[files]]
+path = ".qwen/settings.json"
+scope = "project"
+format = "json"
+note = "Project settings; override user settings."
+
+[[files]]
+path = "~/.qwen/settings.json"
+scope = "global"
+format = "json"
+note = "User settings for all sessions."
+
+[[files]]
+path = "/etc/qwen-code/settings.json"
+scope = "enterprise"
+format = "json"
+note = "System overrides beating user and project settings (Linux). Windows: C:\\ProgramData\\qwen-code\\settings.json; macOS: /Library/Application Support/QwenCode/settings.json."
+
+[[files]]
+path = "/etc/qwen-code/system-defaults.json"
+scope = "enterprise"
+format = "json"
+note = "System-wide defaults with the lowest precedence (Linux); Windows and macOS analogues exist."
+
+[[fields]]
+name = "general"
+type = "object"
+description = "General behavior: preferredEditor, vimMode, enableAutoUpdate, language, chatRecording, voice options."
+
+[[fields]]
+name = "model"
+type = "object"
+description = "Model selection and generation configuration."
+
+[[fields]]
+name = "context"
+type = "object"
+description = "Context loading and file filtering (.gitignore / .qwenignore handling)."
+
+[[fields]]
+name = "mcpServers"
+type = "record<string, object>"
+description = "MCP server definitions (see the MCP surface)."
+
+[[fields]]
+name = "mcp"
+type = "{ allowed?, excluded? }"
+description = "Global MCP allow/deny lists with glob pattern support."
+
+[[fields]]
+name = "hooks"
+type = "object"
+description = "Lifecycle hook configuration (see the Hooks surface)."
+
+[[fields]]
+name = "memory"
+type = "{ enableManagedAutoMemory?, enableManagedAutoDream?, enableTeamMemory?, enableTeamMemorySync? }"
+description = "Auto-memory and team memory toggles (see the Rules surface)."
+
+[[fields]]
+name = "ui"
+type = "object"
+description = "Terminal UI: theme, customThemes, statusLine, banner and footer options."
+
+[[fields]]
+name = "output"
+type = "{ format?: \"text\" | \"json\", showTimestamps?: boolean }"
+description = "CLI output format options."
+
+[[examples]]
+title = "Project settings"
+language = "json"
+code = '''
+{
+  "general": { "vimMode": true },
+  "memory": { "enableTeamMemory": true },
+  "mcpServers": {
+    "my-server": {
+      "httpUrl": "http://localhost:3000/mcp"
+    }
+  }
+}
+'''

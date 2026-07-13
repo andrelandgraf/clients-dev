@@ -2,10 +2,17 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronLeft } from "lucide-react";
-import { ConfigSurface } from "@/components/config-surface";
+import { ClientFavicon } from "@/components/client-favicon";
+import { SurfaceCompareTable } from "@/components/surface-compare-table";
 import { getClientsForSurface } from "@/lib/clients/catalog";
-import { SURFACES, SURFACE_META, type SurfaceId } from "@/lib/clients/schema";
-import { clientTypeLabel, SURFACE_ICON } from "@/lib/clients/display";
+import { homepageDomain, isComplete } from "@/lib/clients/facts";
+import {
+  SURFACES,
+  SURFACE_META,
+  type Client,
+  type SurfaceId,
+} from "@/lib/clients/schema";
+import { SURFACE_ICON } from "@/lib/clients/display";
 
 export const dynamicParams = false;
 
@@ -33,6 +40,49 @@ export async function generateMetadata({
   };
 }
 
+/** Clients whose rules config reads a file named AGENTS.md. */
+function readsAgentsMd(client: Client): boolean {
+  const rules = client.surfaces.rules;
+  if (!rules) return false;
+  return rules.files.some((file) =>
+    file.path.split("/").pop()?.toLowerCase() === "agents.md",
+  );
+}
+
+function RulesInterop({ clients }: { clients: Client[] }) {
+  const supporters = clients.filter(readsAgentsMd);
+  if (supporters.length === 0) return null;
+  return (
+    <section className="mt-6 rounded-xl border border-primary/20 bg-primary/5 p-4">
+      <h2 className="text-sm font-semibold">
+        <code className="font-mono">AGENTS.md</code> interop
+      </h2>
+      <p className="mt-1 text-sm text-muted-foreground">
+        {supporters.length} of {clients.length} documented clients read the
+        cross-client <code className="font-mono text-xs">AGENTS.md</code>{" "}
+        convention — write your rules once and every one of these picks them
+        up.
+      </p>
+      <div className="mt-3 flex flex-wrap gap-2">
+        {supporters.map((client) => (
+          <Link
+            key={client.id}
+            href={`/clients/${client.id}?tab=rules`}
+            className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-background px-2.5 py-1 text-xs font-medium transition-colors hover:border-primary/40 hover:text-primary"
+          >
+            <ClientFavicon
+              domain={homepageDomain(client.homepage)}
+              name={client.name}
+              size={14}
+            />
+            {client.name}
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export default async function SurfacePage({
   params,
 }: {
@@ -42,11 +92,15 @@ export default async function SurfacePage({
   const id = asSurface(surface);
   if (!id) notFound();
 
-  const clients = getClientsForSurface(id);
+  // Fully documented clients first, then partial ones, alphabetical within.
+  const clients = [...getClientsForSurface(id)].sort((a, b) => {
+    const complete = Number(isComplete(b)) - Number(isComplete(a));
+    return complete !== 0 ? complete : a.name.localeCompare(b.name);
+  });
   const Icon = SURFACE_ICON[id];
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
+    <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
       <Link
         href="/"
         className="mb-6 inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
@@ -54,60 +108,49 @@ export default async function SurfacePage({
         <ChevronLeft className="h-4 w-4" /> Home
       </Link>
 
-      <div className="flex items-center gap-3">
-        <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-          <Icon className="h-5 w-5" />
-        </span>
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">
-            {SURFACE_META[id].label}
-          </h1>
-          <p className="text-sm text-muted-foreground">{SURFACE_META[id].blurb}</p>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
+            <Icon className="h-5 w-5" />
+          </span>
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight">
+              {SURFACE_META[id].label}
+            </h1>
+            <p className="text-sm text-muted-foreground">
+              {SURFACE_META[id].blurb}
+            </p>
+          </div>
         </div>
+        <nav className="flex flex-wrap gap-2">
+          {SURFACES.filter((other) => other !== id).map((other) => {
+            const OtherIcon = SURFACE_ICON[other];
+            return (
+              <Link
+                key={other}
+                href={`/${other}`}
+                className="inline-flex items-center gap-1.5 rounded-full border border-border/60 px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+              >
+                <OtherIcon className="h-3.5 w-3.5" />
+                {SURFACE_META[other].label}
+              </Link>
+            );
+          })}
+        </nav>
       </div>
 
-      <nav className="mt-6 flex flex-wrap gap-2">
-        {SURFACES.filter((other) => other !== id).map((other) => {
-          const OtherIcon = SURFACE_ICON[other];
-          return (
-            <Link
-              key={other}
-              href={`/${other}`}
-              className="inline-flex items-center gap-1.5 rounded-full border border-border/60 px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
-            >
-              <OtherIcon className="h-3.5 w-3.5" />
-              {SURFACE_META[other].label}
-            </Link>
-          );
-        })}
-      </nav>
+      {id === "rules" && <RulesInterop clients={clients} />}
 
-      <div className="mt-8 space-y-8">
-        {clients.map((client) => {
-          const config = client.surfaces[id];
-          if (!config) return null;
-          return (
-            <div key={client.id}>
-              <div className="mb-3 flex items-center gap-2">
-                <Link
-                  href={`/clients/${client.id}`}
-                  className="font-mono text-lg font-semibold tracking-tight hover:text-primary"
-                >
-                  {client.name}
-                </Link>
-                <span className="text-xs text-muted-foreground">
-                  {clientTypeLabel(client.type)}
-                </span>
-              </div>
-              <ConfigSurface
-                surface={id}
-                config={config}
-                anchorId={`${client.id}-${id}`}
-              />
-            </div>
-          );
-        })}
+      <div className="mt-8">
+        <SurfaceCompareTable surface={id} clients={clients} />
       </div>
+
+      <p className="mt-4 text-sm text-muted-foreground">
+        Machine-readable:{" "}
+        <code className="rounded bg-secondary/50 px-1.5 py-0.5 font-mono text-xs">
+          curl https://clients.dev/api/{id}.json
+        </code>
+      </p>
     </div>
   );
 }

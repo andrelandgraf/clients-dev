@@ -1,0 +1,58 @@
+status = "supported"
+summary = "Persistent custom instructions from .roo/rules/ directories (global and workspace), mode-specific rules-{modeSlug}/ variants, .roorules fallback files, and AGENTS.md."
+docs = "https://docs.roocode.com/features/custom-instructions"
+notes = [
+  "Loading order: global rules (~/.roo/) first, then workspace rules (.roo/); workspace rules win on conflict. Mode-specific rules load before generic rules.",
+  "Rules directories are read recursively and appended to the system prompt in alphabetical order by filename.",
+  "Fallback single files (.roorules, .roorules-{modeSlug}) are used only when the corresponding rules directory is missing or empty; legacy .clinerules is also read.",
+  "AGENTS.md loading is controlled by the roo-cline.useAgentRules VS Code setting (default true); AGENT.md is a fallback when AGENTS.md is absent.",
+  "Additional plain-text instructions can be set per-mode and globally in the Prompts tab UI.",
+]
+
+[[files]]
+path = ".roo/rules/"
+scope = "project"
+format = "markdown"
+note = "Preferred workspace-wide rules directory; any text/markdown files, read recursively."
+
+[[files]]
+path = ".roo/rules-{modeSlug}/"
+scope = "project"
+format = "markdown"
+note = "Mode-specific rules (e.g. .roo/rules-code/), applied only in that mode."
+
+[[files]]
+path = ".roorules"
+scope = "project"
+format = "markdown"
+note = "Single-file fallback when .roo/rules/ is missing or empty. Plain text also accepted."
+
+[[files]]
+path = "AGENTS.md"
+scope = "project"
+format = "markdown"
+note = "Agent Rules standard file in the workspace root; AGENT.md used as fallback."
+
+[[files]]
+path = "~/.roo/rules/"
+scope = "global"
+format = "markdown"
+note = "Global rules applied to all projects."
+
+[[files]]
+path = "~/.roo/rules-{modeSlug}/"
+scope = "global"
+format = "markdown"
+note = "Global mode-specific rules."
+
+[[examples]]
+title = "Workspace rule file (.roo/rules/coding-standards.md)"
+language = "markdown"
+code = '''
+# Global Coding Standards
+
+1. Always use TypeScript for new projects
+2. Write unit tests for all new functions
+3. Use descriptive variable names
+4. Add JSDoc comments for public APIs
+'''

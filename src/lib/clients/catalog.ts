@@ -1,4 +1,5 @@
 import rawCatalog from "@/data/catalog.json";
+import { isComplete } from "./facts";
 import { Catalog, type Client, SURFACES, type SurfaceId } from "./schema";
 
 /**
@@ -14,6 +15,16 @@ export function getCatalog(): Catalog {
 
 export function getClients(): Client[] {
   return catalog.clients;
+}
+
+/** Clients with every surface verified from official docs (the main table). */
+export function getCompleteClients(): Client[] {
+  return catalog.clients.filter(isComplete);
+}
+
+/** Clients with partial data only — listed separately, never as peer rows. */
+export function getPartialClients(): Client[] {
+  return catalog.clients.filter((client) => !isComplete(client));
 }
 
 export function getClient(id: string): Client | undefined {

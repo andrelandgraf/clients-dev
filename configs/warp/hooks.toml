@@ -1,0 +1,5 @@
+status = "unsupported"
+summary = "Warp has no lifecycle hook mechanism for its agents."
+notes = [
+  "No hooks surface exists in the official docs (docs.warp.dev). Agent lifecycle hooks are open feature requests tracked in warpdotdev/Warp issues #7834, #8931, and #6857.",
+]

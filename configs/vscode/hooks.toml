@@ -1,0 +1,107 @@
+status = "supported"
+summary = "Preview: JSON hook files run shell commands at agent lifecycle events. Hooks receive event JSON on stdin and can return JSON on stdout to block tools, decide permissions, or inject context."
+events = [
+  "SessionStart",
+  "UserPromptSubmit",
+  "PreToolUse",
+  "PostToolUse",
+  "PreCompact",
+  "SubagentStart",
+  "SubagentStop",
+  "Stop",
+]
+docs = "https://code.visualstudio.com/docs/copilot/customization/hooks"
+notes = [
+  "Preview feature; the configuration format may change.",
+  "Same hook format as Claude Code and Copilot CLI. Claude Code configs are read but matcher values are ignored (hooks run for all tools); Copilot CLI camelCase event names and bash/powershell fields are converted.",
+  "Exit code 0 parses stdout as JSON; exit code 2 blocks and shows stderr to the model; other codes are non-blocking warnings.",
+  "PreToolUse hooks can return hookSpecificOutput.permissionDecision (allow/deny/ask); SessionStart hooks can return additionalContext.",
+  "Extra locations via chat.hookFilesLocations; agent-scoped hooks in .agent.md frontmatter require chat.useCustomAgentHooks.",
+  "Organizations can disable hooks via enterprise policy.",
+]
+
+[[files]]
+path = ".github/hooks/*.json"
+scope = "project"
+format = "json"
+key = "hooks"
+
+[[files]]
+path = ".claude/settings.json"
+scope = "project"
+format = "json"
+key = "hooks"
+note = "Claude Code compatibility (also .claude/settings.local.json)."
+
+[[files]]
+path = "~/.copilot/hooks/*.json"
+scope = "global"
+format = "json"
+key = "hooks"
+
+[[files]]
+path = "~/.claude/settings.json"
+scope = "global"
+format = "json"
+key = "hooks"
+note = "Claude Code compatibility. Workspace hooks take precedence over user hooks for the same event."
+
+[[fields]]
+name = "type"
+type = "\"command\""
+required = true
+description = "Hook handler type."
+
+[[fields]]
+name = "command"
+type = "string"
+required = true
+description = "Shell command to run. Receives event JSON on stdin; may write JSON to stdout."
+
+[[fields]]
+name = "cwd"
+type = "string"
+description = "Working directory for the command."
+
+[[fields]]
+name = "env"
+type = "record<string, string>"
+description = "Environment variables for the command."
+
+[[fields]]
+name = "timeout"
+type = "number"
+description = "Timeout in seconds. Default 30."
+
+[[fields]]
+name = "windows | linux | osx"
+type = "string"
+description = "OS-specific command overrides, selected by the extension host platform."
+
+[[examples]]
+title = "Format after edits"
+language = "json"
+code = '''
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "type": "command",
+        "command": "npx prettier --write ."
+      }
+    ]
+  }
+}
+'''
+
+[[examples]]
+title = "Block dangerous commands (PreToolUse output)"
+language = "json"
+code = '''
+{
+  "hookSpecificOutput": {
+    "permissionDecision": "deny",
+    "permissionDecisionReason": "Destructive command blocked by security policy"
+  }
+}
+'''

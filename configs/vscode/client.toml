@@ -1,4 +1,7 @@
-name = "VS Code"
+name = "Visual Studio Code"
 type = "editor"
 vendor = "Microsoft"
+description = "Microsoft's code editor with GitHub Copilot chat and agent mode built in — configured via .vscode/mcp.json, settings.json, instructions files, prompt files, skills, and hooks."
 homepage = "https://code.visualstudio.com/"
+docs = "https://code.visualstudio.com/docs/copilot/overview"
+repo = "https://github.com/microsoft/vscode"

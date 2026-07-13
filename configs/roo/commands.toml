@@ -1,0 +1,51 @@
+status = "supported"
+summary = "Custom slash commands as markdown files in .roo/commands/ (project) or ~/.roo/commands/ (global); the filename becomes the command name."
+invocation = ["/command-name"]
+docs = "https://docs.roocode.com/features/slash-commands"
+notes = [
+  "Project commands override global commands with the same name; built-in commands (e.g. /init and mode-switching commands like /code) cannot be overridden.",
+  "Commands can also be created and managed from Settings > Slash Commands.",
+  "Command subdirectories and symlinked command directories are supported.",
+]
+
+[[files]]
+path = ".roo/commands/<name>.md"
+scope = "project"
+format = "markdown"
+
+[[files]]
+path = "~/.roo/commands/<name>.md"
+scope = "global"
+format = "markdown"
+
+[[fields]]
+name = "description"
+type = "string"
+description = "Shown in the command menu to explain the command's purpose."
+
+[[fields]]
+name = "argument-hint"
+type = "string"
+description = "Hint displayed next to the command showing expected arguments (e.g. <endpoint-name> <http-method>)."
+
+[[fields]]
+name = "mode"
+type = "string"
+description = "Mode slug to switch to before running the command (e.g. code, architect)."
+
+[[examples]]
+title = "Command with frontmatter (.roo/commands/api-endpoint.md)"
+language = "markdown"
+code = '''
+---
+description: Generate a new REST API endpoint with best practices
+argument-hint: <endpoint-name> <http-method>
+---
+
+Create a new REST API endpoint with the following specifications:
+- Proper error handling
+- Input validation
+- Unit tests
+
+Follow our project's API conventions and patterns.
+'''

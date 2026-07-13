@@ -1,0 +1,110 @@
+status = "supported"
+summary = "Layered settings.json files (system defaults, user, project, system overrides) organized into category objects like general, ui, model, context, tools, security, mcp, and hooksConfig. Editable in-session with the /settings dialog."
+docs = "https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/settings.md"
+notes = [
+  "Precedence (low to high): defaults, system defaults file, user, project, system settings file, environment variables, command-line arguments.",
+  "String values may reference environment variables with $VAR_NAME, ${VAR_NAME}, or ${VAR_NAME:-default} syntax.",
+  "A hosted JSON schema is available at schemas/settings.schema.json in the repository for editor validation.",
+  "System paths can be overridden with GEMINI_CLI_SYSTEM_SETTINGS_PATH and GEMINI_CLI_SYSTEM_DEFAULTS_PATH.",
+]
+
+[[files]]
+path = ".gemini/settings.json"
+scope = "project"
+format = "json"
+note = "Project settings; override user settings and system defaults."
+
+[[files]]
+path = "~/.gemini/settings.json"
+scope = "global"
+format = "json"
+note = "User settings for all sessions."
+
+[[files]]
+path = "/etc/gemini-cli/settings.json"
+scope = "enterprise"
+format = "json"
+note = "System overrides beating all other files (Linux). Windows: C:\\ProgramData\\gemini-cli\\settings.json; macOS: /Library/Application Support/GeminiCli/settings.json."
+
+[[files]]
+path = "/etc/gemini-cli/system-defaults.json"
+scope = "enterprise"
+format = "json"
+note = "System-wide defaults with the lowest precedence (Linux); Windows and macOS analogues exist."
+
+[[fields]]
+name = "general"
+type = "object"
+description = "General behavior: vimMode, defaultApprovalMode (default | auto_edit | plan), enableAutoUpdate, session retention, plan mode."
+
+[[fields]]
+name = "model"
+type = "object"
+description = "Model selection and session behavior: name, maxSessionTurns, compressionThreshold."
+
+[[fields]]
+name = "context"
+type = "object"
+description = "Context loading: fileName (GEMINI.md alternatives), discoveryMaxDirs, fileFiltering (.gitignore/.geminiignore handling)."
+
+[[fields]]
+name = "mcpServers"
+type = "record<string, object>"
+description = "MCP server definitions (see the MCP surface)."
+
+[[fields]]
+name = "mcp"
+type = "{ serverCommand?, allowed?, excluded? }"
+description = "Global MCP rules: allow/deny lists of server names."
+
+[[fields]]
+name = "hooks"
+type = "object"
+description = "Lifecycle hook configuration (see the Hooks surface)."
+
+[[fields]]
+name = "hooksConfig"
+type = "{ enabled?: boolean, notifications?: boolean }"
+description = "Canonical toggle and UI indicators for the hooks system."
+
+[[fields]]
+name = "skills"
+type = "{ enabled?: boolean }"
+description = "Toggle for Agent Skills (default true)."
+
+[[fields]]
+name = "tools"
+type = "object"
+description = "Tool behavior: sandbox paths and network access, shell options, useRipgrep, output truncation."
+
+[[fields]]
+name = "security"
+type = "object"
+description = "Security controls: folderTrust, disableYoloMode, always-allow behavior, extension allowlists, environment variable redaction."
+
+[[fields]]
+name = "ui"
+type = "object"
+description = "Terminal UI: theme switching, footer, banner, accessibility, rendering options."
+
+[[fields]]
+name = "experimental"
+type = "object"
+description = "Experimental flags such as autoMemory, worktrees, voiceMode, and modelSteering."
+
+[[examples]]
+title = "Project settings"
+language = "json"
+code = '''
+{
+  "general": { "defaultApprovalMode": "auto_edit" },
+  "context": { "fileName": ["AGENTS.md", "GEMINI.md"] },
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@github/github-mcp-server"],
+      "env": { "GITHUB_PERSONAL_ACCESS_TOKEN": "$GITHUB_PERSONAL_ACCESS_TOKEN" }
+    }
+  }
+}
+'''

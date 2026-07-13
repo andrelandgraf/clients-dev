@@ -1,0 +1,117 @@
+status = "supported"
+summary = "MCP servers in mcp.json at user, folder, and project level, managed via the /mcp interactive UI, `droid mcp add`, or a built-in registry of 40+ servers."
+transports = ["stdio", "sse", "http"]
+auth = ["oauth", "headers", "env"]
+docs = "https://docs.factory.ai/cli/configuration/mcp"
+notes = [
+  "Layering: user config takes priority, then folder-level (.factory/mcp.json in any ancestor directory), then project config.",
+  "Enabling/disabling a project-defined server saves a copy to user config; project servers can only be removed by editing .factory/mcp.json directly.",
+  "${VAR} and ${VAR:-default} expansion is supported in command, args, env, url, and headers — expansion happens in memory, the file is never rewritten.",
+  "OAuth works with zero configuration for most remote servers (Dynamic Client Registration / CIMD); tokens are stored in the system keyring globally, not per-project.",
+  "sse is the legacy HTTP+SSE transport; prefer http (Streamable HTTP).",
+  "Custom droids (subagents) can scope themselves to specific servers via the mcpServers frontmatter field.",
+  "Enterprise: mcpPolicy allowlist and mcpAutonomyUrlOverrides are enforced through org-managed settings.",
+]
+
+[[files]]
+path = "~/.factory/mcp.json"
+scope = "global"
+format = "json"
+key = "mcpServers"
+note = "Personal servers, available in all projects. Servers added via droid mcp add or the registry go here."
+
+[[files]]
+path = ".factory/mcp.json"
+scope = "project"
+format = "json"
+key = "mcpServers"
+note = "Shared team servers committed to the repo; also read from .factory/mcp.json in ancestor directories (folder scope). Never put secrets in project config."
+
+[[fields]]
+name = "type"
+type = "string"
+description = "Server transport. May be omitted for stdio servers."
+values = ["stdio", "http", "sse"]
+
+[[fields]]
+name = "command"
+type = "string"
+description = "Executable to run (stdio servers)."
+
+[[fields]]
+name = "args"
+type = "string[]"
+description = "Command-line arguments (stdio servers)."
+
+[[fields]]
+name = "env"
+type = "record<string, string>"
+description = "Environment variables (stdio servers). Supports ${VAR} expansion."
+
+[[fields]]
+name = "url"
+type = "string"
+description = "HTTP/HTTPS endpoint (http and sse servers)."
+
+[[fields]]
+name = "headers"
+type = "record<string, string>"
+description = "HTTP headers for authentication (http and sse servers)."
+
+[[fields]]
+name = "oauth"
+type = "object | false"
+description = "OAuth overrides (scopes, clientId/clientSecret + authorizationServerIssuer, clientMetadataUrl, tokenEndpointAuthMethod, callbackPort), or false to disable OAuth."
+
+[[fields]]
+name = "disabled"
+type = "boolean"
+description = "Temporarily disable the server. Default false."
+
+[[fields]]
+name = "enabledTools"
+type = "string[]"
+description = "Allowlist of tool names to load; takes precedence over disabledTools."
+
+[[fields]]
+name = "disabledTools"
+type = "string[]"
+description = "Blocklist of tool names to exclude; filtered tools never consume context tokens."
+
+[[fields]]
+name = "timeoutMs"
+type = "number"
+description = "Per-server MCP tool call timeout override; falls back to mcp.callTimeoutMs in settings.json."
+
+[[capabilities]]
+name = "Tools"
+status = "supported"
+note = "View each server's tools via /mcp; filter with enabledTools/disabledTools."
+
+[[examples]]
+title = "mcp.json"
+language = "json"
+code = '''
+{
+  "mcpServers": {
+    "linear": {
+      "type": "http",
+      "url": "https://mcp.linear.app/mcp",
+      "disabled": false
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"],
+      "disabled": false
+    }
+  }
+}
+'''
+
+[[examples]]
+title = "Add servers via CLI"
+language = "bash"
+code = '''
+droid mcp add sentry https://mcp.sentry.dev/mcp --type http
+droid mcp add airtable "npx -y airtable-mcp-server" --env AIRTABLE_API_KEY=your_key
+'''

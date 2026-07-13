@@ -1,0 +1,69 @@
+status = "supported"
+summary = "Persistent instructions via auto-discovered AGENTS.md files (project root, subdirectories, and global config dir) plus the instructions array in kilo.jsonc pointing at rule files, globs, or URLs."
+docs = "https://kilocode.ai/docs/advanced-usage/custom-rules"
+notes = [
+  "AGENTS.md is the primary instruction file; CLAUDE.md and CONTEXT.md are also recognized at the project root (discovered via findUp in parent directories too).",
+  "Per-directory AGENTS.md files are loaded dynamically when the agent reads a file in that directory.",
+  "The instructions key in kilo.jsonc accepts paths, glob patterns, and URLs; URL sources are fetched at session start with a 5-second timeout.",
+  "Global instructions from the global kilo.jsonc load after project instructions; project-level instructions take precedence on conflict.",
+  "Backward compatible with legacy .kilocode/rules/ directories and .kilocoderules files via auto-migration; migrating to kilo.jsonc/AGENTS.md is recommended.",
+  "Markdown is recommended for rule files, though plain text works.",
+]
+
+[[files]]
+path = "AGENTS.md"
+scope = "project"
+format = "markdown"
+note = "Primary project instruction file at the workspace root; also loadable from any subdirectory."
+
+[[files]]
+path = ".kilo/rules/*.md"
+scope = "project"
+format = "markdown"
+note = "Conventional rules directory, referenced from the instructions array in kilo.jsonc."
+
+[[files]]
+path = "kilo.jsonc"
+scope = "project"
+format = "jsonc"
+key = "instructions"
+note = "Array of file paths, globs, or URLs pointing to instruction files. Also valid in .kilo/kilo.jsonc."
+
+[[files]]
+path = "~/.config/kilo/AGENTS.md"
+scope = "global"
+format = "markdown"
+note = "Global instructions applying to all projects; ~/.claude/CLAUDE.md is read for Claude compatibility."
+
+[[files]]
+path = "~/.config/kilo/kilo.jsonc"
+scope = "global"
+format = "jsonc"
+key = "instructions"
+note = "Global instruction sources."
+
+[[examples]]
+title = "Instruction sources (kilo.jsonc)"
+language = "jsonc"
+code = '''
+{
+  "instructions": [
+    ".kilo/rules/formatting.md",
+    ".kilo/rules/*.md",
+    "https://example.com/team-instructions.md"
+  ]
+}
+'''
+
+[[examples]]
+title = "Rule file (.kilo/rules/restricted_files.md)"
+language = "markdown"
+code = '''
+# Restricted files
+
+Files in the list contain sensitive data, they MUST NOT be read
+
+- supersecrets.txt
+- credentials.json
+- .env
+'''

@@ -1,26 +1,57 @@
 status = "supported"
-summary = "SKILL.md skills following the open Agent Skills standard."
-invocation = ["/skill-name"]
-notes = ["Skill discovery paths from the open skills CLI (vercel-labs/skills)."]
+summary = "Folder-based SKILL.md skills (Agent Skills standard) that bundle instructions with supporting files. Cascade sees only name and description until it invokes the skill (progressive disclosure)."
+invocation = ["automatic", "@skill-name"]
+docs = "https://docs.devin.ai/desktop/cascade/skills"
+notes = [
+  "Supporting files (scripts, templates, checklists) placed next to SKILL.md become available when the skill is invoked.",
+  "For cross-agent compatibility, skills are also discovered in .agents/skills/ and ~/.agents/skills/; with Claude Code config reading enabled, .claude/skills/ and ~/.claude/skills/ are scanned too.",
+  "Skills can also be created from the Cascade Customizations UI (+ Workspace / + Global).",
+]
 
 [[files]]
 path = ".windsurf/skills/<name>/SKILL.md"
 scope = "project"
 format = "markdown"
+note = "Workspace skills, committed with the repo."
 
 [[files]]
 path = "~/.codeium/windsurf/skills/<name>/SKILL.md"
 scope = "global"
 format = "markdown"
+note = "Global skills, available in all workspaces. Not committed."
+
+[[files]]
+path = "/etc/windsurf/skills/<name>/SKILL.md"
+scope = "enterprise"
+format = "markdown"
+note = "System skills deployed by IT (Linux path; macOS: /Library/Application Support/Windsurf/skills/, Windows: C:\\ProgramData\\Windsurf\\skills\\). Read-only for end users."
 
 [[fields]]
 name = "name"
 type = "string"
 required = true
-description = "Skill identifier (required by the Agent Skills standard)."
+description = "Unique skill identifier (lowercase letters, numbers, hyphens). Displayed in the UI and used for @-mentions."
 
 [[fields]]
 name = "description"
 type = "string"
 required = true
-description = "What the skill does and when to use it."
+description = "Brief explanation shown to the model so Cascade can decide when to invoke the skill."
+
+[[examples]]
+title = "Skill with frontmatter"
+language = "markdown"
+code = '''
+---
+name: deploy-to-production
+description: Guides the deployment process to production with safety checks
+---
+
+## Pre-deployment Checklist
+1. Run all tests
+2. Check for uncommitted changes
+3. Verify environment variables
+
+## Deployment Steps
+Follow these steps to deploy safely...
+'''

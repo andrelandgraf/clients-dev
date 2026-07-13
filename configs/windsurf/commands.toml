@@ -1,0 +1,41 @@
+status = "supported"
+summary = "Workflows are markdown prompt templates invoked manually with /workflow-name slash commands. Cascade processes the steps sequentially; workflows can call other workflows."
+invocation = ["/workflow-name"]
+docs = "https://docs.devin.ai/desktop/cascade/workflows"
+notes = [
+  "Manual-only: Cascade never invokes a workflow automatically (use a Skill for model-invoked procedures).",
+  "Workflow files are limited to 12,000 characters each.",
+  "Workflows are discovered in the workspace, its subdirectories, and parent directories up to the git root.",
+  "Precedence when names collide: system > workspace > global > built-in (e.g. /plan).",
+  "Workflows contain a title, description, and a series of steps; a workflow can include instructions like 'Call /other-workflow'.",
+]
+
+[[files]]
+path = ".windsurf/workflows/*.md"
+scope = "project"
+format = "markdown"
+note = "Workspace workflows, committed with the repo."
+
+[[files]]
+path = "~/.codeium/windsurf/global_workflows/*.md"
+scope = "global"
+format = "markdown"
+note = "Global workflows available in every workspace. Not committed."
+
+[[files]]
+path = "/etc/windsurf/workflows/*.md"
+scope = "enterprise"
+format = "markdown"
+note = "System workflows deployed by IT (Linux path; macOS: /Library/Application Support/Windsurf/workflows/, Windows: C:\\ProgramData\\Windsurf\\workflows\\). Highest precedence, read-only."
+
+[[examples]]
+title = "Workflow to address PR comments"
+language = "markdown"
+code = '''
+1. Check out the PR branch: `gh pr checkout [id]`
+2. Get comments on the PR via `gh api`
+3. For EACH comment: analyze the file and line range, make the change
+   if it is clear, otherwise ask for clarification.
+4. After all comments are processed, summarize what you did and which
+   comments need the USER's attention.
+'''

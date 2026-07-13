@@ -1,4 +1,6 @@
 name = "Amp"
 type = "cli"
 vendor = "Sourcegraph"
+description = "The frontier coding agent for your terminal and editor, with multi-model modes, threads, subagents, and the Oracle."
 homepage = "https://ampcode.com/"
+docs = "https://ampcode.com/manual"

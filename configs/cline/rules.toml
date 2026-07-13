@@ -1,0 +1,56 @@
+status = "supported"
+summary = "Markdown rule files in .clinerules/ (workspace) and a global Cline Rules directory, with per-file enable/disable toggles and optional paths frontmatter for conditional activation. Cursor rules, Windsurf rules, and AGENTS.md are auto-detected."
+docs = "https://docs.cline.bot/customization/cline-rules"
+notes = [
+  "Cline processes all .md and .txt files inside .clinerules/, combining them into a unified rule set; workspace rules win over global rules on conflict.",
+  "Conditional rules use YAML frontmatter with a paths array of globs, matched against open tabs, visible files, files mentioned in your prompt, and files Cline edits. Rules without frontmatter are always active.",
+  "Cross-tool formats are auto-detected: .cursorrules, .windsurfrules, AGENTS.md, and global ~/.agents/AGENTS.md.",
+  "The /newrule slash command creates a rule interactively; the CLI/SDK also read global rules from ~/.cline/rules/.",
+  "On Linux/WSL the global directory may be ~/Cline/Rules if ~/Documents/Cline/Rules does not exist.",
+]
+
+[[files]]
+path = ".clinerules/"
+scope = "project"
+format = "markdown"
+note = "Primary format: directory of .md/.txt rule files at the project root (a single .clinerules file also works)."
+
+[[files]]
+path = "AGENTS.md"
+scope = "project"
+format = "markdown"
+note = "Standard cross-tool format, auto-detected at the project root."
+
+[[files]]
+path = "~/Documents/Cline/Rules/"
+scope = "global"
+format = "markdown"
+note = "Global rules directory (Windows: Documents\\Cline\\Rules). ~/.cline/rules/ is also read."
+
+[[files]]
+path = "~/.agents/AGENTS.md"
+scope = "global"
+format = "markdown"
+note = "Cross-tool global AGENTS instructions."
+
+[[fields]]
+name = "paths"
+type = "string[]"
+description = "Frontmatter glob patterns that scope the rule; it activates when any pattern matches a file in the current context. Empty array disables the rule."
+
+[[examples]]
+title = "Conditional rule scoped to React code"
+language = "markdown"
+code = '''
+---
+paths:
+  - "src/components/**"
+  - "src/hooks/**"
+---
+
+# React Component Guidelines
+
+When creating or modifying React components:
+- Use functional components with React hooks
+- Extract reusable logic into custom React hooks
+'''

@@ -1,0 +1,92 @@
+status = "supported"
+summary = "SKILL.md Agent Skills (open standard) loaded from project and personal skill folders, invoked automatically by the agent or manually as /skill-name. Managed with /skills and copilot skill commands."
+invocation = ["/skill-name"]
+docs = "https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-skills"
+notes = [
+  "Location priority (first found wins for duplicate names): .github/skills > .agents/skills > .claude/skills > parent .github/skills (monorepo) > ~/.copilot/skills > ~/.agents/skills > plugin skills > COPILOT_SKILLS_DIRS > bundled > remote org/enterprise skills.",
+  "Skills can bundle scripts and other files; everything in the skill directory is discovered when the skill is invoked.",
+  "Manage with /skills list|info|add|remove|reload in a session or copilot skill from the terminal; disable via disabledSkills in settings.json.",
+  "Pre-approving shell/bash in allowed-tools removes the confirmation step for terminal commands — only do this for fully trusted skills.",
+  "Individual .md files in .claude/commands/ act as a simplified alternative skill format (see the commands surface).",
+]
+
+[[files]]
+path = ".github/skills/<name>/SKILL.md"
+scope = "project"
+format = "markdown"
+
+[[files]]
+path = ".agents/skills/<name>/SKILL.md"
+scope = "project"
+format = "markdown"
+note = "Cross-agent project location."
+
+[[files]]
+path = ".claude/skills/<name>/SKILL.md"
+scope = "project"
+format = "markdown"
+note = "Claude-compatible project location."
+
+[[files]]
+path = "~/.copilot/skills/<name>/SKILL.md"
+scope = "global"
+format = "markdown"
+note = "Personal skills for all projects; additional directories via the skillDirectories setting or COPILOT_SKILLS_DIRS."
+
+[[files]]
+path = "~/.agents/skills/<name>/SKILL.md"
+scope = "global"
+format = "markdown"
+note = "Cross-agent personal location."
+
+[[fields]]
+name = "name"
+type = "string"
+required = true
+description = "Unique identifier. Letters, numbers, and hyphens only; max 64 characters; typically matches the skill directory name."
+
+[[fields]]
+name = "description"
+type = "string"
+required = true
+description = "What the skill does and when to use it. Max 1024 characters."
+
+[[fields]]
+name = "argument-hint"
+type = "string"
+description = "Freeform hint describing expected arguments, shown in the skill picker."
+
+[[fields]]
+name = "allowed-tools"
+type = "string | string[]"
+description = "Tools automatically allowed while the skill is active. Use \"*\" for all tools."
+
+[[fields]]
+name = "user-invocable"
+type = "boolean"
+description = "Whether users can invoke the skill with /SKILL-NAME. Default true."
+
+[[fields]]
+name = "disable-model-invocation"
+type = "boolean"
+description = "Prevent the agent from automatically invoking this skill. Default false."
+
+[[fields]]
+name = "license"
+type = "string"
+description = "License that applies to this skill."
+
+[[examples]]
+title = "Skill that runs a script"
+language = "markdown"
+code = '''
+---
+name: image-convert
+description: Converts SVG images to PNG format. Use when asked to convert SVG files.
+allowed-tools: shell
+---
+
+When asked to convert an SVG to PNG, run the `convert-svg-to-png.sh` script
+from this skill's base directory, passing the input SVG file path as the
+first argument.
+'''

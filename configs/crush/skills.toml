@@ -1,7 +1,15 @@
 status = "supported"
-summary = "SKILL.md skills following the open Agent Skills standard."
-invocation = ["/skill-name"]
-notes = ["Skill discovery paths from the open skills CLI (vercel-labs/skills)."]
+summary = "SKILL.md skills following the Agent Skills open standard, discovered from many global and project paths and activated on demand; user-invocable skills appear in the command palette."
+invocation = ["automatic (model-invoked)", "command palette (Ctrl+P) for user-invocable skills"]
+docs = "https://github.com/charmbracelet/crush#agent-skills"
+notes = [
+  "Additional global search paths: $CRUSH_SKILLS_DIR, ~/.config/agents/skills/, ~/.claude/skills/, ~/.agents/skills/, Windows %LOCALAPPDATA% equivalents, and any paths in options.skills_paths.",
+  "Additional project search paths: .agents/skills/, .claude/skills/, and .cursor/skills/.",
+  "User-invocable skills show in the palette as user:skill-name (global) or project:skill-name (project).",
+  "disable-model-invocation hides a skill from the model's available skills list while keeping it user-invocable.",
+  "Hide specific skills (including builtins like crush-config) with options.disabled_skills.",
+  "Crush ships builtin skills including crush-config and crush-hooks for configuring itself.",
+]
 
 [[files]]
 path = ".crush/skills/<name>/SKILL.md"
@@ -24,3 +32,53 @@ name = "description"
 type = "string"
 required = true
 description = "What the skill does and when to use it."
+
+[[fields]]
+name = "user-invocable"
+type = "boolean"
+description = "Make the skill invocable as a command from the command palette (Ctrl+P)."
+
+[[fields]]
+name = "disable-model-invocation"
+type = "boolean"
+description = "Prevent the model from auto-triggering the skill while still allowing user invocation."
+
+[[fields]]
+name = "license"
+type = "string"
+description = "Optional license identifier."
+
+[[fields]]
+name = "compatibility"
+type = "string"
+description = "Optional compatibility hint."
+
+[[fields]]
+name = "metadata"
+type = "record<string, string>"
+description = "Optional string-to-string metadata map."
+
+[[examples]]
+title = "User-invocable skill"
+language = "markdown"
+code = '''
+---
+name: my-skill
+description: A skill that can be invoked as a command.
+user-invocable: true
+---
+
+Instructions the agent loads when the skill is activated.
+'''
+
+[[examples]]
+title = "Extra skill paths in crush.json"
+language = "json"
+code = '''
+{
+  "$schema": "https://charm.land/crush.json",
+  "options": {
+    "skills_paths": ["~/.config/crush/skills", "./project-skills"]
+  }
+}
+'''

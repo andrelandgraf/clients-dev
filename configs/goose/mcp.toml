@@ -1,25 +1,47 @@
 status = "supported"
-summary = "Configure MCP servers in YAML under the extensions key."
-transports = ["stdio", "http", "sse"]
+summary = "MCP servers are configured as extensions under the extensions key in config.yaml. Supports local stdio and remote Streamable HTTP servers, plus built-in, platform, and inline Python extension types."
+transports = ["stdio", "http"]
 auth = ["headers"]
-notes = ["Servers are configured as entries under the extensions key (not mcpServers)."]
+docs = "https://block.github.io/goose/docs/getting-started/using-extensions"
+notes = [
+  "Servers are configured as entries under the extensions key (not mcpServers).",
+  "SSE transport is no longer supported; the sse type is kept only for config file compatibility (per the goose source).",
+  "Extensions can also be added via `goose configure`, the Desktop UI, goose://extension deeplinks, session flags (--with-extension, --with-builtin, --with-streamable-http-extension), or in-session /extension and /builtin commands.",
+  "Secrets referenced via env_keys are stored in the system keyring (or secrets.yaml with file-based storage), not in config.yaml.",
+  "goose automatically checks external extensions for known malware before activation.",
+]
 
 [[files]]
 path = "~/.config/goose/config.yaml"
 scope = "global"
 format = "yaml"
 key = "extensions"
-note = "Windows: %APPDATA%/Block/goose/config/config.yaml."
+note = "macOS/Linux. On Windows: %APPDATA%/Block/goose/config/config.yaml."
+
+[[fields]]
+name = "type"
+type = "\"stdio\" | \"streamable_http\" | \"builtin\" | \"platform\" | \"frontend\" | \"inline_python\""
+description = "Extension type. stdio runs a local command; streamable_http connects to a remote MCP endpoint."
 
 [[fields]]
 name = "name"
 type = "string"
-description = "Extension name."
+description = "Internal extension name."
+
+[[fields]]
+name = "display_name"
+type = "string"
+description = "Human-readable name shown in the UI (optional)."
+
+[[fields]]
+name = "enabled"
+type = "boolean"
+description = "Whether the extension is active."
 
 [[fields]]
 name = "cmd"
 type = "string"
-description = "Command for a local (stdio) extension."
+description = "Command to execute for a stdio extension."
 
 [[fields]]
 name = "args"
@@ -29,24 +51,92 @@ description = "Arguments passed to the command."
 [[fields]]
 name = "uri"
 type = "string"
-description = "Endpoint URL for a remote extension."
+description = "Endpoint URL for a streamable_http extension. Supports environment-variable substitution."
 
 [[fields]]
-name = "type"
-type = "\"stdio\" | \"sse\" | \"streamable_http\""
-description = "Extension transport type."
-
-[[fields]]
-name = "enabled"
-type = "boolean"
-description = "Whether the extension is enabled."
+name = "headers"
+type = "record<string, string>"
+description = "HTTP headers for a streamable_http extension (e.g. Authorization)."
 
 [[fields]]
 name = "envs"
 type = "record<string, string>"
-description = "Environment variables."
+description = "Environment variable values passed to the extension."
+
+[[fields]]
+name = "env_keys"
+type = "string[]"
+description = "Names of required environment variables; missing values are prompted for and stored in the keyring."
 
 [[fields]]
 name = "timeout"
 type = "number"
-description = "Timeout in seconds."
+description = "Operation timeout in seconds."
+
+[[fields]]
+name = "available_tools"
+type = "string[]"
+description = "Filter to specific tool names; empty (default) loads all tools."
+
+[[fields]]
+name = "bundled"
+type = "boolean"
+description = "Whether the extension is included with goose."
+
+[[capabilities]]
+name = "Tools"
+status = "supported"
+
+[[capabilities]]
+name = "Prompts"
+status = "supported"
+note = "MCP prompts are listed and run via the CLI /prompts and /prompt commands."
+
+[[capabilities]]
+name = "Resources"
+status = "missing"
+note = "Not yet verified from official docs."
+
+[[capabilities]]
+name = "Roots"
+status = "supported"
+note = "goose advertises roots support and shares the session working directory (single root)."
+
+[[capabilities]]
+name = "Elicitation"
+status = "supported"
+note = "Form-mode elicitation requests render as forms in Desktop and prompts in the CLI; 5-minute timeout."
+
+[[capabilities]]
+name = "Sampling"
+status = "supported"
+note = "Sampling-aware extensions automatically get access to the LLM goose is using."
+
+[[examples]]
+title = "Local stdio extension"
+language = "yaml"
+code = '''
+extensions:
+  github:
+    name: GitHub
+    cmd: npx
+    args: [-y @modelcontextprotocol/server-github]
+    enabled: true
+    envs: { "GITHUB_PERSONAL_ACCESS_TOKEN": "<YOUR_TOKEN>" }
+    type: stdio
+    timeout: 300
+'''
+
+[[examples]]
+title = "Remote Streamable HTTP extension"
+language = "yaml"
+code = '''
+extensions:
+  remote-tools:
+    name: remote-tools
+    type: streamable_http
+    uri: https://example.com/mcp
+    headers: { "Authorization": "Bearer <token>" }
+    enabled: true
+    timeout: 300
+'''

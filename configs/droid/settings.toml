@@ -1,0 +1,127 @@
+status = "supported"
+summary = "settings.json in .factory/ folders controls model, autonomy, command allow/deny/block lists, hooks toggle, and more, with local overrides and enterprise org-managed settings."
+docs = "https://docs.factory.ai/cli/configuration/settings"
+notes = [
+  "Configure interactively with /settings; changes are saved to the settings file immediately.",
+  "settings.local.json alongside settings.json at any level merges on top of it — add it to .gitignore for machine-specific preferences.",
+  "Hierarchy: org-managed settings, then user, project, and local overrides (see Enterprise Hierarchical Settings docs).",
+  "commandBlocklist can never be bypassed — not even with full autonomy or --skip-permissions-unsafe — and resolves the actual program invoked; commandDenylist requires confirmation; commandAllowlist runs without confirmation.",
+  "Enterprise settings (maxAutonomyLevel, modelPolicy, mcpPolicy, networkPolicy, sandbox, ...) are pushed via managed settings and cannot be overridden by users.",
+]
+
+[[files]]
+path = "~/.factory/settings.json"
+scope = "global"
+format = "json"
+note = "User settings (Windows: %USERPROFILE%\\.factory\\settings.json). settings.local.json merges on top."
+
+[[files]]
+path = ".factory/settings.json"
+scope = "project"
+format = "json"
+note = "Project-level settings; .factory/settings.local.json provides gitignored local overrides."
+
+[[fields]]
+name = "model"
+type = "string"
+description = "Default AI model used by droid (any available model ID)."
+
+[[fields]]
+name = "reasoningEffort"
+type = "string"
+description = "How much structured thinking the model performs; availability depends on the model."
+values = ["off", "none", "low", "medium", "high"]
+
+[[fields]]
+name = "sessionDefaultSettings.interactionMode"
+type = "string"
+description = "Whether new sessions start in Auto or Spec Mode. Default auto."
+values = ["auto", "spec"]
+
+[[fields]]
+name = "sessionDefaultSettings.autonomyLevel"
+type = "string"
+description = "Default Autonomy Level for new sessions. Default off (manual approvals)."
+values = ["off", "low", "medium", "high"]
+
+[[fields]]
+name = "commandAllowlist"
+type = "string[]"
+description = "Commands treated as safe and run without extra confirmation."
+
+[[fields]]
+name = "commandDenylist"
+type = "string[]"
+description = "Commands that always require confirmation; can still run if explicitly approved."
+
+[[fields]]
+name = "commandBlocklist"
+type = "string[]"
+description = "Commands that can never run — no prompt, no approval path, enforced even under full autonomy."
+
+[[fields]]
+name = "hooksDisabled"
+type = "boolean"
+description = "Globally disable all hooks execution without removing configurations. Default false."
+
+[[fields]]
+name = "includeCoAuthoredByDroid"
+type = "boolean"
+description = "Append the Droid co-author trailer to commits. Default true."
+
+[[fields]]
+name = "enableDroidShield"
+type = "boolean"
+description = "Enable secret scanning and git guardrails. Default true."
+
+[[fields]]
+name = "cloudSessionSync"
+type = "boolean"
+description = "Mirror CLI sessions to Factory web. Default true."
+
+[[fields]]
+name = "diffMode"
+type = "string"
+description = "How code changes are displayed. Default github."
+values = ["github", "unified"]
+
+[[fields]]
+name = "customModels"
+type = "array"
+description = "Custom model configurations for BYOK (bring your own key)."
+
+[[fields]]
+name = "mcp.callTimeoutMs"
+type = "number"
+description = "Global timeout for MCP tool calls; overridden per-server by timeoutMs in mcp.json."
+
+[[fields]]
+name = "subagentAutonomyLevel"
+type = "string"
+description = "Autonomy Level applied to subagents spawned by the Task tool. Default inherit."
+values = ["inherit", "off", "low", "medium", "high"]
+
+[[fields]]
+name = "statusLine"
+type = "object"
+description = "Custom status line: { command, padding?, maxRows? }; the command's stdout renders above the input."
+
+[[fields]]
+name = "maxAutonomyLevel"
+type = "string"
+description = "Enterprise: maximum Autonomy Level any session may use; user selections are clamped."
+values = ["off", "low", "medium", "high"]
+
+[[examples]]
+title = "settings.json"
+language = "json"
+code = '''
+{
+  "model": "claude-opus-4-7",
+  "reasoningEffort": "low",
+  "diffMode": "github",
+  "cloudSessionSync": true,
+  "commandAllowlist": ["ls", "pwd", "dir"],
+  "commandBlocklist": ["shutdown", "mkfs"]
+}
+'''

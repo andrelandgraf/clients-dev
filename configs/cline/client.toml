@@ -1,4 +1,7 @@
 name = "Cline"
 type = "ide-extension"
-vendor = "Cline"
+vendor = "Cline Bot Inc."
+description = "Open-source AI coding agent for VS Code (plus CLI and SDK) with Plan/Act modes, MCP support, and human-in-the-loop approval of every file change and command."
 homepage = "https://cline.bot"
+docs = "https://docs.cline.bot"
+repo = "https://github.com/cline/cline"

@@ -1,0 +1,61 @@
+status = "supported"
+summary = "Executable hook scripts named after lifecycle events, placed in .clinerules/hooks/ (workspace) or the global hooks directory. Hooks receive event JSON on stdin and return JSON on stdout that can block execution or inject context."
+events = [
+  "TaskStart", "TaskResume", "TaskCancel", "TaskComplete",
+  "UserPromptSubmit",
+  "PreToolUse", "PostToolUse",
+  "PreCompact",
+]
+docs = "https://docs.cline.bot/customization/hooks"
+notes = [
+  "Hooks must be enabled via the 'Enable Hooks' checkbox in Cline settings (Feature Settings).",
+  "Hook files carry no extension, need a shebang, and must be executable; Windows is not currently supported. Verified from the official repo's .clinerules/hooks/README.md.",
+  "Output JSON: { cancel, contextModification, errorMessage }. cancel: true blocks execution; contextModification (max 50KB) affects future AI decisions, not the current tool call.",
+  "TaskComplete and PreCompact are documented as 'coming soon'. All matching hooks (global + workspace) run concurrently; if any returns cancel: true, the action is blocked.",
+  "Default timeout is 30 seconds. The CLI also reads ~/.cline/hooks/ and a directory set via --hooks-dir / CLINE_HOOKS_DIR; the docs site's hooks page additionally covers SDK plugin lifecycle hooks (beforeTool, afterRun, etc.).",
+]
+
+[[files]]
+path = ".clinerules/hooks/<EventName>"
+scope = "project"
+format = "executable"
+note = "Executable script in any language with a shebang. File name must equal the event name, e.g. .clinerules/hooks/PreToolUse."
+
+[[files]]
+path = "~/Documents/Cline/Hooks/<EventName>"
+scope = "global"
+format = "markdown"
+note = "Executable script, applies to all workspaces (see format caveat above). The CLI also reads ~/.cline/hooks/."
+
+[[fields]]
+name = "cancel"
+type = "boolean"
+required = true
+description = "Hook output: false to continue, true to block execution and surface errorMessage."
+
+[[fields]]
+name = "contextModification"
+type = "string"
+description = "Hook output: context added to the conversation for future AI decisions (max 50KB)."
+
+[[fields]]
+name = "errorMessage"
+type = "string"
+description = "Hook output: error details shown when blocking."
+
+[[examples]]
+title = "PreToolUse hook blocking .js files in a TypeScript project"
+language = "bash"
+code = '''
+#!/usr/bin/env bash
+input=$(cat)
+tool_name=$(echo "$input" | jq -r '.preToolUse.toolName')
+path=$(echo "$input" | jq -r '.preToolUse.parameters.path // ""')
+
+if [[ "$tool_name" == "write_to_file" && "$path" == *.js ]]; then
+  echo '{"cancel": true, "errorMessage": "Use .ts files only"}'
+  exit 0
+fi
+
+echo '{"cancel": false}'
+'''

@@ -1,0 +1,129 @@
+status = "supported"
+summary = "Layered settings: ~/.copilot/settings.json (user), .github/copilot/settings.json (repository, limited key set), .github/copilot/settings.local.json (personal overrides), and MDM managed settings. Edit via /settings or directly."
+docs = "https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-config-dir-reference"
+notes = [
+  "Precedence (later overrides earlier): built-in defaults > MDM managed settings > user settings > repository settings > local settings > environment variables > command-line flags.",
+  "~/.copilot/settings.json supports JSON with comments (JSONC); user-editable settings migrated here from the legacy config.json, which now holds only internal application state.",
+  "Only companyAnnouncements, disableAllHooks, enabledPlugins, extraKnownMarketplaces, hooks, and mergeStrategy are honored at the repository level; other keys are silently ignored.",
+  "The CLI also reads .claude/settings.json and .claude/settings.local.json for the shared cross-tool subset of repository settings.",
+  "Set COPILOT_HOME to relocate the entire ~/.copilot configuration directory.",
+  "Saved tool/directory approvals live separately in ~/.copilot/permissions-config.json, keyed by repository location.",
+]
+
+[[files]]
+path = "~/.copilot/settings.json"
+scope = "global"
+format = "jsonc"
+note = "Global user defaults for all repositories; manage via the /settings command."
+
+[[files]]
+path = ".github/copilot/settings.json"
+scope = "project"
+format = "json"
+note = "Shared repository configuration (committed); limited to a small supported key set."
+
+[[files]]
+path = ".github/copilot/settings.local.json"
+scope = "project"
+format = "json"
+note = "Personal overrides (gitignored); same schema as the repository file, takes precedence over it."
+
+[[files]]
+path = "/Library/Application Support/GitHubCopilot/managed-settings.json"
+scope = "enterprise"
+format = "json"
+note = "MDM managed settings (macOS file source; Linux uses /etc/github-copilot/managed-settings.json, Windows uses registry or %ProgramFiles%). Supported keys: enabledPlugins, extraKnownMarketplaces, model, permissions, strictKnownMarketplaces."
+
+[[fields]]
+name = "model"
+type = "string"
+description = "AI model to use; \"auto\" lets Copilot pick. Managed by the /model command."
+
+[[fields]]
+name = "effortLevel"
+type = "\"low\" | \"medium\" | \"high\" | \"xhigh\""
+description = "Reasoning effort level for extended thinking. Default medium."
+
+[[fields]]
+name = "hooks"
+type = "object"
+description = "Inline hook definitions keyed by event name (same schema as .github/hooks/*.json files)."
+
+[[fields]]
+name = "disableAllHooks"
+type = "boolean"
+description = "Disable all repository- and user-level hooks. Default false."
+
+[[fields]]
+name = "disabledMcpServers"
+type = "string[]"
+description = "MCP server names to configure but not start."
+
+[[fields]]
+name = "disabledSkills"
+type = "string[]"
+description = "Skill names to discover but not load."
+
+[[fields]]
+name = "skillDirectories"
+type = "string[]"
+description = "Additional directories to search for skills (besides ~/.copilot/skills/)."
+
+[[fields]]
+name = "enabledPlugins"
+type = "record<string, boolean>"
+description = "Declarative plugin auto-install, keyed by plugin spec. Also read by the Copilot cloud agent at the repository level."
+
+[[fields]]
+name = "allowedUrls"
+type = "string[]"
+description = "URLs or domains allowed without prompting (supports wildcard subdomains like *.github.com)."
+
+[[fields]]
+name = "deniedUrls"
+type = "string[]"
+description = "URLs or domains always denied; deny rules take precedence over allow rules."
+
+[[fields]]
+name = "askUser"
+type = "boolean"
+description = "Allow the agent to ask clarifying questions. Set false for fully autonomous operation. Default true."
+
+[[fields]]
+name = "permissions.disableBypassPermissionsMode"
+type = "string"
+description = "When \"disable\", all allow-all flags (--allow-all-tools, --yolo, ...) are suppressed. An MDM value of \"disable\" always wins."
+values = ["disable"]
+
+[[fields]]
+name = "subagents.agents"
+type = "record<string, object>"
+description = "Per-subagent model configuration (model, effortLevel, contextTier), keyed by agent name."
+
+[[fields]]
+name = "includeCoAuthoredBy"
+type = "boolean"
+description = "Add a Co-authored-by trailer to git commits made by the agent. Default true."
+
+[[fields]]
+name = "mergeStrategy"
+type = "\"rebase\" | \"merge\""
+description = "Conflict resolution strategy for /pr fix conflicts. Also supported at the repository level."
+
+[[examples]]
+title = "~/.copilot/settings.json"
+language = "jsonc"
+code = '''
+{
+  "model": "auto",
+  "effortLevel": "high",
+  "askUser": true,
+  "allowedUrls": ["*.github.com"],
+  "disabledSkills": ["computer-use-demo"],
+  "hooks": {
+    "postToolUse": [
+      { "type": "command", "bash": "./scripts/log-tool.sh" }
+    ]
+  }
+}
+'''

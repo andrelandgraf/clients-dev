@@ -1,26 +1,64 @@
 status = "supported"
-summary = "SKILL.md skills following the open Agent Skills standard."
-invocation = ["/skill-name"]
-notes = ["Skill discovery paths from the open skills CLI (vercel-labs/skills)."]
+summary = "SKILL.md skills (Agent Skills format) discovered from .agents/skills/ and many compatible directories, invocable by the agent or directly via /{skill-name} with argument placeholders."
+invocation = ["/skill-name", "automatic"]
+docs = "https://docs.warp.dev/agent-platform/capabilities/skills/"
+notes = [
+  "Warp scans many skill directory names at both project and home scope: .agents/skills/ (recommended), .warp/skills/, .claude/skills/, .codex/skills/, .cursor/skills/, .gemini/skills/, .copilot/skills/, .factory/skills/, .github/skills/, .opencode/skills/.",
+  "Skill discovery is based on the cwd; for git repos Warp includes all skills from the current directory up through the repository root.",
+  "Argument placeholders: $ARGUMENTS (full raw string), $ARGUMENTS[N] (Nth whitespace-separated arg, 0-indexed), $N shorthand. Extra text with no placeholders is passed as a separate user message.",
+  "Skills can include supporting files (scripts, templates, configs) referenced by relative path from SKILL.md.",
+  "Edit skills with the /open-skill slash command; bundled skills live in ~/.warp/skills/.",
+  "Warp maintains ready-to-use skills in the warpdotdev/oz-skills repository; skills can also drive cloud agents (Skills as Agents).",
+]
 
 [[files]]
 path = ".agents/skills/<name>/SKILL.md"
 scope = "project"
 format = "markdown"
+note = "Recommended project location; subdirectory skills are discovered when working within that subdirectory."
 
 [[files]]
 path = "~/.agents/skills/<name>/SKILL.md"
 scope = "global"
 format = "markdown"
+note = "Recommended global location, available across all projects."
+
+[[files]]
+path = ".warp/skills/<name>/SKILL.md"
+scope = "project"
+format = "markdown"
+note = "Warp-specific alternative; .claude/skills/, .codex/skills/, .cursor/skills/ and others are also scanned."
+
+[[files]]
+path = "~/.warp/skills/<name>/SKILL.md"
+scope = "global"
+format = "markdown"
+note = "Warp-specific global directory; also where Warp's bundled skills live."
 
 [[fields]]
 name = "name"
 type = "string"
 required = true
-description = "Skill identifier (required by the Agent Skills standard)."
+description = "Unique identifier for the skill (typically kebab-case)."
 
 [[fields]]
 name = "description"
 type = "string"
 required = true
-description = "What the skill does and when to use it."
+description = "What the skill does and when to use it; the agent uses this to decide when to invoke the skill."
+
+[[examples]]
+title = "Parameterized skill"
+language = "markdown"
+code = '''
+---
+name: explain-topic
+description: Explain a topic for a specific audience in a given tone
+---
+
+# Explain Topic
+
+Explain $0 for an audience of $1 professionals.
+Use a $2 tone.
+Full request: $ARGUMENTS
+'''

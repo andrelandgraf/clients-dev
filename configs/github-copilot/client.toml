@@ -1,4 +1,6 @@
 name = "GitHub Copilot"
-type = "ide-extension"
+type = "platform"
 vendor = "GitHub"
+description = "The GitHub Copilot cloud agent (formerly coding agent) on github.com — an autonomous agent that works on issues and pull requests in an ephemeral Actions-powered environment, configured via repository files and repository settings."
 homepage = "https://github.com/features/copilot"
+docs = "https://docs.github.com/en/copilot/concepts/agents/cloud-agent"

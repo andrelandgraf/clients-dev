@@ -1,0 +1,6 @@
+status = "unsupported"
+summary = "Kilo Code does not expose user-configurable lifecycle hooks."
+notes = [
+  "The official documentation has no hooks feature and no hook configuration file.",
+  "An open feature request in the official repo (Kilo-Org/kilocode#5827) asks for session lifecycle hooks, confirming they are not currently available.",
+]

@@ -1,0 +1,85 @@
+status = "supported"
+summary = "Shell-command hooks in hooks.json at user, project, plugin, and org-managed scope, with matchers, JSON stdin input, and decision control via exit codes or structured JSON output."
+events = [
+  "PreToolUse", "PostToolUse",
+  "UserPromptSubmit",
+  "Notification",
+  "Stop", "SubagentStop",
+  "PreCompact",
+  "SessionStart", "SessionEnd",
+]
+docs = "https://docs.factory.ai/reference/hooks-reference"
+notes = [
+  "If hooks.json is absent, Droid falls back to hooks declared under the hooks key in the matching settings.json; the older .factory/hooks/hooks.json location keeps working and is migrated on save.",
+  "matcher applies to PreToolUse/PostToolUse and matches tool names (exact, regex like Edit|Create, or * for all); PreCompact matches manual/auto, SessionStart matches startup/resume/clear/compact.",
+  "Hooks receive JSON on stdin (session_id, transcript_path, cwd, permission_mode, event-specific fields). Exit code 2 blocks (per-event behavior); JSON stdout enables permissionDecision allow/deny/ask, updatedInput, additionalContext, continue/stopReason, and suppressOutput.",
+  "PreToolUse hooks can modify tool inputs via hookSpecificOutput.updatedInput before execution.",
+  "Use $FACTORY_PROJECT_DIR for project-relative scripts; hooks run in parallel with a 60s default timeout, configurable per command.",
+  "Manage via the /hooks menu; disable all hooks globally with the hooksDisabled setting. Direct file edits require review in /hooks before applying (session snapshot).",
+  "MCP tools are matchable with the mcp__<server>__<tool> naming pattern.",
+  "Org-managed hooks are always loaded; allowManagedHooksOnly ignores user/project hooks entirely.",
+]
+
+[[files]]
+path = ".factory/hooks.json"
+scope = "project"
+format = "json"
+key = "hooks"
+note = "Committed to share with the team."
+
+[[files]]
+path = "~/.factory/hooks.json"
+scope = "global"
+format = "json"
+key = "hooks"
+note = "Applies to all projects."
+
+[[files]]
+path = "~/.factory/settings.json"
+scope = "global"
+format = "json"
+key = "hooks"
+note = "Fallback location when hooks.json is absent (same for project settings.json). Org-managed policy hooks are delivered via managed settings."
+
+[[fields]]
+name = "matcher"
+type = "string"
+description = "Case-sensitive pattern matched against tool names for PreToolUse/PostToolUse (exact, regex, or *). Omit for events without matchers."
+
+[[fields]]
+name = "hooks[].type"
+type = "\"command\""
+required = true
+description = "Hook handler type. Currently only command is supported."
+
+[[fields]]
+name = "hooks[].command"
+type = "string"
+required = true
+description = "Bash command to execute; receives event JSON on stdin. Can use $FACTORY_PROJECT_DIR."
+
+[[fields]]
+name = "hooks[].timeout"
+type = "number"
+description = "Per-command timeout in seconds (default 60)."
+
+[[examples]]
+title = "Style check after file edits"
+language = "json"
+code = '''
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Create|Edit|ApplyPatch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$FACTORY_PROJECT_DIR\"/.factory/hooks/check-style.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
+'''

@@ -1,0 +1,49 @@
+status = "supported"
+summary = "Custom slash commands defined as TOML files under .gemini/commands/. Subdirectories create namespaced names (git/commit.toml becomes /git:commit). Prompts support {{args}} injection, !{...} shell execution, and @{...} file embedding."
+invocation = ["/command-name", "/namespace:command-name"]
+docs = "https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/custom-commands.md"
+notes = [
+  "Project commands override user commands of the same name.",
+  "{{args}} is injected raw in the prompt body and shell-escaped inside !{...} blocks; without {{args}}, the full invocation is appended to the prompt.",
+  "!{...} shell blocks require user confirmation before execution; @{...} embeds file content or directory listings (multimodal for images/PDF).",
+  "Run /commands reload to pick up TOML changes without restarting; /commands list shows all command files.",
+  "MCP server prompts also surface as slash commands (see the MCP surface).",
+]
+
+[[files]]
+path = ".gemini/commands/<name>.toml"
+scope = "project"
+format = "toml"
+note = "Project commands; subdirectories namespace the command name with colons."
+
+[[files]]
+path = "~/.gemini/commands/<name>.toml"
+scope = "global"
+format = "toml"
+note = "User commands, available in every project."
+
+[[fields]]
+name = "prompt"
+type = "string"
+required = true
+description = "The prompt sent to the model when the command runs. Single or multi-line."
+
+[[fields]]
+name = "description"
+type = "string"
+description = "One-line description shown in the /help menu. Generated from the filename if omitted."
+
+[[examples]]
+title = "Commit message from staged diff"
+language = "toml"
+code = '''
+# In: <project>/.gemini/commands/git/commit.toml
+# Invoked via: /git:commit
+
+description = "Generates a Git commit message based on staged changes."
+prompt = """
+Please generate a Conventional Commit message based on the following git diff:
+
+!{git diff --staged}
+"""
+'''

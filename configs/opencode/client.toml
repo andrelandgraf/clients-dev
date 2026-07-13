@@ -1,4 +1,7 @@
 name = "OpenCode"
 type = "cli"
-vendor = "opencode"
+vendor = "SST"
+description = "Open-source terminal coding agent with a TUI, client/server architecture, and support for many model providers."
 homepage = "https://opencode.ai"
+docs = "https://opencode.ai/docs"
+repo = "https://github.com/sst/opencode"

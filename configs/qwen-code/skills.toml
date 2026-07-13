@@ -1,26 +1,72 @@
 status = "supported"
-summary = "SKILL.md skills following the open Agent Skills standard."
-invocation = ["/skill-name"]
-notes = ["Skill discovery paths from the open skills CLI (vercel-labs/skills)."]
+summary = "SKILL.md Agent Skills discovered from personal (~/.qwen/skills/), project (.qwen/skills/), and extension directories. Model-invoked by default, user-invocable as /<skill-name>, with optional path gating and priority ordering."
+invocation = ["/skill-name", "automatic", "/skills (panel)"]
+docs = "https://github.com/QwenLM/qwen-code/blob/main/docs/users/features/skills.md"
+notes = [
+  "Skills are model-invoked based on the description; /<skill-name> invokes one explicitly and /skills opens the interactive panel.",
+  "paths: globs (picomatch, relative to project root) keep a skill out of the model's listing until a tool call touches a matching file; once activated it stays active for the session.",
+  "Extensions can bundle skills in their skills/ directory, declared in qwen-extension.json.",
+  "Changes to SKILL.md take effect on the next session start.",
+]
 
 [[files]]
 path = ".qwen/skills/<name>/SKILL.md"
 scope = "project"
 format = "markdown"
+note = "Project skills, shared with the team via git."
 
 [[files]]
 path = "~/.qwen/skills/<name>/SKILL.md"
 scope = "global"
 format = "markdown"
+note = "Personal skills, available across all projects."
 
 [[fields]]
 name = "name"
 type = "string"
 required = true
-description = "Skill identifier (required by the Agent Skills standard)."
+description = "Non-empty identifier of Unicode letters/digits plus _ : . - (whitespace and slashes are rejected)."
 
 [[fields]]
 name = "description"
 type = "string"
 required = true
-description = "What the skill does and when to use it."
+description = "What the skill does and when to use it; drives model-side discovery."
+
+[[fields]]
+name = "priority"
+type = "number"
+description = "Optional; higher values sort earlier in the /skills listing only. Unset behaves like 0."
+
+[[fields]]
+name = "paths"
+type = "string[]"
+description = "Glob patterns that gate model discovery until a tool call touches a matching file."
+
+[[fields]]
+name = "user-invocable"
+type = "boolean"
+description = "Set false to hide the skill from /<skill-name> and the /skills picker (model-only). Default true."
+
+[[fields]]
+name = "disable-model-invocation"
+type = "boolean"
+description = "Set true to hide the skill from the model while keeping user invocation. Default false."
+
+[[examples]]
+title = "Path-gated skill"
+language = "markdown"
+code = '''
+---
+name: tsx-helper
+description: React TSX component helper
+paths:
+  - 'src/**/*.tsx'
+  - 'packages/*/src/**/*.tsx'
+---
+
+# TSX Helper
+
+## Instructions
+Provide clear, step-by-step guidance for Qwen Code.
+'''

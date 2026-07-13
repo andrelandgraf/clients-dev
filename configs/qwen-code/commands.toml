@@ -1,0 +1,47 @@
+status = "supported"
+summary = "Custom slash commands as Markdown files with optional YAML frontmatter under .qwen/commands/ (TOML format is deprecated but still read). Subdirectories create namespaced names, and prompts support {{args}}, !{...} shell execution, and @{...} file injection."
+invocation = ["/command-name", "/namespace:command-name"]
+docs = "https://github.com/QwenLM/qwen-code/blob/main/docs/users/features/commands.md"
+notes = [
+  "Project commands override user commands of the same name.",
+  "Markdown is the recommended format; legacy TOML files still work and trigger an automatic migration prompt.",
+  "Processing order: @{file} injection first, then !{shell} blocks (with confirmation dialog and shell escaping), then {{args}} substitution.",
+  "Without {{args}}, provided arguments are appended to the prompt after two newlines.",
+  "MCP server prompts also appear as slash commands (labeled MCP: <server>).",
+]
+
+[[files]]
+path = ".qwen/commands/<name>.md"
+scope = "project"
+format = "markdown"
+note = "Project commands; git/commit.md becomes /git:commit."
+
+[[files]]
+path = "~/.qwen/commands/<name>.md"
+scope = "global"
+format = "markdown"
+note = "User commands, available in every project."
+
+[[fields]]
+name = "description"
+type = "string"
+description = "Optional frontmatter field shown in /help; the Markdown body after the frontmatter is the prompt."
+
+[[fields]]
+name = "prompt"
+type = "string"
+required = true
+description = "Deprecated TOML format only: the prompt sent to the model. In Markdown commands the body serves this role."
+
+[[examples]]
+title = "Commit message from staged diff"
+language = "markdown"
+code = '''
+---
+description: Generate Commit message based on staged changes
+---
+
+Please generate a Commit message based on the following diff:
+
+!{git diff --staged}
+'''

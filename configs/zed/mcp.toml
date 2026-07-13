@@ -1,15 +1,23 @@
 status = "supported"
-summary = "Configure MCP servers in JSON under the context_servers key."
-transports = ["stdio", "http", "sse"]
-auth = ["headers"]
-notes = ["Servers live under context_servers; entries set source: \"custom\"."]
+summary = "Configure MCP servers (context servers) in settings.json under the context_servers key, or install them as Zed extensions. Supports local stdio and remote servers with OAuth."
+transports = ["stdio", "http"]
+auth = ["oauth", "headers"]
+docs = "https://zed.dev/docs/ai/mcp"
+notes = [
+  "MCP servers can also be installed as Zed extensions from the extension registry (Settings > AI > MCP Servers > Install from Extensions).",
+  "Remote servers without an Authorization header trigger the standard MCP OAuth flow.",
+  "Zed handles notifications/tools/list_changed and reloads a server's tool list at runtime without a restart.",
+  "Servers configured in Zed are forwarded to External Agents over the Agent Client Protocol (ACP).",
+  "Per-tool approval uses agent.tool_permissions with the key format mcp:<server>:<tool>; agent.tool_permissions.default is one of confirm, allow, or deny.",
+  "Custom agent profiles can scope which context servers and tools are enabled via enable_all_context_servers and per-server tool toggles.",
+]
 
 [[files]]
-path = "<Zed config>/settings.json"
+path = "~/.config/zed/settings.json"
 scope = "global"
 format = "json"
 key = "context_servers"
-note = "macOS/Windows: .../Zed/settings.json; Linux: .../zed/settings.json."
+note = "macOS/Linux. On Windows: %APPDATA%/Zed/settings.json."
 
 [[files]]
 path = ".zed/settings.json"
@@ -19,8 +27,8 @@ key = "context_servers"
 
 [[fields]]
 name = "source"
-type = "\"custom\""
-description = "Set to 'custom' for user-defined servers."
+type = "\"custom\" | \"extension\""
+description = "How the server is provided. Entries added via the UI set 'custom'; extension-provided servers use 'extension'."
 
 [[fields]]
 name = "command"
@@ -35,12 +43,7 @@ description = "Arguments passed to the command."
 [[fields]]
 name = "env"
 type = "record<string, string>"
-description = "Environment variables for the server."
-
-[[fields]]
-name = "type"
-type = "\"http\" | \"sse\""
-description = "Remote transport type."
+description = "Environment variables for a local server."
 
 [[fields]]
 name = "url"
@@ -50,4 +53,54 @@ description = "Endpoint URL for a remote server."
 [[fields]]
 name = "headers"
 type = "record<string, string>"
-description = "HTTP headers for a remote server."
+description = "HTTP headers for a remote server (e.g. Authorization: Bearer <token>)."
+
+[[capabilities]]
+name = "Tools"
+status = "supported"
+
+[[capabilities]]
+name = "Prompts"
+status = "supported"
+
+[[capabilities]]
+name = "Resources"
+status = "unsupported"
+note = "Official docs state Zed currently supports MCP's Tools and Prompts features."
+
+[[capabilities]]
+name = "Roots"
+status = "unsupported"
+note = "Not listed among supported MCP features in official docs."
+
+[[capabilities]]
+name = "Elicitation"
+status = "unsupported"
+note = "Docs welcome contributions for Elicitation support."
+
+[[capabilities]]
+name = "Sampling"
+status = "unsupported"
+note = "Docs welcome contributions for Sampling support."
+
+[[examples]]
+title = "Local and remote context servers"
+language = "json"
+code = '''
+{
+  "context_servers": {
+    "local-mcp-server": {
+      "command": "some-command",
+      "args": ["arg-1", "arg-2"],
+      "env": {}
+    },
+    "remote-mcp-server": {
+      "url": "https://example.com/mcp",
+      "headers": { "Authorization": "Bearer <token>" }
+    },
+    "remote-mcp-server-with-oauth": {
+      "url": "https://mcp.example.com/mcp"
+    }
+  }
+}
+'''

@@ -1,0 +1,77 @@
+status = "supported"
+summary = "Always-on instructions via .github/copilot-instructions.md, AGENTS.md, and CLAUDE.md, plus file-based *.instructions.md files that apply conditionally via applyTo glob patterns."
+docs = "https://code.visualstudio.com/docs/copilot/customization/custom-instructions"
+notes = [
+  "AGENTS.md support is controlled by chat.useAgentsMdFile (default true); nested AGENTS.md in subfolders is experimental (chat.useNestedAgentsMdFiles).",
+  "CLAUDE.md support (workspace root, .claude/CLAUDE.md, ~/.claude/CLAUDE.md, CLAUDE.local.md) is controlled by chat.useClaudeMdFile.",
+  ".claude/rules instruction files use a paths array (Claude Rules format) instead of applyTo.",
+  "GitHub organization-level instructions are discovered when github.copilot.chat.organizationInstructions.enabled is set.",
+  "Priority when instructions conflict: personal (user) > repository > organization.",
+  "Extra locations configurable via chat.instructionsFilesLocations; instruction folders are searched recursively.",
+  "Custom instructions are not used for inline completions as you type.",
+]
+
+[[files]]
+path = ".github/copilot-instructions.md"
+scope = "project"
+format = "markdown"
+note = "Single always-on file applied to all chat requests in the workspace."
+
+[[files]]
+path = "AGENTS.md"
+scope = "project"
+format = "markdown"
+note = "Always-on, cross-agent instructions in the workspace root; subfolder AGENTS.md files are experimental."
+
+[[files]]
+path = "CLAUDE.md"
+scope = "project"
+format = "markdown"
+note = "Claude-compatible always-on instructions (also .claude/CLAUDE.md and CLAUDE.local.md)."
+
+[[files]]
+path = ".github/instructions/**/*.instructions.md"
+scope = "project"
+format = "markdown"
+note = "File-based instructions applied via applyTo glob or semantic match of the description."
+
+[[files]]
+path = ".claude/rules/*.md"
+scope = "project"
+format = "markdown"
+note = "Claude Rules format; uses a paths glob array instead of applyTo."
+
+[[files]]
+path = "~/.copilot/instructions/*.instructions.md"
+scope = "global"
+format = "markdown"
+note = "Personal instruction files; user-profile instructions can also live in VS Code user data and sync via Settings Sync."
+
+[[fields]]
+name = "name"
+type = "string"
+description = "Display name shown in the UI (.instructions.md frontmatter). Defaults to the file name."
+
+[[fields]]
+name = "description"
+type = "string"
+description = "Short description shown on hover in the Chat view; also used for semantic matching."
+
+[[fields]]
+name = "applyTo"
+type = "string"
+description = "Glob pattern (relative to the workspace root) that auto-applies the instructions to matching files. Use ** for all files; omit to require manual attachment."
+
+[[examples]]
+title = "Path-scoped instructions file"
+language = "markdown"
+code = '''
+---
+name: 'Python Standards'
+description: 'Coding conventions for Python files'
+applyTo: '**/*.py'
+---
+# Python coding standards
+- Follow the PEP 8 style guide.
+- Use type hints for all function signatures.
+'''

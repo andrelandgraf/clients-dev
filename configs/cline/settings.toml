@@ -1,0 +1,48 @@
+status = "partial"
+summary = "Extension behavior (Auto Approve permissions, YOLO Mode, feature toggles) is configured through the Cline settings UI; persistent configuration lives under ~/.cline/ in documented settings files shared by the IDE extension, CLI, and SDK."
+docs = "https://docs.cline.bot/getting-started/config"
+notes = [
+  "Auto Approve is evaluated per tool call with per-category permissions (read/edit project or all files, safe/all commands, browser, MCP); YOLO Mode auto-approves everything.",
+  "Field-level schemas for global-settings.json and providers.json are not documented; the directory layout is.",
+  "CLINE_COMMAND_PERMISSIONS env var applies a JSON allow/deny policy for shell commands, e.g. {\"allow\": [\"npm *\"], \"deny\": [\"rm -rf *\"]}; deny overrides allow.",
+  "CLINE_DATA_DIR overrides the data directory; enterprise deployments add remote-managed provider config and controls (YOLO Mode lockdown, MCP allowlists).",
+]
+
+[[files]]
+path = "~/.cline/data/settings/global-settings.json"
+scope = "global"
+format = "json"
+note = "Global settings shared across Cline applications (IDE, CLI, SDK)."
+
+[[files]]
+path = "~/.cline/data/settings/providers.json"
+scope = "global"
+format = "json"
+note = "API keys and model provider configuration."
+
+[[files]]
+path = ".cline/"
+scope = "project"
+format = "json"
+note = "Project config root (rules/, skills/, hooks/, plugins/, mcp.json); directories hold markdown/scripts rather than a single JSON settings file."
+
+[[fields]]
+name = "CLINE_COMMAND_PERMISSIONS"
+type = "string (JSON)"
+description = "Environment variable restricting shell commands: { allow: string[], deny: string[], allowRedirects: boolean }."
+
+[[fields]]
+name = "CLINE_DATA_DIR"
+type = "string"
+description = "Environment variable overriding the data directory (default ~/.cline/data)."
+
+[[examples]]
+title = "Command permission policy"
+language = "json"
+code = '''
+{
+  "allow": ["npm *", "git *"],
+  "deny": ["rm -rf *"],
+  "allowRedirects": false
+}
+'''

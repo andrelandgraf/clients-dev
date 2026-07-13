@@ -1,0 +1,58 @@
+status = "supported"
+summary = "AGENTS.md guidance files at project, user, and system scope, with @-file mentions and glob-scoped granular guidance in mentioned files."
+invocation = ["@file-mention"]
+docs = "https://ampcode.com/manual#agents-md"
+notes = [
+  "AGENTS.md in the cwd (or editor workspace roots) and parent directories up to $HOME are always included; subtree AGENTS.md files are included when the agent reads a file in that subtree.",
+  "If no AGENTS.md exists in a directory, AGENT.md or CLAUDE.md is used instead.",
+  "@-mention other files inside agent files to include them as context; relative, absolute, ~/ paths and glob patterns are supported.",
+  "Mentioned files can declare `globs` in YAML frontmatter so they are only included after Amp reads a matching file (granular, language- or area-specific guidance).",
+  "Run agents-md list from the command palette to see the agent files in use; Amp offers to generate an AGENTS.md if none exists.",
+]
+
+[[files]]
+path = "AGENTS.md"
+scope = "project"
+format = "markdown"
+note = "In cwd, parent dirs, and subtrees. Architecture, build/test commands, conventions."
+
+[[files]]
+path = "~/.config/amp/AGENTS.md"
+scope = "global"
+format = "markdown"
+note = "Personal preferences and device-specific guidance; ~/.config/AGENTS.md also works."
+
+[[files]]
+path = "/etc/ampcode/AGENTS.md"
+scope = "enterprise"
+format = "markdown"
+note = "System-wide/organization-managed guidance (macOS: /Library/Application Support/ampcode/AGENTS.md, Windows: %ProgramData%\\ampcode\\AGENTS.md)."
+
+[[fields]]
+name = "globs"
+type = "string[]"
+description = "YAML frontmatter in an @-mentioned file; the file is only included once Amp has read a file matching any glob. Globs are implicitly prefixed with **/ unless they start with ./ or ../."
+
+[[examples]]
+title = "Glob-scoped guidance file (docs/typescript-conventions.md)"
+language = "markdown"
+code = '''
+---
+globs:
+  - '**/*.ts'
+  - '**/*.tsx'
+---
+
+Follow these TypeScript conventions:
+
+- Never use the `any` type
+'''
+
+[[examples]]
+title = "@-mentions in AGENTS.md"
+language = "markdown"
+code = '''
+See @doc/style.md and @specs/**/*.md.
+
+When making commits, see @doc/git-commit-instructions.md.
+'''

@@ -55,6 +55,12 @@ export const Format = z.enum([
   "yaml",
   "markdown",
   "mdc",
+  // Plain-text rule files like .rules or .goosehints.
+  "text",
+  // Plugin/hook source files (e.g. Amp and OpenCode plugins).
+  "typescript",
+  // Shebang scripts in any language (e.g. Cline hooks).
+  "executable",
 ]);
 
 export const SupportStatus = z.enum([

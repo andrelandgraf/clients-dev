@@ -1,0 +1,55 @@
+status = "supported"
+summary = "Custom instructions from the repository (.github/copilot-instructions.md, .github/instructions/**/*.instructions.md, AGENTS.md) plus personal instructions in ~/.copilot (copilot-instructions.md and instructions/*.instructions.md) applied to every session."
+docs = "https://docs.github.com/en/copilot/reference/custom-instructions-support"
+notes = [
+  "copilot init (or /init in a session) generates or improves the repository's copilot-instructions.md, documenting build/test/lint commands, architecture, and conventions.",
+  "/instructions lets you view and toggle custom instruction files in a session.",
+  "Personal instruction files in ~/.copilot apply to all sessions regardless of project (see the CLI configuration directory reference).",
+]
+
+[[files]]
+path = ".github/copilot-instructions.md"
+scope = "project"
+format = "markdown"
+note = "Repository-wide instructions."
+
+[[files]]
+path = ".github/instructions/**/*.instructions.md"
+scope = "project"
+format = "markdown"
+note = "Path-specific instructions with applyTo frontmatter globs."
+
+[[files]]
+path = "AGENTS.md"
+scope = "project"
+format = "markdown"
+note = "Cross-agent instructions file."
+
+[[files]]
+path = "~/.copilot/copilot-instructions.md"
+scope = "global"
+format = "markdown"
+note = "Personal custom instructions applied to all sessions."
+
+[[files]]
+path = "~/.copilot/instructions/*.instructions.md"
+scope = "global"
+format = "markdown"
+note = "Additional personal instruction files, organizable by topic."
+
+[[fields]]
+name = "applyTo"
+type = "string"
+description = "Glob pattern(s), comma-separated, selecting the files the instructions apply to (path-specific .instructions.md files)."
+
+[[examples]]
+title = "Path-specific instructions"
+language = "markdown"
+code = '''
+---
+applyTo: "**/*.ts,**/*.tsx"
+---
+# TypeScript standards
+- Use TypeScript for all new code
+- Prefer immutable data (const, readonly)
+'''

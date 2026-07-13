@@ -1,0 +1,90 @@
+status = "supported"
+summary = "The cloud agent runs .github/hooks/*.json hooks inside its ephemeral Linux sandbox. A subset of events fires; only bash (or the cross-platform command) entries are honored, and HTTP hooks must target firewall-allowed hosts."
+events = [
+  "sessionStart",
+  "sessionEnd",
+  "userPromptSubmitted",
+  "preToolUse",
+  "postToolUse",
+  "postToolUseFailure",
+  "agentStop",
+  "subagentStart",
+  "subagentStop",
+  "errorOccurred",
+  "preCompact",
+]
+docs = "https://docs.github.com/en/copilot/reference/hooks-reference"
+notes = [
+  "Same JSON format ({ \"version\": 1, \"hooks\": { ... } }) as Copilot CLI; event names in camelCase, or PascalCase for the VS Code-compatible snake_case payloads.",
+  "In cloud agent jobs, only .github/hooks/*.json in the cloned repository is loaded — no user-level files, settings.json, or plugins exist in the sandbox.",
+  "notification and permissionRequest hooks do not apply (tool calls are pre-approved); a preToolUse decision of 'ask' is treated as 'deny'.",
+  "preCompact fires only with trigger 'auto'; sessionStart fires once per job as a new session.",
+  "The sandbox filesystem is ephemeral — persist hook output via an http hook to an admin-allowlisted host.",
+  "preToolUse command hooks are fail-closed: crashes, timeouts, and non-zero exits (other than 2) deny the tool call.",
+  "Set disableAllHooks: true at the top level of a hook file to skip its hooks without deleting it.",
+]
+
+[[files]]
+path = ".github/hooks/*.json"
+scope = "project"
+format = "json"
+key = "hooks"
+
+[[fields]]
+name = "type"
+type = "\"command\" | \"http\""
+description = "Hook handler type. Defaults to command. Prompt hooks may not fire because cloud agent jobs are non-interactive."
+
+[[fields]]
+name = "bash"
+type = "string"
+description = "Shell command for the Linux sandbox. powershell entries are ignored under the cloud agent."
+
+[[fields]]
+name = "command"
+type = "string"
+description = "Cross-platform fallback command, honored when bash is absent."
+
+[[fields]]
+name = "cwd"
+type = "string"
+description = "Working directory. The sandbox workspace is /workspace when a repository is cloned."
+
+[[fields]]
+name = "env"
+type = "record<string, string>"
+description = "Environment variables to set (supports variable expansion)."
+
+[[fields]]
+name = "timeoutSec"
+type = "number"
+description = "Timeout in seconds. Default 30. timeout is accepted as an alias."
+
+[[fields]]
+name = "matcher"
+type = "string"
+description = "Optional regex (anchored ^(?:PATTERN)$) filtering by tool name (preToolUse/postToolUse), agent name (subagentStart), or trigger (preCompact)."
+
+[[fields]]
+name = "url"
+type = "string"
+description = "Target URL for http hooks; must be https and reachable through the cloud agent firewall."
+
+[[examples]]
+title = "Deny destructive commands"
+language = "json"
+code = '''
+{
+  "version": 1,
+  "hooks": {
+    "preToolUse": [
+      {
+        "type": "command",
+        "matcher": "bash",
+        "bash": "./scripts/block-dangerous.sh",
+        "timeoutSec": 10
+      }
+    ]
+  }
+}
+'''

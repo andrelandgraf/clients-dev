@@ -1,0 +1,37 @@
+status = "supported"
+summary = "Always-on instructions via AGENTS.md: a personal global file plus one project instruction file, with compatibility for .rules, .cursorrules, CLAUDE.md, and similar."
+docs = "https://zed.dev/docs/ai/instructions"
+notes = [
+  "Zed's Rules Library was replaced: reusable rules became Skills, always-on rules became Instructions (AGENTS.md).",
+  "For project instructions Zed uses the first matching file in this order: .rules, .cursorrules, .windsurfrules, .clinerules, .github/copilot-instructions.md, AGENT.md, AGENTS.md, CLAUDE.md, GEMINI.md.",
+  "Project instructions override personal AGENTS.md when they conflict.",
+  "Instructions apply to the Zed Agent; External Agents and Terminal Threads read their own native instruction files.",
+]
+
+[[files]]
+path = "~/.config/zed/AGENTS.md"
+scope = "global"
+format = "markdown"
+note = "Personal instructions for every project. On Windows: %APPDATA%/Zed/AGENTS.md."
+
+[[files]]
+path = "AGENTS.md"
+scope = "project"
+format = "markdown"
+note = "Project instructions at the worktree root. First matching compatibility file wins (see notes)."
+
+[[files]]
+path = ".rules"
+scope = "project"
+format = "text"
+note = "Zed-native compatibility instruction file; highest priority in the match order."
+
+[[examples]]
+title = "Project AGENTS.md"
+language = "markdown"
+code = '''
+# Project instructions
+
+- Run `cargo test` before committing.
+- Follow the repository's error-handling conventions in src/errors.rs.
+'''

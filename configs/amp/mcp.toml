@@ -1,0 +1,97 @@
+status = "supported"
+summary = "MCP servers configured under amp.mcpServers in settings, added via `amp mcp add`, or bundled inside skills via mcp.json (the recommended approach to keep the tool list clean)."
+transports = ["stdio", "sse", "http"]
+auth = ["oauth", "headers", "env"]
+docs = "https://ampcode.com/manual#mcp"
+notes = [
+  "Amp recommends bundling MCP servers in skills via an mcp.json file in the skill directory; servers start with Amp but tools stay hidden until the skill loads.",
+  "Precedence when a server name appears in multiple places: --mcp-config CLI flag > amp.mcpServers in user/workspace settings > skill-bundled servers.",
+  "MCP servers in workspace settings (.amp/settings.json) require explicit approval (`amp mcp approve <name>`) before they can run; global settings and --mcp-config do not.",
+  "OAuth tokens are stored in ~/.amp/oauth/ and refreshed automatically; manage with `amp mcp oauth login|logout`.",
+  "amp.mcpPermissions rules can allow or reject servers matching command/args or url patterns.",
+]
+
+[[files]]
+path = "~/.config/amp/settings.json"
+scope = "global"
+format = "json"
+key = "amp.mcpServers"
+
+[[files]]
+path = ".amp/settings.json"
+scope = "project"
+format = "json"
+key = "amp.mcpServers"
+note = "Workspace servers require explicit user approval before running."
+
+[[files]]
+path = ".agents/skills/<name>/mcp.json"
+scope = "project"
+format = "json"
+note = "Skill-bundled servers; tools are hidden until the skill is loaded."
+
+[[fields]]
+name = "command"
+type = "string"
+description = "Command to run a local (stdio) server."
+
+[[fields]]
+name = "args"
+type = "string[]"
+description = "Arguments passed to the command."
+
+[[fields]]
+name = "env"
+type = "record<string, string>"
+description = "Environment variables for local servers. Supports ${VAR_NAME} interpolation in settings files."
+
+[[fields]]
+name = "url"
+type = "string"
+description = "Endpoint of a remote server."
+
+[[fields]]
+name = "headers"
+type = "record<string, string>"
+description = "HTTP headers sent with requests to remote servers (e.g. Authorization)."
+
+[[fields]]
+name = "includeTools"
+type = "string[]"
+description = "Tool names or glob patterns to filter which tools are exposed (recommended, skill-bundled mcp.json)."
+
+[[capabilities]]
+name = "Tools"
+status = "supported"
+
+[[examples]]
+title = "amp.mcpServers in settings.json"
+language = "json"
+code = '''
+"amp.mcpServers": {
+  "playwright": {
+    "command": "npx",
+    "args": ["-y", "@playwright/mcp@latest", "--headless"]
+  },
+  "linear": {
+    "url": "https://mcp.linear.app/sse"
+  },
+  "sourcegraph": {
+    "url": "${SRC_ENDPOINT}/.api/mcp/v1",
+    "headers": { "Authorization": "token ${SRC_ACCESS_TOKEN}" }
+  }
+}
+'''
+
+[[examples]]
+title = "Skill-bundled mcp.json"
+language = "json"
+code = '''
+{
+  "chrome-devtools": {
+    "command": "npx",
+    "args": ["-y", "chrome-devtools-mcp@latest"],
+    "includeTools": ["navigate_*", "take_screenshot", "click", "fill*"]
+  }
+}
+'''

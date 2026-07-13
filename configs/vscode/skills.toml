@@ -1,0 +1,92 @@
+status = "supported"
+summary = "SKILL.md Agent Skills (open standard) loaded on demand from project and personal skill folders, including Claude- and .agents-compatible locations. Skills double as slash commands in chat."
+invocation = ["/skill-name"]
+docs = "https://code.visualstudio.com/docs/copilot/customization/agent-skills"
+notes = [
+  "Enabled via chat.useAgentSkills (default true); extra locations via chat.agentSkillsLocations.",
+  "Progressive loading: only name/description at startup, the SKILL.md body when activated, and bundled files only when referenced.",
+  "Extensions can contribute skills via the chatSkills contribution point in package.json.",
+  "In monorepos, chat.useCustomizationsInParentRepositories discovers skills from the parent repository root.",
+]
+
+[[files]]
+path = ".github/skills/<name>/SKILL.md"
+scope = "project"
+format = "markdown"
+
+[[files]]
+path = ".claude/skills/<name>/SKILL.md"
+scope = "project"
+format = "markdown"
+note = "Claude-compatible project location."
+
+[[files]]
+path = ".agents/skills/<name>/SKILL.md"
+scope = "project"
+format = "markdown"
+note = "Cross-agent project location."
+
+[[files]]
+path = "~/.copilot/skills/<name>/SKILL.md"
+scope = "global"
+format = "markdown"
+
+[[files]]
+path = "~/.claude/skills/<name>/SKILL.md"
+scope = "global"
+format = "markdown"
+note = "Claude-compatible personal location."
+
+[[files]]
+path = "~/.agents/skills/<name>/SKILL.md"
+scope = "global"
+format = "markdown"
+note = "Cross-agent personal location."
+
+[[fields]]
+name = "name"
+type = "string"
+required = true
+description = "Unique identifier. Lowercase letters, numbers, and hyphens only; must match the parent directory name; max 64 characters."
+
+[[fields]]
+name = "description"
+type = "string"
+required = true
+description = "What the skill does and when to use it (drives automatic loading). Max 1024 characters."
+
+[[fields]]
+name = "argument-hint"
+type = "string"
+description = "Hint shown in the chat input when the skill is invoked as a slash command."
+
+[[fields]]
+name = "user-invocable"
+type = "boolean"
+description = "Whether the skill appears in the / menu. Default true."
+
+[[fields]]
+name = "disable-model-invocation"
+type = "boolean"
+description = "When true, the agent cannot auto-load the skill; it must be invoked via slash command. Default false."
+
+[[fields]]
+name = "context"
+type = "\"fork\""
+description = "Experimental. Run the skill in a dedicated subagent context; only the final result returns to the parent agent. Requires github.copilot.chat.skillTool.enabled."
+
+[[examples]]
+title = "SKILL.md"
+language = "markdown"
+code = '''
+---
+name: webapp-testing
+description: Guide for testing web applications using Playwright. Use this when asked to create or run browser-based tests.
+---
+
+# Web Application Testing with Playwright
+
+1. Review the [test template](./test-template.js) for the standard test structure
+2. Create a new test file in the `tests/` directory
+3. Use role-based locators and add assertions
+'''

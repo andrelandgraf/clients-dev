@@ -1,0 +1,151 @@
+status = "supported"
+summary = "opencode.json (or .jsonc) configures models, agents, permissions, tools, MCP, commands, and plugins, merged across remote, global, project, and managed scopes."
+docs = "https://opencode.ai/docs/config/"
+notes = [
+  "Precedence (later overrides earlier): remote .well-known/opencode config, global config, OPENCODE_CONFIG path, project config, .opencode directories, OPENCODE_CONFIG_CONTENT, managed config files, macOS managed preferences (MDM).",
+  "Configs are merged, not replaced: non-conflicting keys from all sources are preserved.",
+  "Values support {env:VARIABLE_NAME} and {file:path} substitution.",
+  "TUI-specific settings (theme, keybinds, scroll, notifications) live in a separate tui.json with schema https://opencode.ai/tui.json.",
+  "On macOS, managed preferences deploy via .mobileconfig in the ai.opencode.managed preference domain; Linux uses /etc/opencode/, Windows %ProgramData%\\opencode.",
+]
+
+[[files]]
+path = "opencode.json"
+scope = "project"
+format = "json"
+note = "Found in the current directory or by traversing up to the nearest Git directory. JSONC (opencode.jsonc) also supported. Schema: https://opencode.ai/config.json."
+
+[[files]]
+path = "~/.config/opencode/opencode.json"
+scope = "global"
+format = "json"
+note = "User-wide preferences like providers, models, and permissions."
+
+[[files]]
+path = "/Library/Application Support/opencode/opencode.json"
+scope = "enterprise"
+format = "json"
+note = "Managed config, requires admin to write. Linux: /etc/opencode/; Windows: %ProgramData%\\opencode. Not user-overridable."
+
+[[files]]
+path = "tui.json"
+scope = "project"
+format = "json"
+note = "TUI-specific settings; also available globally at ~/.config/opencode/tui.json."
+
+[[fields]]
+name = "model"
+type = "string"
+description = "Default model in provider/model format, e.g. anthropic/claude-sonnet-4-5."
+
+[[fields]]
+name = "small_model"
+type = "string"
+description = "Separate model for lightweight tasks like title generation."
+
+[[fields]]
+name = "provider"
+type = "object"
+description = "Provider configuration: API keys, base URLs, custom models, timeouts."
+
+[[fields]]
+name = "agent"
+type = "object"
+description = "Specialized agent definitions with per-agent prompt, model, tools, and permissions."
+
+[[fields]]
+name = "default_agent"
+type = "string"
+description = "Primary agent used when none is specified (e.g. build or plan)."
+
+[[fields]]
+name = "permission"
+type = "object"
+description = "Approval rules per tool or pattern, e.g. { \"edit\": \"ask\", \"bash\": \"ask\" }."
+values = ["allow", "ask", "deny"]
+
+[[fields]]
+name = "tools"
+type = "record<string, boolean>"
+description = "Enable or disable tools (including MCP tools) globally, with glob pattern support."
+
+[[fields]]
+name = "mcp"
+type = "object"
+description = "MCP server definitions (see MCP surface)."
+
+[[fields]]
+name = "instructions"
+type = "string[]"
+description = "Additional instruction files (see Rules surface)."
+
+[[fields]]
+name = "command"
+type = "object"
+description = "Inline custom command definitions (see Commands surface)."
+
+[[fields]]
+name = "plugin"
+type = "string[]"
+description = "npm packages to load as plugins (see Hooks surface)."
+
+[[fields]]
+name = "share"
+type = "\"manual\" | \"auto\" | \"disabled\""
+description = "Conversation sharing behavior. Default manual."
+values = ["manual", "auto", "disabled"]
+
+[[fields]]
+name = "autoupdate"
+type = "boolean | \"notify\""
+description = "Automatically download updates on startup, or notify only."
+
+[[fields]]
+name = "snapshot"
+type = "boolean"
+description = "Track file changes for undo/revert. Disable for large repos."
+
+[[fields]]
+name = "formatter"
+type = "boolean | object"
+description = "Enable code formatters, or configure overrides and custom formatters."
+
+[[fields]]
+name = "lsp"
+type = "boolean | object"
+description = "Enable LSP servers, or configure overrides and custom servers."
+
+[[fields]]
+name = "compaction"
+type = "{ auto?: boolean, prune?: boolean, reserved?: number }"
+description = "Context compaction behavior."
+
+[[fields]]
+name = "server"
+type = "{ port?: number, hostname?: string, mdns?: boolean, cors?: string[] }"
+description = "Server settings for opencode serve and opencode web."
+
+[[fields]]
+name = "disabled_providers"
+type = "string[]"
+description = "Providers to never load, even if credentials are available. Takes priority over enabled_providers."
+
+[[fields]]
+name = "enabled_providers"
+type = "string[]"
+description = "Allowlist of providers; all others are ignored."
+
+[[examples]]
+title = "Basic config"
+language = "jsonc"
+code = '''
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "anthropic/claude-sonnet-4-5",
+  "autoupdate": true,
+  "permission": {
+    "edit": "ask",
+    "bash": "ask"
+  }
+}
+'''

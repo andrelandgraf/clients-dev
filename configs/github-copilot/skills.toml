@@ -1,38 +1,58 @@
 status = "supported"
-summary = "SKILL.md skills following the open Agent Skills standard."
+summary = "SKILL.md Agent Skills (open standard) stored in the repository; loaded automatically when relevant to the cloud agent's task and also used by Copilot code review."
 invocation = ["/skill-name"]
-notes = ["Skill discovery paths from the open skills CLI (vercel-labs/skills)."]
+docs = "https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/add-skills"
+notes = [
+  "The cloud agent runs in an ephemeral sandbox, so only project skills committed to the repository apply; personal skills (~/.copilot/skills, ~/.agents/skills) apply to local surfaces like Copilot CLI and VS Code.",
+  "Skills in .github/skills are also used automatically by Copilot code review when relevant (public preview).",
+  "Skills can bundle scripts and other resources referenced from SKILL.md.",
+  "Discover and install shared skills with gh skill in GitHub CLI or from the Awesome GitHub Copilot collection.",
+]
+
+[[files]]
+path = ".github/skills/<name>/SKILL.md"
+scope = "project"
+format = "markdown"
+
+[[files]]
+path = ".claude/skills/<name>/SKILL.md"
+scope = "project"
+format = "markdown"
+note = "Claude-compatible project location."
 
 [[files]]
 path = ".agents/skills/<name>/SKILL.md"
 scope = "project"
 format = "markdown"
-
-[[files]]
-path = "~/.copilot/skills/<name>/SKILL.md"
-scope = "global"
-format = "markdown"
+note = "Cross-agent project location."
 
 [[fields]]
 name = "name"
 type = "string"
 required = true
-description = "Skill identifier (required by the Agent Skills standard)."
+description = "Unique identifier: lowercase, hyphens for spaces, typically matching the skill directory name."
 
 [[fields]]
 name = "description"
 type = "string"
 required = true
-description = "What the skill does and when to use it."
+description = "What the skill does and when Copilot should use it."
 
-[[capabilities]]
-name = "allowed-tools"
-status = "supported"
+[[fields]]
+name = "license"
+type = "string"
+description = "License that applies to this skill."
 
-[[capabilities]]
-name = "context: fork"
-status = "unsupported"
+[[examples]]
+title = "SKILL.md"
+language = "markdown"
+code = '''
+---
+name: github-actions-failure-debugging
+description: Guide for debugging failing GitHub Actions workflows. Use this when asked to debug failing GitHub Actions workflows.
+---
 
-[[capabilities]]
-name = "Hooks"
-status = "unsupported"
+1. Use the `list_workflow_runs` tool to look up recent workflow runs and their status
+2. Use the `summarize_job_log_failures` tool to get an AI summary of failed job logs
+3. Try to reproduce the failure and fix the failing build before committing
+'''

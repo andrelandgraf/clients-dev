@@ -14,7 +14,11 @@ An open database of how AI coding clients are configured. See `README.md` for th
 - `src/lib/clients/schema.ts` — Zod schema for clients and surfaces (the contract).
 - `scripts/generate-catalog.ts` — compiles `configs/**` → `src/data/catalog.json` (validated).
 - `src/lib/clients/catalog.ts` — loads + re-validates the catalog for the app and API.
-- `src/app/` — Next.js App Router pages; `src/app/api/[[...route]]/route.ts` is the Hono API.
+- `src/lib/clients/facts.ts` — derived facts: completeness (all six surfaces verified), path summaries.
+- `src/lib/clients/json-schema.ts` — compiles documented fields into JSON Schema per client/surface.
+- `src/lib/clients/mcp-server.ts` — the catalog exposed as an MCP server (served at `/api/mcp`).
+- `src/app/` — Next.js App Router pages; `src/app/api/[[...route]]/route.ts` is the Hono API;
+  `src/app/llms.txt/route.ts` serves the LLM-facing summary.
 - `src/components/` — UI (shadcn/ui in `ui/`, app components alongside).
 
 ## Conventions
@@ -32,3 +36,6 @@ An open database of how AI coding clients are configured. See `README.md` for th
 
 1. `configs/<id>/client.toml` (metadata) + `<surface>.toml` per supported surface.
 2. `bun run generate` to validate, then `bun run dev` to preview `/clients/<id>`.
+3. A client joins the homepage main table only when **all six** surface files
+   exist with verified statuses (`unsupported` counts; `missing` does not).
+   Until then it is listed under "More clients" with partial data.

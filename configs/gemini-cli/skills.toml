@@ -1,26 +1,65 @@
 status = "supported"
-summary = "SKILL.md skills following the open Agent Skills standard."
-invocation = ["/skill-name"]
-notes = ["Skill discovery paths from the open skills CLI (vercel-labs/skills)."]
+summary = "Agent Skills based on the agentskills.io open standard: SKILL.md directories discovered from built-in, extension, user, and workspace tiers, activated by the model via the activate_skill tool with user consent."
+invocation = ["automatic (activate_skill tool)", "/skills list"]
+docs = "https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/skills.md"
+notes = [
+  "Discovery precedence (lowest to highest): built-in, extension, user, workspace. Within a tier the .agents/skills/ alias wins over .gemini/skills/.",
+  "Only skill name and description are injected into the system prompt; the SKILL.md body loads on activation (progressive disclosure).",
+  "Activation grants the model read access to the skill's directory (scripts/, references/, assets/).",
+  "Manage with /skills list|link|enable|disable|reload in-session, or gemini skills list|install|uninstall|link from the terminal.",
+  "Toggle the feature with the skills.enabled setting (default true).",
+]
+
+[[files]]
+path = ".gemini/skills/<name>/SKILL.md"
+scope = "project"
+format = "markdown"
+note = "Workspace skills, shared with the team via version control."
 
 [[files]]
 path = ".agents/skills/<name>/SKILL.md"
 scope = "project"
 format = "markdown"
+note = "Interoperable alias; takes precedence over .gemini/skills/ within the workspace tier."
 
 [[files]]
 path = "~/.gemini/skills/<name>/SKILL.md"
 scope = "global"
 format = "markdown"
+note = "User skills, available across all projects."
+
+[[files]]
+path = "~/.agents/skills/<name>/SKILL.md"
+scope = "global"
+format = "markdown"
+note = "Interoperable alias; takes precedence over ~/.gemini/skills/ within the user tier."
 
 [[fields]]
 name = "name"
 type = "string"
 required = true
-description = "Skill identifier (required by the Agent Skills standard)."
+description = "Unique skill identifier; should match the directory name."
 
 [[fields]]
 name = "description"
 type = "string"
 required = true
-description = "What the skill does and when to use it."
+description = "How Gemini decides when to use the skill. Be specific about tasks and trigger keywords."
+
+[[examples]]
+title = "SKILL.md"
+language = "markdown"
+code = '''
+---
+name: code-reviewer
+description:
+  Expertise in reviewing code changes for correctness, security, and style. Use
+  when the user asks to "review" their code or a PR.
+---
+
+# Code Reviewer Instructions
+
+1. **Analyze**: Review the provided code for logical errors and style violations.
+2. **Review**: Use the bundled `scripts/review.js` utility to perform an automated check.
+3. **Feedback**: Provide constructive feedback.
+'''

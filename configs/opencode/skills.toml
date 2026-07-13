@@ -1,38 +1,110 @@
 status = "supported"
-summary = "SKILL.md skills following the open Agent Skills standard."
-invocation = ["/skill-name"]
-notes = ["Skill discovery paths from the open skills CLI (vercel-labs/skills)."]
+summary = "SKILL.md instruction sets discovered from project and home directories, listed in the native skill tool and loaded on demand by the agent."
+invocation = ["automatic (skill tool)"]
+docs = "https://opencode.ai/docs/skills/"
+notes = [
+  "Skills are loaded on demand via the native skill tool: available skills are listed in the tool description and the agent calls skill({ name }) to load the full content.",
+  "Claude-compatible (.claude/skills/) and agent-compatible (.agents/skills/) locations are also searched, in projects and in the home directory.",
+  "Only name, description, license, compatibility, and metadata frontmatter fields are recognized; unknown fields are ignored.",
+  "Access is controlled with pattern-based permissions under permission.skill in opencode.json (allow/deny/ask), overridable per agent; set tools.skill = false to disable skills for an agent entirely.",
+]
 
 [[files]]
-path = ".agents/skills/<name>/SKILL.md"
+path = ".opencode/skills/<name>/SKILL.md"
 scope = "project"
 format = "markdown"
+note = "OpenCode walks up from the working directory to the git worktree root."
 
 [[files]]
 path = "~/.config/opencode/skills/<name>/SKILL.md"
 scope = "global"
 format = "markdown"
 
+[[files]]
+path = ".claude/skills/<name>/SKILL.md"
+scope = "project"
+format = "markdown"
+note = "Claude Code-compatible location. Disable with OPENCODE_DISABLE_CLAUDE_CODE_SKILLS=1."
+
+[[files]]
+path = "~/.claude/skills/<name>/SKILL.md"
+scope = "global"
+format = "markdown"
+note = "Claude Code-compatible location."
+
+[[files]]
+path = ".agents/skills/<name>/SKILL.md"
+scope = "project"
+format = "markdown"
+note = "Agent-compatible location."
+
+[[files]]
+path = "~/.agents/skills/<name>/SKILL.md"
+scope = "global"
+format = "markdown"
+note = "Agent-compatible location."
+
 [[fields]]
 name = "name"
 type = "string"
 required = true
-description = "Skill identifier (required by the Agent Skills standard)."
+description = "Skill identifier: 1-64 chars, lowercase alphanumeric with single hyphen separators, must match the directory name."
 
 [[fields]]
 name = "description"
 type = "string"
 required = true
-description = "What the skill does and when to use it."
+description = "What the skill does and when to use it (1-1024 chars)."
 
-[[capabilities]]
-name = "allowed-tools"
-status = "supported"
+[[fields]]
+name = "license"
+type = "string"
+description = "Optional license identifier."
 
-[[capabilities]]
-name = "context: fork"
-status = "unsupported"
+[[fields]]
+name = "compatibility"
+type = "string"
+description = "Optional compatibility hint."
 
-[[capabilities]]
-name = "Hooks"
-status = "unsupported"
+[[fields]]
+name = "metadata"
+type = "record<string, string>"
+description = "Optional string-to-string metadata map."
+
+[[examples]]
+title = "Skill with frontmatter"
+language = "markdown"
+code = '''
+---
+name: git-release
+description: Create consistent releases and changelogs
+license: MIT
+compatibility: opencode
+metadata:
+  audience: maintainers
+---
+
+## What I do
+
+- Draft release notes from merged PRs
+- Propose a version bump
+
+## When to use me
+
+Use this when you are preparing a tagged release.
+'''
+
+[[examples]]
+title = "Skill permissions in opencode.json"
+language = "json"
+code = '''
+{
+  "permission": {
+    "skill": {
+      "*": "allow",
+      "internal-*": "deny",
+      "experimental-*": "ask"
+    }
+  }
+}
+'''

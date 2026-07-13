@@ -1,0 +1,87 @@
+status = "supported"
+summary = "MCP servers configured in Settings > Agents > MCP servers, in Warp Drive, or via file-based .warp/.mcp.json config. Warp also picks up MCP config from Claude Code, Codex, and other agent providers."
+transports = ["stdio", "sse", "http"]
+auth = ["oauth", "headers", "env"]
+docs = "https://docs.warp.dev/agent-platform/capabilities/mcp/"
+notes = [
+  "Global Warp-managed servers auto-spawn by default; global servers from third-party providers (Claude Code ~/.claude.json, Codex ~/.codex/config.toml, other agents ~/.agents/.mcp.json) require the Auto-spawn servers from third-party agents toggle.",
+  "Project-scoped servers from any provider never auto-spawn and must be approved/toggled on per session.",
+  "The bundled /agent-add-mcp skill lets the agent write file-based server definitions to ~/.warp/.mcp.json (global) or {repo_root}/.warp/.mcp.json (project) with your approval.",
+  "Warp prevents edits to MCP config files unless you explicitly approve the change.",
+  "Servers can be shared with teammates via Warp Drive; env secrets are scrubbed and replaced with variables on share.",
+  "Set working_directory explicitly when command/args include relative paths.",
+]
+
+[[files]]
+path = "~/.warp/.mcp.json"
+scope = "global"
+format = "json"
+key = "mcpServers"
+note = "Shared by Stable and Preview channels. Pasted multi-server JSON also uses the mcpServers key."
+
+[[files]]
+path = ".warp/.mcp.json"
+scope = "project"
+format = "json"
+key = "mcpServers"
+note = "Project-scoped; requires explicit approval and never auto-spawns."
+
+[[fields]]
+name = "command"
+type = "string"
+required = true
+description = "Executable to launch for a CLI (stdio) server, e.g. npx."
+
+[[fields]]
+name = "args"
+type = "string[]"
+required = true
+description = "Command-line arguments passed to the command."
+
+[[fields]]
+name = "env"
+type = "record<string, string>"
+description = "Environment variables for the server (e.g. API tokens)."
+
+[[fields]]
+name = "working_directory"
+type = "string"
+description = "Working directory where the command runs; used to resolve relative paths."
+
+[[fields]]
+name = "url"
+type = "string"
+required = true
+description = "HTTP endpoint for a Streamable HTTP or SSE server."
+
+[[fields]]
+name = "headers"
+type = "record<string, string>"
+description = "HTTP headers for remote servers (e.g. Authorization bearer token)."
+
+[[capabilities]]
+name = "Tools"
+status = "supported"
+
+[[capabilities]]
+name = "Resources"
+status = "supported"
+note = "Running servers list their available tools and resources on the MCP servers page."
+
+[[examples]]
+title = "Multiple servers (paste or .warp/.mcp.json)"
+language = "json"
+code = '''
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/allowed/files"]
+    },
+    "externalDocs": {
+      "url": "http://localhost:4000/mcp/stream",
+      "headers": { "my-header": "my-header-value" }
+    }
+  }
+}
+'''

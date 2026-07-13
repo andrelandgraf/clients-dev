@@ -1,0 +1,98 @@
+status = "supported"
+summary = "Repository administrators configure MCP servers as JSON (mcpServers key) in the repository settings on github.com (Settings > Copilot > MCP servers). The config is shared by the cloud agent and Copilot code review; secrets are injected via COPILOT_MCP_-prefixed Agents secrets."
+transports = ["stdio", "http", "sse"]
+auth = ["headers", "env-secrets"]
+docs = "https://docs.github.com/en/copilot/how-tos/use-copilot-agents/coding-agent/extend-coding-agent-with-mcp"
+notes = [
+  "The JSON configuration is entered directly in repository settings on github.com, not stored as a repo file.",
+  "The GitHub MCP server and Playwright MCP server are enabled by default; the built-in GitHub server uses a read-only token scoped to the current repository.",
+  "Only MCP tools are supported; resources and prompts are not. Remote servers using OAuth are not supported.",
+  "Configured tools run autonomously without per-call approval — allowlist specific read-only tools where possible.",
+  "env and headers values reference Agents secrets/variables prefixed with COPILOT_MCP_ using $VAR, ${VAR}, or ${VAR:-default} substitution.",
+  "Servers needing extra dependencies can install them via .github/workflows/copilot-setup-steps.yml.",
+  "Org/enterprise admins can also attach MCP servers to custom agents via the mcp-servers frontmatter property.",
+]
+
+[[fields]]
+name = "type"
+type = "\"local\" | \"stdio\" | \"http\" | \"sse\""
+required = true
+description = "Server transport. local and stdio are equivalent (local process); http and sse are remote."
+
+[[fields]]
+name = "tools"
+type = "string[]"
+required = true
+description = "Allowlist of tools to enable from the server; use [\"*\"] for all tools."
+
+[[fields]]
+name = "command"
+type = "string"
+description = "Command to start a local server (required for local/stdio)."
+
+[[fields]]
+name = "args"
+type = "string[]"
+description = "Arguments passed to the command (required for local/stdio)."
+
+[[fields]]
+name = "env"
+type = "record<string, string>"
+description = "Environment variables for a local server; values may reference COPILOT_MCP_-prefixed secrets/variables."
+
+[[fields]]
+name = "url"
+type = "string"
+description = "The MCP server's URL (required for http/sse)."
+
+[[fields]]
+name = "headers"
+type = "record<string, string>"
+description = "Headers attached to requests to a remote server; values may reference COPILOT_MCP_-prefixed secrets/variables."
+
+[[capabilities]]
+name = "Tools"
+status = "supported"
+
+[[capabilities]]
+name = "Resources"
+status = "unsupported"
+
+[[capabilities]]
+name = "Prompts"
+status = "unsupported"
+
+[[examples]]
+title = "Local server with a secret"
+language = "json"
+code = '''
+{
+  "mcpServers": {
+    "sentry": {
+      "type": "local",
+      "command": "npx",
+      "args": ["@sentry/mcp-server@latest", "--host=$SENTRY_HOST"],
+      "env": {
+        "SENTRY_HOST": "https://contoso.sentry.io",
+        "SENTRY_ACCESS_TOKEN": "$COPILOT_MCP_SENTRY_ACCESS_TOKEN"
+      },
+      "tools": ["*"]
+    }
+  }
+}
+'''
+
+[[examples]]
+title = "Remote SSE server"
+language = "json"
+code = '''
+{
+  "mcpServers": {
+    "cloudflare": {
+      "type": "sse",
+      "url": "https://docs.mcp.cloudflare.com/sse",
+      "tools": ["*"]
+    }
+  }
+}
+'''

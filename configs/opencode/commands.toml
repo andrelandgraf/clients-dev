@@ -1,0 +1,77 @@
+status = "supported"
+summary = "Custom slash commands defined as markdown files with frontmatter or inline in opencode.json, with argument placeholders, shell output injection, and file references."
+invocation = ["/command-name"]
+docs = "https://opencode.ai/docs/commands/"
+notes = [
+  "The markdown file name becomes the command name; the frontmatter defines properties and the body becomes the prompt template.",
+  "Templates support $ARGUMENTS, positional $1/$2/$3 arguments, !`command` to inject shell output, and @path to include file contents.",
+  "Custom commands can override built-in commands like /init, /undo, /redo, /share, and /help.",
+]
+
+[[files]]
+path = ".opencode/commands/<name>.md"
+scope = "project"
+format = "markdown"
+
+[[files]]
+path = "~/.config/opencode/commands/<name>.md"
+scope = "global"
+format = "markdown"
+
+[[files]]
+path = "opencode.json"
+scope = "project"
+format = "json"
+key = "command"
+note = "Inline command definitions; template is required in this form."
+
+[[fields]]
+name = "template"
+type = "string"
+required = true
+description = "The prompt sent to the LLM when the command runs (the markdown body in file-based commands)."
+
+[[fields]]
+name = "description"
+type = "string"
+description = "Brief description shown in the TUI when typing the command."
+
+[[fields]]
+name = "agent"
+type = "string"
+description = "Agent that executes the command. Subagents trigger a subagent invocation by default."
+
+[[fields]]
+name = "subtask"
+type = "boolean"
+description = "Force the command to run as a subagent invocation to keep it out of the primary context."
+
+[[fields]]
+name = "model"
+type = "string"
+description = "Model override for this command."
+
+[[examples]]
+title = "Command file (.opencode/commands/test.md)"
+language = "markdown"
+code = '''
+---
+description: Run tests with coverage
+agent: build
+---
+
+Run the full test suite with coverage report and show any failures.
+Focus on the failing tests and suggest fixes.
+'''
+
+[[examples]]
+title = "Command with arguments"
+language = "markdown"
+code = '''
+---
+description: Create a new component
+---
+
+Create a new React component named $ARGUMENTS with TypeScript support.
+Include proper typing and basic structure.
+'''

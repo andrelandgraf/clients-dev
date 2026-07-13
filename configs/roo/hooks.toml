@@ -1,0 +1,6 @@
+status = "unsupported"
+summary = "Roo Code does not expose user-configurable lifecycle hooks."
+notes = [
+  "The official documentation has no hooks feature; no hook configuration file exists in docs or the extension repo.",
+  "Task lifecycle events (taskStarted, taskCompleted, etc.) exist only as an internal extension API for programmatic consumers, not as a user-facing hook surface.",
+]

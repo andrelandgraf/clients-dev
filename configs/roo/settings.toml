@@ -1,0 +1,72 @@
+status = "supported"
+summary = "Settings live in the Roo Code settings UI backed by extension storage, exportable/importable as JSON. Agent-relevant knobs (command allowlists, AGENTS.md loading, timeouts) are VS Code settings under the roo-cline.* namespace."
+docs = "https://docs.roocode.com/features/settings-management"
+notes = [
+  "Export/Import produces a roo-code-settings.json file containing provider profiles (including plaintext API keys) and global settings.",
+  "roo-cline.autoImportSettingsPath auto-imports a settings JSON on every VS Code start, useful for syncing machines or standardizing teams.",
+  "MCP servers, rules, skills, and commands have their own dedicated files (see the other surfaces).",
+]
+
+[[files]]
+path = ".vscode/settings.json"
+scope = "project"
+format = "json"
+key = "roo-cline"
+note = "VS Code workspace settings; all Roo settings are prefixed roo-cline.* (also settable in user settings)."
+
+[[files]]
+path = "~/Documents/roo-code-settings.json"
+scope = "global"
+format = "json"
+note = "Default filename for exported settings; any path can be used and wired to auto-import."
+
+[[fields]]
+name = "roo-cline.allowedCommands"
+type = "string[]"
+description = "Commands auto-executed without approval. Default: [\"git log\", \"git diff\", \"git show\"]."
+
+[[fields]]
+name = "roo-cline.deniedCommands"
+type = "string[]"
+description = "Commands always blocked from execution."
+
+[[fields]]
+name = "roo-cline.commandExecutionTimeout"
+type = "number"
+description = "Timeout in seconds for command execution (0-600; 0 = no timeout)."
+
+[[fields]]
+name = "roo-cline.useAgentRules"
+type = "boolean"
+description = "Enable loading of AGENTS.md files for agent-specific instructions (default true)."
+
+[[fields]]
+name = "roo-cline.autoImportSettingsPath"
+type = "string"
+description = "Path to a settings JSON automatically imported on VS Code startup."
+
+[[fields]]
+name = "roo-cline.customStoragePath"
+type = "string"
+description = "Custom directory for Roo Code storage (task history, settings)."
+
+[[fields]]
+name = "roo-cline.apiRequestTimeout"
+type = "number"
+description = "Timeout in seconds for AI provider API requests (0-3600, default 600)."
+
+[[fields]]
+name = "roo-cline.newTaskRequireTodos"
+type = "boolean"
+description = "Require a todo list when creating new tasks via subtasks (default false)."
+
+[[examples]]
+title = "Auto-approve safe commands (VS Code settings.json)"
+language = "json"
+code = '''
+{
+  "roo-cline.allowedCommands": ["git log", "git diff", "npm test"],
+  "roo-cline.useAgentRules": true,
+  "roo-cline.autoImportSettingsPath": "~/roo-code-settings.json"
+}
+'''

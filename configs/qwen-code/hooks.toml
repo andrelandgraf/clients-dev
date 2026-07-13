@@ -1,0 +1,153 @@
+status = "supported"
+summary = "Lifecycle hooks configured under the hooks key in settings.json, with four executor types: shell command, HTTP POST, registered function (internal), and LLM prompt. Hooks can inject context, block tools, and audit the session across a wide event set."
+events = [
+  "PreToolUse", "PostToolUse", "PostToolUseFailure",
+  "UserPromptSubmit",
+  "SessionStart", "SessionEnd",
+  "MessageDisplay",
+  "Stop",
+  "SubagentStart", "SubagentStop",
+  "PreCompact",
+  "Notification",
+  "PermissionRequest", "PermissionDenied",
+  "TodoCreated", "TodoCompleted",
+]
+docs = "https://github.com/QwenLM/qwen-code/blob/main/docs/users/features/hooks.md"
+notes = [
+  "Command hooks receive JSON on stdin and reply via stdout; exit code 2 blocks the action with stderr as feedback to the model.",
+  "HTTP hooks POST the event JSON to a URL with SSRF protection, URL allowlists, and env var interpolation restricted to allowedEnvVars.",
+  "Matchers are regexes against tool ids, subagent types, or session sources; empty string or * matches all. Some events (UserPromptSubmit, Stop, Todo*) take no matcher.",
+  "Hooks run in parallel by default; sequential: true enforces ordered execution. Command hooks can set async: true for non-blocking background runs.",
+  "Project-level hooks require trusted folder status.",
+  "Function hooks are used internally by the Skill system and are not a public configuration API.",
+]
+
+[[files]]
+path = ".qwen/settings.json"
+scope = "project"
+format = "json"
+key = "hooks"
+
+[[files]]
+path = "~/.qwen/settings.json"
+scope = "global"
+format = "json"
+key = "hooks"
+
+[[fields]]
+name = "matcher"
+type = "string"
+description = "Regex filtering the trigger (tool id, subagent type, session source, etc.) depending on the event."
+
+[[fields]]
+name = "sequential"
+type = "boolean"
+description = "Run hooks in this group in order instead of in parallel."
+
+[[fields]]
+name = "hooks[].type"
+type = "\"command\" | \"http\" | \"prompt\""
+required = true
+description = "Hook executor type (function type exists but is internal-only)."
+
+[[fields]]
+name = "hooks[].command"
+type = "string"
+description = "Shell command to execute (command hooks). Receives event JSON on stdin."
+
+[[fields]]
+name = "hooks[].url"
+type = "string"
+description = "Target URL for HTTP hooks; event JSON is sent as the POST body."
+
+[[fields]]
+name = "hooks[].headers"
+type = "record<string, string>"
+description = "HTTP request headers; supports ${VAR} interpolation limited to allowedEnvVars."
+
+[[fields]]
+name = "hooks[].allowedEnvVars"
+type = "string[]"
+description = "Whitelist of environment variables allowed in HTTP hook URLs/headers."
+
+[[fields]]
+name = "hooks[].timeout"
+type = "number"
+description = "Timeout: milliseconds for command hooks (default 60000), seconds for HTTP hooks (default 600)."
+
+[[fields]]
+name = "hooks[].async"
+type = "boolean"
+description = "Command hooks only: run in the background without blocking; results surface next turn."
+
+[[fields]]
+name = "hooks[].env"
+type = "record<string, string>"
+description = "Environment variables for command hooks."
+
+[[fields]]
+name = "hooks[].shell"
+type = "\"bash\" | \"powershell\""
+description = "Shell used to run command hooks."
+
+[[fields]]
+name = "hooks[].name"
+type = "string"
+description = "Friendly name for logging."
+
+[[fields]]
+name = "hooks[].statusMessage"
+type = "string"
+description = "Status message displayed while the hook executes."
+
+[[fields]]
+name = "hooks[].once"
+type = "boolean"
+description = "HTTP hooks only: execute at most once per event per session."
+
+[[examples]]
+title = "Security check before shell commands"
+language = "json"
+code = '''
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "^run_shell_command$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$QWEN_PROJECT_DIR/.qwen/hooks/security-check.sh",
+            "name": "security-check",
+            "timeout": 10000
+          }
+        ]
+      }
+    ]
+  }
+}
+'''
+
+[[examples]]
+title = "HTTP audit hook"
+language = "json"
+code = '''
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "http",
+            "url": "http://127.0.0.1:8080/hooks/pre-tool-use",
+            "headers": { "Authorization": "Bearer ${HOOK_API_KEY}" },
+            "allowedEnvVars": ["HOOK_API_KEY"],
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
+'''

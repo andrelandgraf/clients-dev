@@ -1,38 +1,67 @@
 status = "supported"
-summary = "SKILL.md skills following the open Agent Skills standard."
-invocation = ["/skill-name"]
-notes = ["Skill discovery paths from the open skills CLI (vercel-labs/skills)."]
+summary = "SKILL.md instruction packages following the Agent Skills format, loaded on demand when a request matches the skill description. Supports mode-specific and cross-agent (.agents) locations."
+invocation = [
+  "automatic (request matches skill description)",
+  "skill tool (explicit load, e.g. \"use the pdf-processing skill\")",
+]
+docs = "https://docs.roocode.com/features/skills"
+notes = [
+  "Progressive disclosure: only frontmatter metadata is indexed at startup; the full SKILL.md loads when a request matches, and bundled files are read on demand.",
+  "Override priority: project .roo > project .agents > global .roo > global .agents; mode-specific beats generic within each location.",
+  "Mode-specific variants live in skills-{modeSlug}/ directories (e.g. .roo/skills-code/).",
+  "Skills can bundle helper scripts, templates, and reference files alongside SKILL.md.",
+  "Symlinked skill directories are supported; the skill name comes from the symlink name.",
+]
 
 [[files]]
 path = ".roo/skills/<name>/SKILL.md"
 scope = "project"
 format = "markdown"
+note = "Roo-specific project skills (highest priority)."
+
+[[files]]
+path = ".agents/skills/<name>/SKILL.md"
+scope = "project"
+format = "markdown"
+note = "Cross-agent project skills shared with other agent tools."
 
 [[files]]
 path = "~/.roo/skills/<name>/SKILL.md"
 scope = "global"
 format = "markdown"
+note = "Roo-specific global skills."
+
+[[files]]
+path = "~/.agents/skills/<name>/SKILL.md"
+scope = "global"
+format = "markdown"
+note = "Cross-agent global skills."
 
 [[fields]]
 name = "name"
 type = "string"
 required = true
-description = "Skill identifier (required by the Agent Skills standard)."
+description = "Skill identifier; must exactly match the directory (or symlink) name. 1-64 chars, lowercase alphanumeric and hyphens, no leading/trailing/consecutive hyphens."
 
 [[fields]]
 name = "description"
 type = "string"
 required = true
-description = "What the skill does and when to use it."
+description = "What the skill does and when to use it (1-1024 chars). Roo matches requests against this text."
 
-[[capabilities]]
-name = "allowed-tools"
-status = "supported"
+[[examples]]
+title = "SKILL.md"
+language = "markdown"
+code = '''
+---
+name: pdf-processing
+description: Extract text and tables from PDF files using Python libraries
+---
 
-[[capabilities]]
-name = "context: fork"
-status = "unsupported"
+# PDF Processing Instructions
 
-[[capabilities]]
-name = "Hooks"
-status = "unsupported"
+When the user requests PDF processing:
+1. Check if PyPDF2 or pdfplumber is installed
+2. For text extraction, use pdfplumber for better table detection
+3. Always handle encoding errors gracefully
+'''

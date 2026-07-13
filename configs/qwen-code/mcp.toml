@@ -1,0 +1,152 @@
+status = "supported"
+summary = "MCP servers configured under the mcpServers key in settings.json. Supports stdio, SSE, and Streamable HTTP transports, OAuth 2.0, per-server tool filtering, discovery timeouts, and the qwen mcp CLI for managing entries."
+transports = ["stdio", "sse", "http"]
+auth = ["oauth", "headers"]
+docs = "https://github.com/QwenLM/qwen-code/blob/main/docs/users/features/mcp.md"
+notes = [
+  "Prefer httpUrl (Streamable HTTP) over url (SSE) for remote servers; stdio uses command/args.",
+  "Servers are discovered progressively in the background; per-server discoveryTimeoutMs defaults to 30s (stdio) or 5s (remote).",
+  "The mcp settings object (mcp.allowed / mcp.excluded) globally allow- or deny-lists servers, with glob pattern support.",
+  "Manage servers via qwen mcp add/remove or the interactive /mcp dialog.",
+  "OAuth tokens are stored in ~/.qwen/mcp-oauth-tokens.json (plaintext, mode 0600); set QWEN_CODE_FORCE_ENCRYPTED_FILE_STORAGE=true for keychain or encrypted storage.",
+  "MCP resources are referenced in messages with @server:uri syntax.",
+]
+
+[[files]]
+path = ".qwen/settings.json"
+scope = "project"
+format = "json"
+key = "mcpServers"
+
+[[files]]
+path = "~/.qwen/settings.json"
+scope = "global"
+format = "json"
+key = "mcpServers"
+note = "User scope is the default for qwen mcp add."
+
+[[fields]]
+name = "command"
+type = "string"
+description = "Path to the executable for stdio transport. One of command, url, or httpUrl is required."
+
+[[fields]]
+name = "args"
+type = "string[]"
+description = "Command-line arguments for stdio transport."
+
+[[fields]]
+name = "url"
+type = "string"
+description = "SSE endpoint URL (legacy transport; prefer httpUrl when the server supports both)."
+
+[[fields]]
+name = "httpUrl"
+type = "string"
+description = "Streamable HTTP endpoint URL."
+
+[[fields]]
+name = "headers"
+type = "record<string, string>"
+description = "Custom HTTP headers when using url or httpUrl."
+
+[[fields]]
+name = "env"
+type = "record<string, string>"
+description = "Environment variables for the server process. Supports $VAR_NAME / ${VAR_NAME} expansion."
+
+[[fields]]
+name = "cwd"
+type = "string"
+description = "Working directory for stdio transport."
+
+[[fields]]
+name = "timeout"
+type = "number"
+description = "Tool-call timeout in milliseconds (default 600,000 = 10 minutes)."
+
+[[fields]]
+name = "discoveryTimeoutMs"
+type = "number"
+description = "Cap on the initial discovery handshake. Defaults: 30s for stdio servers, 5s for remote HTTP/SSE servers."
+
+[[fields]]
+name = "trust"
+type = "boolean"
+description = "When true, bypasses all tool call confirmations for this server. Default false."
+
+[[fields]]
+name = "includeTools"
+type = "string[]"
+description = "Allowlist of tool names to expose from this server."
+
+[[fields]]
+name = "excludeTools"
+type = "string[]"
+description = "Denylist of tool names; takes precedence over includeTools."
+
+[[fields]]
+name = "oauth"
+type = "{ enabled?, clientId?, clientSecret?, authorizationUrl?, tokenUrl?, scopes?, redirectUri?, tokenParamName?, audiences? }"
+description = "OAuth configuration; endpoints are auto-discovered if omitted. redirectUri defaults to http://localhost:7777/oauth/callback."
+
+[[capabilities]]
+name = "Tools"
+status = "supported"
+
+[[capabilities]]
+name = "Prompts"
+status = "supported"
+note = "Prompts advertised via prompts/list become slash commands; discovery is lenient about the declared capability."
+
+[[capabilities]]
+name = "Resources"
+status = "supported"
+note = "Browse via /mcp and inject with @server:uri; disabled in untrusted folders."
+
+[[capabilities]]
+name = "Roots"
+status = "missing"
+note = "Not documented in the official MCP docs."
+
+[[capabilities]]
+name = "Elicitation"
+status = "missing"
+note = "Not documented in the official MCP docs."
+
+[[capabilities]]
+name = "Sampling"
+status = "missing"
+note = "Not documented in the official MCP docs."
+
+[[examples]]
+title = "Local stdio server"
+language = "json"
+code = '''
+{
+  "mcpServers": {
+    "pythonTools": {
+      "command": "python",
+      "args": ["-m", "my_mcp_server", "--port", "8080"],
+      "cwd": "./mcp-servers/python",
+      "env": { "API_KEY": "${EXTERNAL_API_KEY}" },
+      "timeout": 15000
+    }
+  }
+}
+'''
+
+[[examples]]
+title = "Remote HTTP server with auth header"
+language = "json"
+code = '''
+{
+  "mcpServers": {
+    "httpServerWithAuth": {
+      "httpUrl": "http://localhost:3000/mcp",
+      "headers": { "Authorization": "Bearer your-api-token" },
+      "timeout": 5000
+    }
+  }
+}
+'''

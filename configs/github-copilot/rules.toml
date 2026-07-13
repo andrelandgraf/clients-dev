@@ -1,0 +1,60 @@
+status = "supported"
+summary = "Repository custom instructions: repo-wide .github/copilot-instructions.md, path-specific .github/instructions/*.instructions.md with applyTo globs, and AGENTS.md files anywhere in the repo (nearest file wins)."
+docs = "https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-repository-instructions"
+notes = [
+  "Path-specific instructions on GitHub.com are supported for the cloud agent and Copilot code review.",
+  "The excludeAgent frontmatter key ('cloud-agent' or 'code-review') limits a path-specific file to one of the two agents.",
+  "A single CLAUDE.md or GEMINI.md in the repository root can be used instead of AGENTS.md.",
+  "Organization-level custom instructions can be defined on GitHub and apply across repositories (enterprise/org scope, configured in the org UI rather than a repo file).",
+  "Priority: personal instructions > repository instructions > organization instructions; all applicable sets are provided to Copilot.",
+  "The cloud agent can generate a copilot-instructions.md for you (onboarding prompt at github.com/copilot/agents).",
+  "For code review, Copilot uses the instructions in the base branch of the pull request.",
+]
+
+[[files]]
+path = ".github/copilot-instructions.md"
+scope = "project"
+format = "markdown"
+note = "Repository-wide instructions applied to all Copilot requests in the repo."
+
+[[files]]
+path = ".github/instructions/**/*.instructions.md"
+scope = "project"
+format = "markdown"
+note = "Path-specific instructions with applyTo frontmatter; subdirectories allowed."
+
+[[files]]
+path = "AGENTS.md"
+scope = "project"
+format = "markdown"
+note = "Can be stored anywhere in the repository; the nearest AGENTS.md in the directory tree takes precedence."
+
+[[files]]
+path = "CLAUDE.md"
+scope = "project"
+format = "markdown"
+note = "Alternative single agent-instructions file in the repo root (GEMINI.md also accepted)."
+
+[[fields]]
+name = "applyTo"
+type = "string"
+required = true
+description = "Glob pattern(s), comma-separated, selecting the files the instructions apply to (path-specific files only). Example: \"**/*.ts,**/*.tsx\"."
+
+[[fields]]
+name = "excludeAgent"
+type = "string"
+description = "Exclude the file from one agent. Omit to apply to both the cloud agent and code review."
+values = ["cloud-agent", "code-review"]
+
+[[examples]]
+title = "Path-specific instructions"
+language = "markdown"
+code = '''
+---
+applyTo: "app/models/**/*.rb"
+excludeAgent: "code-review"
+---
+Use ActiveRecord validations for all model constraints.
+Prefer scopes over class methods for query logic.
+'''

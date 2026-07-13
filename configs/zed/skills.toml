@@ -1,26 +1,58 @@
 status = "supported"
-summary = "SKILL.md skills following the open Agent Skills standard."
-invocation = ["/skill-name"]
-notes = ["Skill discovery paths from the open skills CLI (vercel-labs/skills)."]
+summary = "SKILL.md skill folders following the open Agent Skills standard, loaded autonomously from a catalog or invoked manually via slash command or @-mention."
+invocation = ["/skill-name", "@skill", "automatic"]
+docs = "https://zed.dev/docs/ai/skills"
+notes = [
+  "Skills replaced Zed's reusable Rules Library.",
+  "Flat layout only: skills must be direct children of the skills root; nested folders are not discovered.",
+  "Project-local skills only load from trusted worktrees; a project-local skill overrides a global skill with the same name.",
+  "Live reload: SKILL.md edits take effect immediately without restarting the session.",
+  "The total size of all skill names and descriptions is capped at 50KB for the catalog.",
+  "Skills can bundle scripts/, references/, and assets/ that the agent loads on demand.",
+  "Skills can be shared via self-contained zed://skill links and imported from GitHub .md URLs; a built-in /create-skill skill scaffolds new skills.",
+  "Invoking a user-created skill prompts for permission (same flow as tool permissions); built-in skills do not prompt.",
+]
 
 [[files]]
 path = ".agents/skills/<name>/SKILL.md"
 scope = "project"
 format = "markdown"
+note = "Project-local skills, only loaded from trusted worktrees."
 
 [[files]]
 path = "~/.agents/skills/<name>/SKILL.md"
 scope = "global"
 format = "markdown"
+note = "Global skills, available in every project."
 
 [[fields]]
 name = "name"
 type = "string"
 required = true
-description = "Skill identifier (required by the Agent Skills standard)."
+description = "Lowercase letters, numbers, and hyphens only; 1-64 chars; no leading/trailing/consecutive hyphens. Should match the folder name."
 
 [[fields]]
 name = "description"
 type = "string"
 required = true
-description = "What the skill does and when to use it."
+description = "What the skill does and when to use it. Keep under 1024 bytes; longer descriptions load with a warning."
+
+[[fields]]
+name = "disable-model-invocation"
+type = "boolean"
+description = "When true, hides the skill from the agent's catalog; it remains invocable via slash command or @-mention."
+
+[[examples]]
+title = "Manual-only deploy skill"
+language = "markdown"
+code = '''
+---
+name: deploy
+description: Deploy the current branch to production.
+disable-model-invocation: true
+---
+
+## Instructions
+
+Step-by-step instructions for the agent...
+'''

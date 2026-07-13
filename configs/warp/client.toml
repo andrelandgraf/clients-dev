@@ -1,4 +1,6 @@
 name = "Warp"
-type = "cli"
+type = "desktop-app"
 vendor = "Warp"
+description = "The Agentic Development Environment — a terminal and agent platform with local and cloud agents (Oz), MCP, rules, and skills."
 homepage = "https://www.warp.dev/"
+docs = "https://docs.warp.dev/"

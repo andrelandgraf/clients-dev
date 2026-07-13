@@ -61,6 +61,14 @@ validates every file with Zod and compiles them into a single
 **Only document what's in the official docs.** Every field, path, and format
 should be verifiable from the vendor's documentation — no guessing.
 
+## Completeness
+
+The homepage table only lists clients where **all six surfaces are verified**
+from official docs (a surface can be verified as `unsupported` — knowing a
+client has no hooks is a fact). Clients with partial data appear in a separate
+"More clients" section and are never shown as peer rows, so a missing entry is
+always a documentation gap, never a claim about the client.
+
 ## API
 
 The data is exposed as JSON (CORS-enabled) via Hono route handlers:
@@ -72,6 +80,22 @@ The data is exposed as JSON (CORS-enabled) via Hono route handlers:
 | `GET /api/clients.json`   | All clients with their surfaces.              |
 | `GET /api/clients/{id}.json` | A single client.                           |
 | `GET /api/{surface}.json` | One surface compared across all clients.      |
+| `GET /api/schemas.json`   | Index of available JSON Schemas.              |
+| `GET /api/schemas/{client}/{surface}.json` | JSON Schema for the fields a client accepts on one surface — validate or generate config entries. |
+| `GET /llms.txt`           | The whole catalog summarized for LLMs.        |
+
+## MCP server
+
+The catalog is itself an MCP server (Streamable HTTP) at
+`https://clients.dev/api/mcp`:
+
+```bash
+npx add-mcp https://clients.dev/api/mcp
+```
+
+Tools: `list_clients`, `get_client`, `compare_surface`, `get_config_schema`,
+plus a `catalog` resource. Agents can answer "where does client X read its MCP
+config and what fields does it accept?" directly from the source of truth.
 
 ## Development
 

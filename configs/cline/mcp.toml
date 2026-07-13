@@ -1,15 +1,36 @@
 status = "supported"
-summary = "Configure MCP servers in JSON under the mcpServers key."
+summary = "Configure MCP servers in cline_mcp_settings.json under the mcpServers key (editable via the MCP Servers panel). Supports local stdio servers and remote servers over Streamable HTTP or legacy SSE."
 transports = ["stdio", "http", "sse"]
-auth = ["headers"]
-notes = ["Remote entries set type to 'sse' or 'streamableHttp' and include disabled."]
+auth = ["headers", "oauth"]
+docs = "https://docs.cline.bot/mcp/mcp-overview"
+notes = [
+  "Omitting type on a remote server defaults to the legacy sse transport; set type to streamableHttp explicitly for the recommended transport.",
+  "The Cline CLI reads ~/.cline/mcp.json and .cline/mcp.json (project) with the same server definitions; the extension shares config under ~/.cline/data/.",
+  "Legacy installs stored the file in VS Code globalStorage (saoudrizwan.claude-dev/settings/cline_mcp_settings.json); the extension migrates it to ~/.cline/data/settings/.",
+  "OAuth credentials for remote servers are stored under each server's oauth key (managed by the extension, verified from source).",
+  "Per-tool auto-approval via the autoApprove array; the Auto Approve setting 'Use MCP servers' gates MCP tools and resources globally.",
+]
 
 [[files]]
-path = "saoudrizwan.claude-dev/settings/cline_mcp_settings.json"
+path = "~/.cline/data/settings/cline_mcp_settings.json"
 scope = "global"
 format = "json"
 key = "mcpServers"
-note = "Stored under the VS Code globalStorage directory (e.g. ~/Library/Application Support/Code/User/globalStorage on macOS)."
+note = "Shared by the VS Code extension, CLI, and SDK. Open via MCP Servers > Configure > Configure MCP Servers in the extension."
+
+[[files]]
+path = "~/.cline/mcp.json"
+scope = "global"
+format = "json"
+key = "mcpServers"
+note = "CLI MCP config (cline mcp wizard)."
+
+[[files]]
+path = ".cline/mcp.json"
+scope = "project"
+format = "json"
+key = "mcpServers"
+note = "Project-level MCP server config (documented in the CLI reference)."
 
 [[fields]]
 name = "command"
@@ -33,15 +54,64 @@ description = "Endpoint URL for a remote server."
 
 [[fields]]
 name = "type"
-type = "\"sse\" | \"streamableHttp\""
-description = "Remote transport type."
-
-[[fields]]
-name = "disabled"
-type = "boolean"
-description = "Whether the server is disabled."
+type = "\"streamableHttp\" | \"sse\""
+description = "Remote transport type. Defaults to legacy sse when omitted."
+values = ["streamableHttp", "sse"]
 
 [[fields]]
 name = "headers"
 type = "record<string, string>"
-description = "HTTP headers for a remote server."
+description = "HTTP headers for a remote server (e.g. Authorization)."
+
+[[fields]]
+name = "disabled"
+type = "boolean"
+description = "Toggle a server off without deleting it."
+
+[[fields]]
+name = "autoApprove"
+type = "string[]"
+description = "Tool names that run without per-call approval."
+
+[[capabilities]]
+name = "Tools"
+status = "supported"
+
+[[capabilities]]
+name = "Resources"
+status = "supported"
+note = "Auto Approve's 'Use MCP servers' setting covers MCP tools and resources."
+
+[[examples]]
+title = "Local stdio server"
+language = "json"
+code = '''
+{
+  "mcpServers": {
+    "local-server": {
+      "command": "node",
+      "args": ["/path/to/server.js"],
+      "env": { "API_KEY": "your_api_key" },
+      "disabled": false,
+      "autoApprove": []
+    }
+  }
+}
+'''
+
+[[examples]]
+title = "Remote server (Streamable HTTP)"
+language = "json"
+code = '''
+{
+  "mcpServers": {
+    "remote-server": {
+      "type": "streamableHttp",
+      "url": "https://example.com/mcp",
+      "headers": { "Authorization": "Bearer your-token" },
+      "disabled": false,
+      "autoApprove": []
+    }
+  }
+}
+'''

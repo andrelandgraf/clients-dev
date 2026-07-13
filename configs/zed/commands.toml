@@ -1,0 +1,23 @@
+status = "partial"
+summary = "Slash commands in the Agent Panel invoke skills by name, plus the built-in /compact. There is no separate custom prompt-template command format; custom commands are authored as skills."
+invocation = ["/skill-name", "/compact", "/create-skill"]
+docs = "https://zed.dev/docs/ai/skills"
+notes = [
+  "Typing / in the Agent Panel message editor lists installed skills; selecting one injects the skill's instructions as context.",
+  "/compact manually compacts the current Zed Agent thread.",
+  "/create-skill invokes the built-in skill-creation skill.",
+  "Legacy Text Threads have their own built-in context slash commands (/file, /fetch, /prompt, /now, /diagnostics, /symbols, /tab, /selection, /terminal, /default); these do not work in the modern Agent Panel. See https://zed.dev/docs/ai/text-threads.",
+  "User-defined prompt-template command files (e.g. a .zed/commands/ directory) are an open feature request, not a shipped feature.",
+]
+
+[[files]]
+path = ".agents/skills/<name>/SKILL.md"
+scope = "project"
+format = "markdown"
+note = "Skills double as slash commands; see the skills surface for the full format."
+
+[[files]]
+path = "~/.agents/skills/<name>/SKILL.md"
+scope = "global"
+format = "markdown"
+note = "Global skills are also available as slash commands in every project."

@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowUpRight, ChevronLeft } from "lucide-react";
+import { ClientFavicon } from "@/components/client-favicon";
 import { ConfigSurface } from "@/components/config-surface";
 import {
   ClientSurfaceTabs,
   type SurfaceTab,
 } from "@/components/client-surface-tabs";
 import { getClient, getClientIds } from "@/lib/clients/catalog";
+import { homepageDomain } from "@/lib/clients/facts";
 import { SURFACES, SURFACE_META, type SurfaceId } from "@/lib/clients/schema";
 import { clientTypeLabel, SURFACE_ICON } from "@/lib/clients/display";
 
@@ -104,6 +106,11 @@ export default async function ClientPage({
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <div className="flex items-center gap-3">
+            <ClientFavicon
+              domain={homepageDomain(client.homepage)}
+              name={client.name}
+              size={32}
+            />
             <h1 className="font-mono text-3xl font-bold tracking-tight">
               {client.name}
             </h1>

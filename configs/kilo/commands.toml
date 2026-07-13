@@ -1,0 +1,55 @@
+status = "supported"
+summary = "Workflows (slash commands) as markdown files in .kilo/commands/ (project) or ~/.config/kilo/commands/ (global); the filename becomes the command name."
+invocation = ["/command-name"]
+docs = "https://kilocode.ai/docs/features/slash-commands/workflows"
+notes = [
+  "Legacy .kilocode/workflows/ files are automatically migrated to the new command format on startup.",
+  "Workflows can use all built-in tools (read, glob, grep, edit, write, bash, webfetch) and MCP server tools.",
+]
+
+[[files]]
+path = ".kilo/commands/<name>.md"
+scope = "project"
+format = "markdown"
+
+[[files]]
+path = "~/.config/kilo/commands/<name>.md"
+scope = "global"
+format = "markdown"
+
+[[fields]]
+name = "description"
+type = "string"
+description = "Shown in the command picker."
+
+[[fields]]
+name = "agent"
+type = "string"
+description = "Which agent to use when invoking this command."
+
+[[fields]]
+name = "model"
+type = "string"
+description = "Model override for this command."
+
+[[fields]]
+name = "subtask"
+type = "boolean"
+description = "When true, runs the command as a sub-agent session."
+
+[[examples]]
+title = "PR submission workflow (.kilo/commands/submit-pr.md)"
+language = "markdown"
+code = '''
+---
+description: Submit a pull request with full checks
+agent: code
+---
+
+# Submit PR Workflow
+
+1. Use grep to check for TODO comments or console.log statements
+2. Run tests using bash with npm test
+3. If tests pass, stage and commit changes with a descriptive message
+4. Push the branch and create a pull request using gh pr create
+'''

@@ -17,7 +17,9 @@ const ENDPOINTS: { cmd: string; desc: string }[] = [
   { cmd: `curl ${SITE}/api/catalog.json`, desc: "Full catalog ({ generatedAt, clients })" },
   { cmd: `curl ${SITE}/api/clients/cursor.json`, desc: "A single client by id" },
   { cmd: `curl ${SITE}/api/mcp.json`, desc: "One surface compared across all clients" },
-  { cmd: `curl ${SITE}/api`, desc: "Index of endpoints and surfaces" },
+  { cmd: `curl ${SITE}/api/schemas/cursor/mcp.json`, desc: "JSON Schema for a client's config entries" },
+  { cmd: `curl ${SITE}/llms.txt`, desc: "The whole catalog summarized for LLMs" },
+  { cmd: `npx add-mcp ${SITE}/api/mcp`, desc: "Connect your agent to the catalog over MCP" },
 ];
 
 function CurlRow({ cmd, desc }: { cmd: string; desc: string }) {
@@ -65,10 +67,10 @@ export function HowToUse() {
           <div className="space-y-5">
             <section>
               <p className="text-sm text-muted-foreground">
-                The homepage is a matrix of every client against the six config
-                surfaces. Each client has a detail page with exact file paths,
-                formats, and field schemas. Surface pages compare one surface
-                across all clients.
+                The homepage table shows the actual config file paths for every
+                fully documented client. Each client has a detail page with
+                formats and typed field schemas; surface pages compare one
+                surface side by side across all clients.
               </p>
             </section>
 

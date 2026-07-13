@@ -1,4 +1,7 @@
 name = "Goose"
 type = "cli"
 vendor = "Block"
+description = "An open source, extensible AI agent from Block that automates engineering tasks via MCP extensions, available as a CLI and desktop app."
 homepage = "https://block.github.io/goose/"
+docs = "https://block.github.io/goose/docs/quickstart"
+repo = "https://github.com/block/goose"

@@ -1,0 +1,131 @@
+status = "supported"
+summary = "Agent behavior is configured in settings.json via chat.* and github.copilot.* keys: agent mode, tool approvals, sandboxing, MCP access, and discovery locations for instructions, prompts, skills, and hooks."
+docs = "https://code.visualstudio.com/docs/copilot/reference/copilot-settings"
+notes = [
+  "Standard VS Code settings precedence applies: user settings, then workspace .vscode/settings.json.",
+  "Several agent settings (e.g. chat.agent.enabled, chat.mcp.access, chat.tools.global.autoApprove) can be managed centrally by organization policy.",
+  "settings.json supports comments (JSONC).",
+]
+
+[[files]]
+path = ".vscode/settings.json"
+scope = "project"
+format = "jsonc"
+
+[[files]]
+path = "<VS Code profile>/settings.json"
+scope = "global"
+format = "jsonc"
+note = "e.g. ~/Library/Application Support/Code/User/settings.json on macOS."
+
+[[fields]]
+name = "chat.agent.enabled"
+type = "boolean"
+description = "Enable or disable agent mode. Default true; can be managed at the organization level."
+
+[[fields]]
+name = "chat.agent.maxRequests"
+type = "number"
+description = "Maximum number of requests the agent can make per turn. Default 25."
+
+[[fields]]
+name = "chat.tools.terminal.autoApprove"
+type = "record<string, boolean>"
+description = "Which terminal commands are auto-approved in agent mode; supports /regex/ keys. Dangerous commands (rm, curl, chmod, ...) default to false."
+
+[[fields]]
+name = "chat.tools.edits.autoApprove"
+type = "record<string, boolean>"
+description = "Glob patterns for files that require approval before edits are applied."
+
+[[fields]]
+name = "chat.tools.global.autoApprove"
+type = "boolean"
+description = "Auto-approve all tools (disables critical security protections). Default false; org-manageable."
+
+[[fields]]
+name = "chat.mcp.access"
+type = "boolean"
+description = "Manage which MCP servers can be used. Org-manageable."
+
+[[fields]]
+name = "chat.mcp.discovery.enabled"
+type = "boolean"
+description = "Auto-discover MCP server configuration from other applications. Default false."
+
+[[fields]]
+name = "chat.mcp.serverSampling"
+type = "object"
+description = "Which models are exposed to MCP servers for sampling."
+
+[[fields]]
+name = "chat.useAgentsMdFile"
+type = "boolean"
+description = "Use AGENTS.md files as always-on chat context. Default true."
+
+[[fields]]
+name = "chat.useClaudeMdFile"
+type = "boolean"
+description = "Use CLAUDE.md files as always-on custom instructions. Default true."
+
+[[fields]]
+name = "chat.instructionsFilesLocations"
+type = "record<string, boolean>"
+description = "Folders searched (recursively) for *.instructions.md files. Default includes .github/instructions."
+
+[[fields]]
+name = "chat.promptFilesLocations"
+type = "record<string, boolean>"
+description = "Folders searched for .prompt.md files. Default includes .github/prompts."
+
+[[fields]]
+name = "chat.useAgentSkills"
+type = "boolean"
+description = "Enable Agent Skills support. Default true."
+
+[[fields]]
+name = "chat.agentSkillsLocations"
+type = "record<string, boolean>"
+description = "Folders searched for skills. Defaults include .github/skills, .claude/skills, ~/.copilot/skills, ~/.claude/skills."
+
+[[fields]]
+name = "chat.hookFilesLocations"
+type = "record<string, boolean>"
+description = "Preview. Additional hook file locations (folders of *.json or individual files)."
+
+[[fields]]
+name = "chat.agent.sandbox.enabled"
+type = "\"off\" | \"on\" | \"allowNetwork\""
+description = "Preview. Sandboxing for agent terminal commands (macOS/Linux). Sandboxed commands are auto-approved. Org-manageable."
+
+[[fields]]
+name = "github.copilot.enable"
+type = "record<string, boolean>"
+description = "Enable or disable inline suggestions per language."
+
+[[fields]]
+name = "github.copilot.chat.codeGeneration.useInstructionFiles"
+type = "boolean"
+description = "Automatically add .github/copilot-instructions.md to chat requests. Default true."
+
+[[fields]]
+name = "chat.disableAIFeatures"
+type = "boolean"
+description = "Disable and hide all built-in AI features and the Copilot extensions."
+
+[[examples]]
+title = "Agent-related settings"
+language = "jsonc"
+code = '''
+{
+  "chat.agent.maxRequests": 50,
+  "chat.tools.terminal.autoApprove": {
+    "npm test": true,
+    "/^git (status|diff)/": true
+  },
+  "chat.useAgentsMdFile": true,
+  "chat.instructionsFilesLocations": {
+    ".github/instructions": true
+  }
+}
+'''

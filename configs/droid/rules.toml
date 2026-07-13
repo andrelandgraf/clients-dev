@@ -1,0 +1,37 @@
+status = "supported"
+summary = "AGENTS.md files at repo root, subdirectories, and a personal override in ~/.factory/AGENTS.md brief the agent on build/test commands, architecture, and conventions."
+docs = "https://docs.factory.ai/cli/configuration/agents-md"
+notes = [
+  "Discovery order (first match wins): ./AGENTS.md in the cwd, nearest parent up to the repo root, AGENTS.md in sub-folders the agent is working inside, then the personal override ~/.factory/AGENTS.md.",
+  "Multiple files can coexist; the file closer to the code being edited takes precedence.",
+  "Plain Markdown; top-level headings act as semantic sections (Build & Test, Architecture Overview, Security, Git Workflows, Conventions & Patterns).",
+  "Factory recommends keeping it under ~150 lines with concrete backtick-wrapped commands.",
+  "The legacy .droid.yaml project config is superseded by AGENTS.md plus .factory/ settings, MCP, hooks, and skills.",
+]
+
+[[files]]
+path = "AGENTS.md"
+scope = "project"
+format = "markdown"
+note = "Repo root and sub-folders; closest file to the edited code wins."
+
+[[files]]
+path = "~/.factory/AGENTS.md"
+scope = "global"
+format = "markdown"
+note = "Personal override read when no project file matches."
+
+[[examples]]
+title = "AGENTS.md skeleton"
+language = "markdown"
+code = '''
+# Build & Test
+
+- Build: `npm run build`
+- Test: `npm run test -- --runInBand`
+
+# Conventions
+
+- All backend code in `packages/api/src`
+- Use `zod` for request validation
+'''

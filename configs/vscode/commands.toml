@@ -1,0 +1,68 @@
+status = "supported"
+summary = "Prompt files (.prompt.md) are reusable Markdown prompts invoked as slash commands in chat, with YAML frontmatter for agent, model, and tool selection."
+invocation = ["/prompt-name"]
+docs = "https://code.visualstudio.com/docs/copilot/customization/prompt-files"
+notes = [
+  "Agent skills also appear as slash commands alongside prompt files.",
+  "Extra workspace locations via chat.promptFilesLocations; user prompt files sync via Settings Sync.",
+  "Bodies support Markdown links to workspace files, #tool: references, and ${input:variableName} placeholders.",
+  "Custom agents (.github/agents/*.agent.md, formerly chat modes) are a separate mechanism; a prompt file can target one via the agent frontmatter field.",
+  "Generate prompt files with /create-prompt or the Agent Customizations editor.",
+]
+
+[[files]]
+path = ".github/prompts/<name>.prompt.md"
+scope = "project"
+format = "markdown"
+
+[[files]]
+path = "<VS Code profile>/prompts/<name>.prompt.md"
+scope = "global"
+format = "markdown"
+note = "User prompt files live in VS Code user data (per profile); create them via the Chat: New Prompt File command."
+
+[[fields]]
+name = "description"
+type = "string"
+description = "Short description of the prompt."
+
+[[fields]]
+name = "name"
+type = "string"
+description = "Slash-command name. Defaults to the file name."
+
+[[fields]]
+name = "argument-hint"
+type = "string"
+description = "Hint text shown in the chat input field."
+
+[[fields]]
+name = "agent"
+type = "string"
+description = "Agent used to run the prompt: ask, agent, plan, or a custom agent name."
+values = ["ask", "agent", "plan", "<custom agent>"]
+
+[[fields]]
+name = "model"
+type = "string"
+description = "Language model used when running the prompt. Defaults to the currently selected model."
+
+[[fields]]
+name = "tools"
+type = "string[]"
+description = "Tool or tool-set names available to this prompt. Use '<server>/*' to include all tools of an MCP server; unavailable tools are ignored."
+
+[[examples]]
+title = "Prompt file"
+language = "markdown"
+code = '''
+---
+agent: 'agent'
+description: 'Generate a new React form component'
+tools: ['search/codebase', 'vscode/askQuestions']
+---
+Your goal is to generate a new React form component based on our templates.
+
+* Use `react-hook-form` for form state management
+* Always define TypeScript types for your form data
+'''

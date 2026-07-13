@@ -1,4 +1,7 @@
 name = "Roo Code"
 type = "ide-extension"
 vendor = "Roo Code"
-homepage = "https://roocode.com/"
+description = "Open-source AI coding agent extension for VS Code with multiple modes, MCP support, and rich rule/skill customization."
+homepage = "https://roocode.com"
+docs = "https://docs.roocode.com"
+repo = "https://github.com/RooCodeInc/Roo-Code"

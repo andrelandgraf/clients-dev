@@ -1,38 +1,52 @@
 status = "supported"
-summary = "SKILL.md skills following the open Agent Skills standard."
-invocation = ["/skill-name"]
-notes = ["Skill discovery paths from the open skills CLI (vercel-labs/skills)."]
+summary = "SKILL.md skill folders with progressive loading: only name and description (~100 tokens) load at startup; the full instructions load when Cline triggers the skill via the use_skill tool or you invoke it as a slash command."
+invocation = ["automatic", "/skill-name"]
+docs = "https://docs.cline.bot/customization/skills"
+notes = [
+  "Skills can bundle supporting files (docs/, templates/, scripts/) that load only as needed; script output enters context, not the script itself.",
+  "Every skill has an enable/disable toggle in the Skills menu; skills are enabled by default when discovered.",
+  "When a global and project skill share a name, the global skill takes precedence.",
+  "Keep SKILL.md under ~5k tokens; split detail into docs/ files referenced from the instructions.",
+]
 
 [[files]]
-path = ".agents/skills/<name>/SKILL.md"
+path = ".cline/skills/<name>/SKILL.md"
 scope = "project"
 format = "markdown"
+note = "Recommended project location; commit to share with your team. .clinerules/skills/ and .claude/skills/ are also discovered."
 
 [[files]]
-path = "~/.agents/skills/<name>/SKILL.md"
+path = "~/.cline/skills/<name>/SKILL.md"
 scope = "global"
 format = "markdown"
+note = "Global skills available across all projects."
 
 [[fields]]
 name = "name"
 type = "string"
 required = true
-description = "Skill identifier (required by the Agent Skills standard)."
+description = "Skill identifier; must exactly match the directory name. Use kebab-case."
 
 [[fields]]
 name = "description"
 type = "string"
 required = true
-description = "What the skill does and when to use it."
+description = "Tells Cline when to use the skill (max 1024 characters). Determines automatic triggering."
 
-[[capabilities]]
-name = "allowed-tools"
-status = "supported"
+[[examples]]
+title = "Data analysis skill"
+language = "markdown"
+code = '''
+---
+name: data-analysis
+description: Analyze data files and generate insights. Use when working with CSV, Excel, or JSON data files that need exploration, cleaning, or visualization.
+---
 
-[[capabilities]]
-name = "context: fork"
-status = "unsupported"
+# Data Analysis
 
-[[capabilities]]
-name = "Hooks"
-status = "supported"
+When analyzing data files, follow this process:
+
+## 1. Understand the Data
+- Read a sample of the file to understand its structure
+- Identify column types and data quality issues
+'''

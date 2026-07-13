@@ -1,13 +1,16 @@
 status = "supported"
-summary = "Configure MCP servers in JSON under the mcpServers key."
-transports = ["stdio", "http", "sse"]
-auth = ["headers", "oauth"]
-
-[[files]]
-path = "~/.gemini/settings.json"
-scope = "global"
-format = "json"
-key = "mcpServers"
+summary = "MCP servers configured under the mcpServers key in settings.json. Supports stdio, SSE, and Streamable HTTP transports, OAuth (including Google credentials and service-account impersonation), tool filtering, and the gemini mcp CLI for managing entries."
+transports = ["stdio", "sse", "http"]
+auth = ["oauth", "headers", "google-credentials", "service-account-impersonation"]
+docs = "https://github.com/google-gemini/gemini-cli/blob/main/docs/tools/mcp-server.md"
+notes = [
+  "MCP tools get a fully qualified name mcp_{serverName}_{toolName}; avoid underscores in server names so policy rules parse correctly.",
+  "The mcp settings object (mcp.allowed / mcp.excluded) globally allow- or deny-lists servers by name.",
+  "Manage servers without editing JSON via gemini mcp add/list/remove/enable/disable; per-server enablement is stored in ~/.gemini/mcp-server-enablement.json.",
+  "OAuth tokens are stored in ~/.gemini/mcp-oauth-tokens.json and refreshed automatically.",
+  "Sensitive host environment variables (patterns like *TOKEN*, *SECRET*, *KEY*) are redacted from server processes unless explicitly listed in env.",
+  "MCP server instructions (from the initialize result) are appended to the system prompt.",
+]
 
 [[files]]
 path = ".gemini/settings.json"
@@ -15,37 +18,144 @@ scope = "project"
 format = "json"
 key = "mcpServers"
 
+[[files]]
+path = "~/.gemini/settings.json"
+scope = "global"
+format = "json"
+key = "mcpServers"
+
 [[fields]]
 name = "command"
 type = "string"
-description = "Command to start a local (stdio) server."
+description = "Path to the executable for stdio transport. One of command, url, or httpUrl is required."
 
 [[fields]]
 name = "args"
 type = "string[]"
-description = "Arguments passed to the command."
-
-[[fields]]
-name = "env"
-type = "record<string, string>"
-description = "Environment variables for the server."
+description = "Command-line arguments for stdio transport."
 
 [[fields]]
 name = "url"
 type = "string"
-description = "Endpoint URL for a remote server."
+description = "SSE endpoint URL (e.g. http://localhost:8080/sse)."
+
+[[fields]]
+name = "httpUrl"
+type = "string"
+description = "Streamable HTTP endpoint URL."
 
 [[fields]]
 name = "headers"
 type = "record<string, string>"
-description = "HTTP headers for a remote server."
+description = "Custom HTTP headers when using url or httpUrl."
+
+[[fields]]
+name = "env"
+type = "record<string, string>"
+description = "Environment variables for the server process. Supports $VAR_NAME / ${VAR_NAME} expansion (and %VAR_NAME% on Windows)."
+
+[[fields]]
+name = "cwd"
+type = "string"
+description = "Working directory for stdio transport."
 
 [[fields]]
 name = "timeout"
 type = "number"
-description = "Request timeout in milliseconds for remote servers."
+description = "Request timeout in milliseconds (default 600,000 = 10 minutes)."
+
+[[fields]]
+name = "trust"
+type = "boolean"
+description = "When true, bypasses all tool call confirmations for this server. Default false."
+
+[[fields]]
+name = "includeTools"
+type = "string[]"
+description = "Allowlist of tool names to expose from this server."
+
+[[fields]]
+name = "excludeTools"
+type = "string[]"
+description = "Denylist of tool names; takes precedence over includeTools."
+
+[[fields]]
+name = "authProviderType"
+type = "string"
+description = "Authentication provider for remote servers."
+values = ["dynamic_discovery", "google_credentials", "service_account_impersonation"]
 
 [[fields]]
 name = "oauth"
-type = "{ scopes: string[] }"
-description = "OAuth configuration (scopes written under oauth.scopes)."
+type = "{ enabled?, clientId?, clientSecret?, authorizationUrl?, tokenUrl?, scopes?, redirectUri?, tokenParamName?, audiences? }"
+description = "OAuth configuration for remote servers; endpoints are auto-discovered when omitted."
+
+[[fields]]
+name = "targetAudience"
+type = "string"
+description = "OAuth client ID allowlisted on an IAP-protected app (service account impersonation)."
+
+[[fields]]
+name = "targetServiceAccount"
+type = "string"
+description = "Google Cloud service account email to impersonate (service account impersonation)."
+
+[[capabilities]]
+name = "Tools"
+status = "supported"
+
+[[capabilities]]
+name = "Prompts"
+status = "supported"
+note = "Server prompts become slash commands, e.g. /poem-writer --title=\"...\"."
+
+[[capabilities]]
+name = "Resources"
+status = "supported"
+note = "Discovered at startup and referenced in chat with @server://resource/path."
+
+[[capabilities]]
+name = "Roots"
+status = "missing"
+note = "Not documented in the official MCP docs."
+
+[[capabilities]]
+name = "Elicitation"
+status = "missing"
+note = "Not documented in the official MCP docs."
+
+[[capabilities]]
+name = "Sampling"
+status = "missing"
+note = "Not documented in the official MCP docs."
+
+[[examples]]
+title = "Local stdio server"
+language = "json"
+code = '''
+{
+  "mcpServers": {
+    "pythonTools": {
+      "command": "python",
+      "args": ["-m", "my_mcp_server", "--port", "8080"],
+      "env": { "API_KEY": "$EXTERNAL_API_KEY" },
+      "timeout": 15000
+    }
+  }
+}
+'''
+
+[[examples]]
+title = "Remote HTTP server with headers"
+language = "json"
+code = '''
+{
+  "mcpServers": {
+    "httpServerWithAuth": {
+      "httpUrl": "http://localhost:3000/mcp",
+      "headers": { "Authorization": "Bearer your-api-token" },
+      "timeout": 5000
+    }
+  }
+}
+'''

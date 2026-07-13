@@ -1,0 +1,55 @@
+status = "supported"
+summary = "AGENTS.md files hold persistent project and global instructions, with CLAUDE.md fallbacks and an instructions option for extra rule files."
+docs = "https://opencode.ai/docs/rules/"
+notes = [
+  "Run /init to scan the repo and generate or improve the project AGENTS.md.",
+  "Precedence: local files found by traversing up from the current directory (AGENTS.md wins over CLAUDE.md), then ~/.config/opencode/AGENTS.md, then ~/.claude/CLAUDE.md.",
+  "Claude Code compatibility can be disabled with OPENCODE_DISABLE_CLAUDE_CODE=1 (all) or OPENCODE_DISABLE_CLAUDE_CODE_PROMPT=1 (only ~/.claude/CLAUDE.md).",
+  "The instructions option accepts paths, glob patterns, and remote URLs (fetched with a 5s timeout); all instruction files are combined with AGENTS.md.",
+]
+
+[[files]]
+path = "AGENTS.md"
+scope = "project"
+format = "markdown"
+note = "Project rules, found by traversing up from the current directory. Commit to Git."
+
+[[files]]
+path = "~/.config/opencode/AGENTS.md"
+scope = "global"
+format = "markdown"
+note = "Personal rules applied across all sessions."
+
+[[files]]
+path = "CLAUDE.md"
+scope = "project"
+format = "markdown"
+note = "Claude Code-compatible fallback, used only if no AGENTS.md exists."
+
+[[files]]
+path = "~/.claude/CLAUDE.md"
+scope = "global"
+format = "markdown"
+note = "Claude Code-compatible fallback, used only if no ~/.config/opencode/AGENTS.md exists."
+
+[[files]]
+path = "opencode.json"
+scope = "project"
+format = "json"
+key = "instructions"
+note = "Array of paths, globs, or URLs to additional instruction files."
+
+[[fields]]
+name = "instructions"
+type = "string[]"
+description = "Paths, glob patterns, or remote URLs of instruction files to include (e.g. CONTRIBUTING.md, .cursor/rules/*.md)."
+
+[[examples]]
+title = "Reuse existing rule files"
+language = "json"
+code = '''
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": ["CONTRIBUTING.md", "docs/guidelines.md", ".cursor/rules/*.md"]
+}
+'''

@@ -1,0 +1,6 @@
+status = "unsupported"
+summary = "Zed has no lifecycle hook system for the Agent Panel: no user-configurable scripts fire on agent events such as tool use, prompt submit, or session start/end."
+notes = [
+  "Agent lifecycle hooks (custom commands, pre/post tool-use scripts) are open feature requests on the Zed GitHub repo (e.g. issues #57890, #52688) but are not shipped.",
+  "The unrelated create_worktree Task hook runs when Zed creates a linked git worktree for parallel agents; it is a workspace task hook, not an agent lifecycle hook.",
+]

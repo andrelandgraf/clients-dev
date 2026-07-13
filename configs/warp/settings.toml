@@ -1,0 +1,98 @@
+status = "supported"
+summary = "TOML settings file with hot reload; the [agents] sections control model, knowledge (rules), MCP auto-spawn, and permission profiles for the agent."
+docs = "https://docs.warp.dev/terminal/settings/all-settings/"
+notes = [
+  "File location depends on platform/channel: macOS Stable ~/.warp/settings.toml, Linux ~/.config/warp-terminal/settings.toml, Windows %LOCALAPPDATA%\\warp\\Warp\\config\\settings.toml.",
+  "Settings are grouped into TOML sections; only include settings you want to change. A settings_schema.json ships with the app.",
+  "Agent-relevant sections: [agents], [agents.knowledge], [agents.mcp_servers], [agents.profiles], [agents.warp_agent.*], [agents.third_party], [agents.voice].",
+  "Settings can sync across devices via account.is_settings_sync_enabled.",
+]
+
+[[files]]
+path = "~/.warp/settings.toml"
+scope = "global"
+format = "toml"
+note = "macOS Stable path; Linux uses ~/.config/warp-terminal/settings.toml. There is no project-scoped settings file."
+
+[[fields]]
+name = "agents.model"
+type = "string"
+description = "Default model for the Warp Agent in the terminal. Default \"auto\"."
+
+[[fields]]
+name = "agents.knowledge.rules_enabled"
+type = "boolean"
+description = "Whether the agent uses your saved rules during requests. Default true."
+
+[[fields]]
+name = "agents.mcp_servers.file_based_mcp_enabled"
+type = "boolean"
+description = "Auto-spawn global file-based MCP servers from third-party agents. Default false."
+
+[[fields]]
+name = "agents.profiles.agent_mode_coding_permissions"
+type = "string"
+description = "File read permission level for the agent."
+values = ["always_ask_before_reading", "always_allow_reading", "allow_reading_specific_files"]
+
+[[fields]]
+name = "agents.profiles.agent_mode_execute_readonly_commands"
+type = "boolean"
+description = "Whether the agent can auto-execute read-only commands without asking. Default false."
+
+[[fields]]
+name = "agents.profiles.agent_mode_command_execution_allowlist"
+type = "string[]"
+description = "Regex patterns for commands the agent can execute without explicit permission."
+
+[[fields]]
+name = "agents.profiles.agent_mode_command_execution_denylist"
+type = "string[]"
+description = "Regex patterns for commands the agent must always ask before executing."
+
+[[fields]]
+name = "agents.warp_agent.is_any_ai_enabled"
+type = "boolean"
+description = "Master switch for all AI features. Default true."
+
+[[fields]]
+name = "agents.warp_agent.other.agent_attribution_enabled"
+type = "boolean"
+description = "Add an attribution co-author line to commits and PRs the agent creates. Default true."
+
+[[fields]]
+name = "agents.warp_agent.other.default_prompt_submission_mode"
+type = "string"
+description = "Behavior when submitting a prompt while the agent is still responding. Default interrupt."
+values = ["interrupt", "queue"]
+
+[[fields]]
+name = "agents.cloud_conversation_storage_enabled"
+type = "boolean"
+description = "Whether conversations are stored in the cloud. Default true."
+
+[[fields]]
+name = "general.default_session_mode"
+type = "string"
+description = "Default mode for new terminal sessions. Default terminal."
+values = ["terminal", "agent", "cloud_agent", "tab_config", "docker_sandbox"]
+
+[[fields]]
+name = "code.indexing.agent_mode_codebase_context"
+type = "boolean"
+description = "Whether Codebase Context is provided to the agent. Default true."
+
+[[examples]]
+title = "Agent permissions in settings.toml"
+language = "toml"
+code = '''
+[agents]
+model = "auto"
+
+[agents.profiles]
+agent_mode_execute_readonly_commands = true
+agent_mode_command_execution_allowlist = ["ls(\\s.*)?", "cat(\\s.*)?"]
+
+[agents.mcp_servers]
+file_based_mcp_enabled = true
+'''

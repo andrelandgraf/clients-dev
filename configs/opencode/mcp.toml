@@ -1,8 +1,21 @@
 status = "supported"
-summary = "Configure MCP servers in JSON under the mcp key."
-transports = ["stdio", "http", "sse"]
-auth = ["headers"]
-notes = ["Local servers use type 'local' with command as an array; remote servers use type 'remote' with url."]
+summary = "Configure MCP servers under the mcp key in opencode.json. Local servers run as commands; remote servers connect over HTTP with header or OAuth auth."
+transports = ["stdio", "http"]
+auth = ["oauth", "headers"]
+docs = "https://opencode.ai/docs/mcp-servers/"
+notes = [
+  "Local servers use type 'local' with command as an array; remote servers use type 'remote' with url.",
+  "OAuth is automatic for remote servers: OpenCode detects 401 responses, uses Dynamic Client Registration (RFC 7591), and stores tokens in ~/.local/share/opencode/mcp-auth.json. Manage with `opencode mcp auth|list|logout|debug`.",
+  "MCP tools register with the server name as prefix and can be enabled/disabled globally or per agent via the tools option with glob patterns (e.g. \"my-mcp*\": false).",
+  "Organizations can ship default MCP servers via a .well-known/opencode remote config; local configs override them per server.",
+]
+
+[[files]]
+path = "opencode.json"
+scope = "project"
+format = "json"
+key = "mcp"
+note = "JSONC (opencode.jsonc) is also supported."
 
 [[files]]
 path = "~/.config/opencode/opencode.json"
@@ -10,38 +23,90 @@ scope = "global"
 format = "json"
 key = "mcp"
 
-[[files]]
-path = "opencode.json"
-scope = "project"
-format = "json"
-key = "mcp"
-
 [[fields]]
 name = "type"
 type = "\"local\" | \"remote\""
-description = "Server type."
+required = true
+description = "Server connection type."
+values = ["local", "remote"]
 
 [[fields]]
 name = "command"
 type = "string[]"
-description = "For local servers: [command, ...args]."
+required = true
+description = "For local servers: command and arguments to run the MCP server."
 
 [[fields]]
 name = "environment"
 type = "record<string, string>"
-description = "Environment variables for local servers."
+description = "Environment variables to set when running a local server."
+
+[[fields]]
+name = "cwd"
+type = "string"
+description = "Working directory for a local server process. Relative paths resolve from the workspace."
 
 [[fields]]
 name = "url"
 type = "string"
-description = "Endpoint URL for a remote server."
+required = true
+description = "For remote servers: URL of the remote MCP server."
 
 [[fields]]
 name = "headers"
 type = "record<string, string>"
-description = "HTTP headers for a remote server."
+description = "Headers to send with requests to a remote server (e.g. Authorization)."
+
+[[fields]]
+name = "oauth"
+type = "{ clientId?: string, clientSecret?: string, scope?: string } | false"
+description = "OAuth config for pre-registered client credentials, or false to disable automatic OAuth detection."
 
 [[fields]]
 name = "enabled"
 type = "boolean"
-description = "Whether the server is enabled."
+description = "Enable or disable the MCP server on startup."
+
+[[fields]]
+name = "timeout"
+type = "number"
+description = "Timeout in ms for fetching tools from the MCP server. Defaults to 5000."
+
+[[capabilities]]
+name = "Tools"
+status = "supported"
+note = "MCP tools are automatically available to the LLM alongside built-in tools."
+
+[[examples]]
+title = "Local server"
+language = "json"
+code = '''
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "my-local-mcp-server": {
+      "type": "local",
+      "command": ["npx", "-y", "my-mcp-command"],
+      "enabled": true,
+      "environment": { "MY_ENV_VAR": "my_env_var_value" }
+    }
+  }
+}
+'''
+
+[[examples]]
+title = "Remote server with headers"
+language = "json"
+code = '''
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "my-remote-mcp": {
+      "type": "remote",
+      "url": "https://my-mcp-server.com",
+      "enabled": true,
+      "headers": { "Authorization": "Bearer MY_API_KEY" }
+    }
+  }
+}
+'''

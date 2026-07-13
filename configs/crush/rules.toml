@@ -1,0 +1,63 @@
+status = "supported"
+summary = "Project context files (AGENTS.md, CRUSH.md, and compatible variants) plus global context files in ~/.config, with configurable paths."
+docs = "https://github.com/charmbracelet/crush#global-context-files"
+notes = [
+  "Default project context paths also include compatible files from other tools: .github/copilot-instructions.md, .cursorrules, .cursor/rules/, CLAUDE.md, CLAUDE.local.md, GEMINI.md, and case variants of CRUSH.md/AGENTS.md (verified in source).",
+  "Project initialization analyzes the codebase and writes a context file, AGENTS.md by default; customize the name/location with options.initialize_as.",
+  "Add extra project context files with options.context_paths and replace the global defaults with options.global_context_paths (directories load all .md files recursively).",
+  "Use ~/.config/crush/CRUSH.md for Crush-specific rules and ~/.config/AGENTS.md for generic instructions shared with other agentic tools.",
+]
+
+[[files]]
+path = "AGENTS.md"
+scope = "project"
+format = "markdown"
+note = "Default file created by project initialization; CRUSH.md and other case variants are also read."
+
+[[files]]
+path = "CRUSH.md"
+scope = "project"
+format = "markdown"
+note = "Crush-specific project rules; .local and lowercase variants are also read."
+
+[[files]]
+path = "~/.config/crush/CRUSH.md"
+scope = "global"
+format = "markdown"
+note = "Global Crush-specific rules."
+
+[[files]]
+path = "~/.config/AGENTS.md"
+scope = "global"
+format = "markdown"
+note = "Global generic instructions shared with other agentic coding tools."
+
+[[fields]]
+name = "options.context_paths"
+type = "string[]"
+description = "Additional project context file paths, appended to the built-in defaults."
+
+[[fields]]
+name = "options.global_context_paths"
+type = "string[]"
+description = "Global context file or folder paths. Folders load all .md files recursively. Defaults to ~/.config/crush/CRUSH.md and ~/.config/AGENTS.md."
+
+[[fields]]
+name = "options.initialize_as"
+type = "string"
+description = "Name of the context file created/updated during project initialization. Default AGENTS.md."
+
+[[examples]]
+title = "Custom global context paths"
+language = "json"
+code = '''
+{
+  "$schema": "https://charm.land/crush.json",
+  "options": {
+    "global_context_paths": [
+      "~/path/to/custom/context/file.md",
+      "/full/path/to/folder/of/files/"
+    ]
+  }
+}
+'''

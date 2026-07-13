@@ -1,0 +1,41 @@
+status = "supported"
+summary = "Lifecycle event handling via TypeScript plugins: amp.on(...) handlers can observe, approve, reject, or modify tool calls and agent turns."
+events = ["session.start", "agent.start", "tool.call", "tool.result", "agent.end"]
+docs = "https://ampcode.com/manual#plugins"
+notes = [
+  "Amp has no shell-command hook config file; hooks are written as plugins — TypeScript files exporting a default function that receives the PluginAPI.",
+  "tool.call handlers return allow, reject-and-continue, modify, or synthesize; agent.end handlers can return continue with a follow-up user message. There is no session.end event.",
+  "The legacy permissions system (amp.permissions, amp.guardedFiles.allowlist, amp.dangerouslyAllowAll set to false) is now a built-in plugin activated when those settings are present.",
+  "Plugins can also register tools (amp.registerTool), command-palette commands (amp.registerCommand), show UI, and classify with amp.ai.ask.",
+  "Reload with `plugins: reload` from the command palette; inspect with `plugins: list`.",
+]
+
+[[files]]
+path = ".amp/plugins/*.ts"
+scope = "project"
+format = "typescript"
+
+[[files]]
+path = "~/.config/amp/plugins/*.ts"
+scope = "global"
+format = "typescript"
+note = "System plugins applied across your own projects."
+
+[[examples]]
+title = "Gate tool calls with a plugin"
+language = "typescript"
+code = '''
+import type { PluginAPI } from '@ampcode/plugin'
+
+export default function (amp: PluginAPI) {
+  amp.on('tool.call', async (event, ctx) => {
+    const confirmed = await ctx.ui.confirm({
+      title: `Allow ${event.tool}?`,
+      message: `Amp wants to call ${event.tool}.`,
+      confirmButtonText: 'Allow',
+    })
+    if (confirmed) return { action: 'allow' }
+    return { action: 'reject-and-continue', message: `The user rejected ${event.tool}.` }
+  })
+}
+'''

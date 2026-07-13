@@ -1,0 +1,41 @@
+status = "deprecated"
+summary = "Custom slash commands (.agents/commands/) were removed in favor of skills; command-palette commands can still be added programmatically via the plugin API."
+invocation = ["command palette (Ctrl+O)"]
+docs = "https://ampcode.com/news/slashing-custom-commands"
+notes = [
+  "Custom commands in .agents/commands/ and ~/.config/amp/commands/ were two ways of doing the same thing as skills and have been removed; Amp's migration guide moves each command to a skill directory (.agents/skills/<name>/SKILL.md).",
+  "Plugins can register command-palette actions with amp.registerCommand(...), including availability states (enabled/disabled/hidden).",
+]
+
+[[files]]
+path = ".agents/commands/<name>.md"
+scope = "project"
+format = "markdown"
+note = "Legacy location, removed. Migrate to .agents/skills/<name>/SKILL.md."
+
+[[files]]
+path = "~/.config/amp/commands/<name>.md"
+scope = "global"
+format = "markdown"
+note = "Legacy location, removed. Migrate to ~/.config/agents/skills/<name>/SKILL.md."
+
+[[examples]]
+title = "Register a command via a plugin"
+language = "typescript"
+code = '''
+import type { PluginAPI } from '@ampcode/plugin'
+
+export default function (amp: PluginAPI) {
+  amp.registerCommand(
+    'open-plugin-docs',
+    {
+      title: 'Open plugin docs',
+      category: 'docs',
+      description: 'Open the Amp Plugin API manual page.',
+    },
+    async (ctx) => {
+      await ctx.system.open('https://ampcode.com/manual/plugin-api')
+    },
+  )
+}
+'''

@@ -1,0 +1,138 @@
+status = "supported"
+summary = "Versioned JSON hook files run command, HTTP, or prompt handlers at lifecycle events on the local machine. Sources are combined in order: policy, repository .github/hooks, user ~/.copilot/hooks, inline hooks blocks in settings files, and plugins."
+events = [
+  "sessionStart",
+  "sessionEnd",
+  "userPromptSubmitted",
+  "preToolUse",
+  "postToolUse",
+  "postToolUseFailure",
+  "permissionRequest",
+  "notification",
+  "agentStop",
+  "subagentStart",
+  "subagentStop",
+  "errorOccurred",
+  "preCompact",
+]
+docs = "https://docs.github.com/en/copilot/reference/hooks-reference"
+notes = [
+  "Files use { \"version\": 1, \"hooks\": { ... } }. camelCase event names deliver camelCase payloads; PascalCase names (e.g. PreToolUse) deliver VS Code/Claude-compatible snake_case payloads with Claude matcher semantics.",
+  "Cross-tool .claude/settings.json and .claude/settings.local.json hooks in the repository are also read.",
+  "preToolUse can return permissionDecision allow/deny/ask and modifiedArgs; permissionRequest can short-circuit the whole permission flow; postToolUse can modify the tool result or inject additionalContext; agentStop/subagentStop can block and force another turn.",
+  "Command preToolUse hooks are fail-closed (crash/timeout denies the tool); HTTP preToolUse hooks are fail-open.",
+  "Prompt hooks (sessionStart only) auto-submit text or a slash command in new interactive sessions.",
+  "Policy hooks in /etc/github-copilot/policy.d/*.json (or the Windows registry/ProgramData equivalents) are machine-wide, load first, and cannot be disabled by disableAllHooks.",
+  "Set disableAllHooks in settings to keep hook config on disk but stop it from running.",
+]
+
+[[files]]
+path = ".github/hooks/*.json"
+scope = "project"
+format = "json"
+key = "hooks"
+
+[[files]]
+path = "~/.copilot/hooks/*.json"
+scope = "global"
+format = "json"
+key = "hooks"
+note = "Or $COPILOT_HOME/hooks/ when COPILOT_HOME is set."
+
+[[files]]
+path = ".github/copilot/settings.json"
+scope = "project"
+format = "json"
+key = "hooks"
+note = "Inline hooks block; .github/copilot/settings.local.json for personal, gitignored hooks."
+
+[[files]]
+path = "~/.copilot/settings.json"
+scope = "global"
+format = "json"
+key = "hooks"
+note = "Inline user-level hook definitions."
+
+[[files]]
+path = "/etc/github-copilot/policy.d/*.json"
+scope = "enterprise"
+format = "json"
+key = "hooks"
+note = "Machine-wide policy hooks installed by administrators (Linux/macOS; Windows uses ProgramData or the registry). Must be root-owned on POSIX."
+
+[[fields]]
+name = "type"
+type = "\"command\" | \"http\" | \"prompt\""
+description = "Handler type. Defaults to command. prompt is only valid on sessionStart."
+
+[[fields]]
+name = "bash"
+type = "string"
+description = "Shell command for Unix (command hooks)."
+
+[[fields]]
+name = "powershell"
+type = "string"
+description = "Shell command for Windows (command hooks)."
+
+[[fields]]
+name = "command"
+type = "string"
+description = "Cross-platform fallback command, used when bash/powershell are absent."
+
+[[fields]]
+name = "cwd"
+type = "string"
+description = "Working directory (relative to the repository root or absolute)."
+
+[[fields]]
+name = "env"
+type = "record<string, string>"
+description = "Environment variables to set (supports variable expansion)."
+
+[[fields]]
+name = "timeoutSec"
+type = "number"
+description = "Timeout in seconds. Default 30. timeout is accepted as an alias."
+
+[[fields]]
+name = "matcher"
+type = "string"
+description = "Optional regex (anchored ^(?:PATTERN)$) filtering by tool name, notification type, agent name, or compaction trigger, depending on the event."
+
+[[fields]]
+name = "url"
+type = "string"
+description = "Target URL for http hooks. https required except localhost with COPILOT_HOOK_ALLOW_LOCALHOST=1."
+
+[[fields]]
+name = "headers"
+type = "record<string, string>"
+description = "Request headers for http hooks; allowedEnvVars whitelists env vars expandable inside header values."
+
+[[fields]]
+name = "prompt"
+type = "string"
+description = "Text or slash command auto-submitted by a prompt hook (sessionStart only)."
+
+[[examples]]
+title = "Log tool use and block on stop"
+language = "json"
+code = '''
+{
+  "version": 1,
+  "hooks": {
+    "preToolUse": [
+      {
+        "type": "command",
+        "matcher": "bash|edit",
+        "bash": "./scripts/log-tool.sh",
+        "timeoutSec": 10
+      }
+    ],
+    "sessionStart": [
+      { "type": "prompt", "prompt": "/instructions" }
+    ]
+  }
+}
+'''

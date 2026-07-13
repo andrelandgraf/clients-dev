@@ -1,26 +1,67 @@
 status = "supported"
-summary = "SKILL.md skills following the open Agent Skills standard."
-invocation = ["/skill-name"]
-notes = ["Skill discovery paths from the open skills CLI (vercel-labs/skills)."]
+summary = "SKILL.md skills in .factory/skills/ that both the user (/skill-name) and the Droid can invoke, with frontmatter to control invocation and optional supporting files."
+invocation = ["/skill-name", "automatic"]
+docs = "https://docs.factory.ai/cli/configuration/skills"
+notes = [
+  "Custom slash commands have been merged into skills: .factory/commands/review.md and .factory/skills/review/SKILL.md both create /review.",
+  "The skill file can be SKILL.md or skill.mdx; supporting files (scripts, schemas, checklists) live in the same directory.",
+  "disable-model-invocation: true makes a skill user-only (e.g. /deploy); user-invocable: false makes it Droid-only background knowledge.",
+  "<repo>/.agent/skills/ is also discovered for compatibility with .agent folder conventions.",
+  "Restart droid (or rescan) after adding skills so they are discovered.",
+]
 
 [[files]]
 path = ".factory/skills/<name>/SKILL.md"
 scope = "project"
 format = "markdown"
+note = "Project skills shared with teammates, checked into git. Per-subproject .factory folders work in monorepos."
 
 [[files]]
 path = "~/.factory/skills/<name>/SKILL.md"
 scope = "global"
 format = "markdown"
+note = "Personal skills that follow you across projects."
+
+[[files]]
+path = ".agent/skills/<name>/SKILL.md"
+scope = "project"
+format = "markdown"
+note = "Compatibility path for .agent folder conventions."
 
 [[fields]]
 name = "name"
 type = "string"
-required = true
-description = "Skill identifier (required by the Agent Skills standard)."
+description = "Display name; defaults to the directory name. Lowercase letters, numbers, and hyphens only."
 
 [[fields]]
 name = "description"
 type = "string"
-required = true
-description = "What the skill does and when to use it."
+description = "What the skill does and when to use it. The Droid uses this to decide when to apply the skill. Recommended."
+
+[[fields]]
+name = "user-invocable"
+type = "boolean"
+description = "Set false to hide from the / slash menu (Droid-only background knowledge). Default true."
+
+[[fields]]
+name = "disable-model-invocation"
+type = "boolean"
+description = "Set true to prevent the Droid from loading the skill automatically (user-only workflows like /deploy). Default false."
+
+[[examples]]
+title = "SKILL.md"
+language = "markdown"
+code = '''
+---
+name: summarize-diff
+description: Summarize the staged git diff in 3-5 bullets. Use when the user asks for a summary of pending changes.
+---
+
+# Summarize Diff
+
+## Instructions
+
+1. Run `git diff --staged`.
+2. Summarize the changes in 3-5 bullets, focusing on user-visible behavior.
+3. Call out any migrations, risky areas, or tests that should be run.
+'''

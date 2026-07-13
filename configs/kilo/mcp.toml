@@ -1,0 +1,119 @@
+status = "supported"
+summary = "MCP servers configured under the top-level mcp key of kilo.jsonc (project or global). Local (STDIO) and remote (Streamable HTTP with SSE fallback) servers, with OAuth 2.0 for remote servers."
+transports = ["stdio", "http", "sse"]
+auth = ["oauth", "headers"]
+docs = "https://kilocode.ai/docs/features/mcp/using-mcp-in-kilo-code"
+notes = [
+  "Project-level configuration takes precedence over global configuration.",
+  "For remote servers Kilo tries Streamable HTTP first, then falls back to SSE automatically.",
+  "Remote servers supporting OAuth 2.0 trigger the auth flow automatically; disable with \"oauth\": false.",
+  "Tool auto-approval uses the shared permission key with namespaced names ({server}_{tool}) and wildcard patterns.",
+  "Config files support {env:VARIABLE_NAME} syntax to reference environment variables.",
+]
+
+[[files]]
+path = ".kilo/kilo.jsonc"
+scope = "project"
+format = "jsonc"
+key = "mcp"
+note = "Preferred project location; kilo.json also accepted. Takes priority over root kilo.jsonc."
+
+[[files]]
+path = "kilo.jsonc"
+scope = "project"
+format = "jsonc"
+key = "mcp"
+note = "Project-root config alternative."
+
+[[files]]
+path = "~/.config/kilo/kilo.jsonc"
+scope = "global"
+format = "jsonc"
+key = "mcp"
+note = "Global config applying to all projects."
+
+[[fields]]
+name = "type"
+type = "\"local\" | \"remote\""
+required = true
+description = "Server kind: local spawns a child process over STDIO; remote connects over HTTP/HTTPS."
+values = ["local", "remote"]
+
+[[fields]]
+name = "command"
+type = "string[]"
+description = "Command and arguments to start a local server (e.g. [\"node\", \"/path/to/server.js\"])."
+
+[[fields]]
+name = "environment"
+type = "record<string, string>"
+description = "Environment variables for the local server process."
+
+[[fields]]
+name = "url"
+type = "string"
+description = "Endpoint URL for a remote server."
+
+[[fields]]
+name = "headers"
+type = "record<string, string>"
+description = "Custom HTTP headers for remote servers (e.g. Authorization)."
+
+[[fields]]
+name = "oauth"
+type = "boolean"
+description = "Set false to disable the automatic OAuth 2.0 flow for a remote server."
+
+[[fields]]
+name = "enabled"
+type = "boolean"
+description = "Toggle the server without removing its configuration."
+
+[[fields]]
+name = "timeout"
+type = "number"
+description = "Timeout in milliseconds. Defaults: 10s for local servers, 15s for remote servers."
+
+[[capabilities]]
+name = "Tools"
+status = "supported"
+note = "MCP tools share the built-in permission system via namespaced {server}_{tool} keys."
+
+[[capabilities]]
+name = "Resources"
+status = "supported"
+note = "Servers expose resources alongside tools; Kilo detects available tools and resources automatically."
+
+[[examples]]
+title = "Local (STDIO) server"
+language = "jsonc"
+code = '''
+{
+  "mcp": {
+    "my-local-server": {
+      "type": "local",
+      "command": ["node", "/path/to/server.js"],
+      "environment": { "API_KEY": "your_api_key" },
+      "enabled": true
+    }
+  }
+}
+'''
+
+[[examples]]
+title = "Remote server with auto-approved tools"
+language = "jsonc"
+code = '''
+{
+  "mcp": {
+    "my-remote-server": {
+      "type": "remote",
+      "url": "https://your-server-url.com/mcp",
+      "headers": { "Authorization": "Bearer your-token" }
+    }
+  },
+  "permission": {
+    "my_remote_server_*": "allow"
+  }
+}
+'''

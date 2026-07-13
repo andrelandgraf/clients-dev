@@ -1,0 +1,70 @@
+status = "supported"
+summary = "Lifecycle hooks are implemented through the plugin system: JS/TS modules that hook into agent events to observe, block, or rewrite behavior."
+events = [
+  "tool.execute.before", "tool.execute.after",
+  "shell.env",
+  "experimental.session.compacting",
+  "event",
+]
+docs = "https://opencode.ai/docs/plugins/"
+notes = [
+  "There is no declarative shell-hook config; hooks are functions returned by plugin modules written in JavaScript or TypeScript (typed via @opencode-ai/plugin).",
+  "The generic event hook receives bus events such as session.idle, session.created, file.edited, permission.asked, tool.execute.before/after, message.updated, and tui.* events.",
+  "tool.execute.before can throw to block a tool call or mutate args to rewrite input; shell.env injects environment variables into all shell execution.",
+  "Plugins can also register custom tools via the tool helper, and experimental.session.compacting customizes or replaces the compaction prompt.",
+  "Plugin load order: global config, project config, ~/.config/opencode/plugins/, .opencode/plugins/. npm plugins are installed with Bun and cached in ~/.cache/opencode/node_modules/.",
+]
+
+[[files]]
+path = ".opencode/plugins/"
+scope = "project"
+format = "typescript"
+note = "Directory of JS/TS plugin modules, auto-loaded at startup."
+
+[[files]]
+path = "~/.config/opencode/plugins/"
+scope = "global"
+format = "typescript"
+note = "Directory of JS/TS plugin modules, auto-loaded at startup."
+
+[[files]]
+path = "opencode.json"
+scope = "project"
+format = "json"
+key = "plugin"
+note = "Array of npm package names to load as plugins (regular and scoped packages)."
+
+[[fields]]
+name = "plugin"
+type = "string[]"
+description = "npm packages to load as plugins, e.g. [\"opencode-helicone-session\", \"@my-org/custom-plugin\"]."
+
+[[examples]]
+title = "Block reads of .env files"
+language = "javascript"
+code = '''
+export const EnvProtection = async ({ project, client, $, directory, worktree }) => {
+  return {
+    "tool.execute.before": async (input, output) => {
+      if (input.tool === "read" && output.args.filePath.includes(".env")) {
+        throw new Error("Do not read .env files")
+      }
+    },
+  }
+}
+'''
+
+[[examples]]
+title = "Notify when a session goes idle"
+language = "javascript"
+code = '''
+export const NotificationPlugin = async ({ $ }) => {
+  return {
+    event: async ({ event }) => {
+      if (event.type === "session.idle") {
+        await $`osascript -e 'display notification "Session completed!" with title "opencode"'`
+      }
+    },
+  }
+}
+'''

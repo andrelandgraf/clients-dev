@@ -1,0 +1,67 @@
+status = "supported"
+summary = "QWEN.md instruction files (global, project, and personal-local tiers) loaded at session start, plus automatic auto-memory the agent writes itself and an opt-in git-shared team memory tier."
+docs = "https://github.com/QwenLM/qwen-code/blob/main/docs/users/features/memory.md"
+notes = [
+  "Qwen Code also reads an existing AGENTS.md in the repository, so instructions do not need to be duplicated.",
+  "Reference other files from QWEN.md with @path/to/file; relative paths resolve from the QWEN.md file itself.",
+  "/init generates a starter QWEN.md; /memory opens the memory panel; /remember and /forget edit auto-memory directly.",
+  "Auto-memory (on by default) stores markdown notes in ~/.qwen/projects/<project>/memory/; /dream triggers cleanup.",
+  "Team memory (.qwen/team-memory/, off by default via memory.enableTeamMemory) shares durable project knowledge through git, with secret scanning on writes.",
+  ".qwen/QWEN.local.md must be gitignored manually; it loads after the shared project QWEN.md.",
+]
+
+[[files]]
+path = "QWEN.md"
+scope = "project"
+format = "markdown"
+note = "Project root; applies to the whole team when committed."
+
+[[files]]
+path = ".qwen/QWEN.local.md"
+scope = "project"
+format = "markdown"
+note = "Personal, project-specific instructions; keep out of git."
+
+[[files]]
+path = "~/.qwen/QWEN.md"
+scope = "global"
+format = "markdown"
+note = "Personal instructions across all projects."
+
+[[files]]
+path = ".qwen/team-memory/"
+scope = "project"
+format = "markdown"
+note = "Opt-in git-shared auto-memory tier (memory.enableTeamMemory); one file per memory plus a MEMORY.md index."
+
+[[fields]]
+name = "memory.enableManagedAutoMemory"
+type = "boolean"
+description = "settings.json toggle for automatic memory saving (default true)."
+
+[[fields]]
+name = "memory.enableManagedAutoDream"
+type = "boolean"
+description = "settings.json toggle for periodic background memory cleanup."
+
+[[fields]]
+name = "memory.enableTeamMemory"
+type = "boolean"
+description = "Enable the git-shared .qwen/team-memory/ tier (default false)."
+
+[[fields]]
+name = "memory.enableTeamMemorySync"
+type = "boolean"
+description = "Best-effort git sync of team memory at session start (default false)."
+
+[[examples]]
+title = "Project QWEN.md"
+language = "markdown"
+code = '''
+See @README.md for project overview.
+
+# Conventions
+
+- Always use pnpm, not npm.
+- Git workflow: @docs/git-workflow.md
+'''

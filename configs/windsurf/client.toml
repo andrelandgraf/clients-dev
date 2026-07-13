@@ -1,4 +1,6 @@
 name = "Windsurf"
 type = "editor"
-vendor = "Codeium"
+vendor = "Cognition"
+description = "Agentic AI code editor built around the Cascade agent, created by Codeium and now maintained by Cognition as Devin Desktop."
 homepage = "https://windsurf.com"
+docs = "https://docs.windsurf.com"

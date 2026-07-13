@@ -1,0 +1,82 @@
+status = "supported"
+summary = "Cascade Hooks run shell commands at key points in the agent workflow, configured in hooks.json at system, user, and workspace level (merged, executed system -> user -> workspace). Hooks receive event JSON on stdin; pre-hooks can block the action by exiting with code 2."
+events = [
+  "pre_read_code", "post_read_code",
+  "pre_write_code", "post_write_code",
+  "pre_run_command", "post_run_command",
+  "pre_mcp_tool_use", "post_mcp_tool_use",
+  "pre_user_prompt",
+  "post_cascade_response", "post_cascade_response_with_transcript",
+  "post_setup_worktree",
+]
+docs = "https://docs.devin.ai/desktop/cascade/hooks"
+notes = [
+  "Exit code 0 = proceed; exit code 2 = blocking error (pre-hooks only); other codes = non-blocking error.",
+  "Only pre_user_prompt, pre_read_code, pre_write_code, pre_run_command, and pre_mcp_tool_use can block actions.",
+  "Every hook receives common JSON fields: agent_action_name, trajectory_id, execution_id, timestamp, model_name, and event-specific tool_info.",
+  "post_cascade_response_with_transcript writes a full JSONL conversation transcript to ~/.windsurf/transcripts/{trajectory_id}.jsonl.",
+  "Enterprise teams can also distribute hooks via the cloud dashboard (Team Settings > Cascade Hooks); cloud hooks load before system, user, and workspace hooks.",
+]
+
+[[files]]
+path = ".windsurf/hooks.json"
+scope = "project"
+format = "json"
+key = "hooks"
+note = "Workspace hooks, version-controlled with the repo."
+
+[[files]]
+path = "~/.codeium/windsurf/hooks.json"
+scope = "global"
+format = "json"
+key = "hooks"
+note = "User-level hooks (JetBrains plugin reads ~/.codeium/hooks.json)."
+
+[[files]]
+path = "/etc/windsurf/hooks.json"
+scope = "enterprise"
+format = "json"
+key = "hooks"
+note = "System hooks deployed by IT (Linux path; macOS: /Library/Application Support/Windsurf/hooks.json, Windows: C:\\ProgramData\\Windsurf\\hooks.json)."
+
+[[fields]]
+name = "command"
+type = "string"
+description = "Shell command to run on macOS/Linux (via bash -c). At least one of command or powershell is required."
+
+[[fields]]
+name = "powershell"
+type = "string"
+description = "Command to run on Windows (via powershell -Command). Falls back to command when omitted."
+
+[[fields]]
+name = "show_output"
+type = "boolean"
+description = "Whether to display the hook's stdout/stderr in the Cascade UI."
+
+[[fields]]
+name = "working_directory"
+type = "string"
+description = "Directory to run the command from. Defaults to the workspace root; ~ expansion is not supported."
+
+[[examples]]
+title = "Block dangerous commands and format after edits"
+language = "json"
+code = '''
+{
+  "hooks": {
+    "pre_run_command": [
+      {
+        "command": "python3 /Users/yourname/hooks/block_dangerous_commands.py",
+        "show_output": true
+      }
+    ],
+    "post_write_code": [
+      {
+        "command": "bash /Users/yourname/hooks/format_code.sh",
+        "show_output": false
+      }
+    ]
+  }
+}
+'''

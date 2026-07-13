@@ -1,31 +1,47 @@
 status = "supported"
-summary = "Configure MCP servers in JSON. Global uses mcpServers; project uses the VS Code servers key."
+summary = "MCP servers are configured under the mcpServers key in ~/.copilot/mcp-config.json (user level) or in workspace .mcp.json / .github/mcp.json files, or managed with /mcp and copilot mcp commands. Supports stdio, Streamable HTTP, and legacy SSE with OAuth (including headless client_credentials)."
 transports = ["stdio", "http", "sse"]
-auth = ["headers"]
+auth = ["oauth", "headers", "env-secrets", "oidc"]
+docs = "https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-mcp-servers"
+notes = [
+  "Loading priority: --additional-mcp-config flag > plugin-provided servers > workspace .mcp.json / .github/mcp.json (loaded from the working directory up to the Git root; requires folder trust) > ~/.copilot/mcp-config.json.",
+  "Built-in servers: github-mcp-server, playwright, fetch, time, and (opt-in) computer-use. Disable with --disable-builtin-mcps or --disable-mcp-server.",
+  "To migrate from VS Code's .vscode/mcp.json, remap the servers key to mcpServers in .mcp.json.",
+  "All MCP tool invocations require explicit permission; approvals persist in ~/.copilot/permissions-config.json.",
+  "GitHub Enterprise organizations can enforce a fail-closed MCP server allowlist.",
+  "Use /mcp auth <server> to re-run the OAuth flow for remote servers.",
+]
 
 [[files]]
 path = "~/.copilot/mcp-config.json"
 scope = "global"
 format = "json"
 key = "mcpServers"
-note = "Or $XDG_CONFIG_HOME/mcp-config.json."
+note = "Or $COPILOT_HOME/mcp-config.json when COPILOT_HOME is set."
 
 [[files]]
-path = ".vscode/mcp.json"
+path = ".mcp.json"
 scope = "project"
 format = "json"
-key = "servers"
-note = "Project config uses the VS Code servers key."
+key = "mcpServers"
+note = "Workspace servers; takes precedence over user-level definitions on name conflicts."
+
+[[files]]
+path = ".github/mcp.json"
+scope = "project"
+format = "json"
+key = "mcpServers"
+note = "Repository-level alternative to .mcp.json."
 
 [[fields]]
 name = "type"
-type = "\"stdio\" | \"http\" | \"sse\""
-description = "Server transport type."
+type = "\"local\" | \"stdio\" | \"http\" | \"sse\""
+description = "Transport. local and stdio are equivalent; defaults to local for command servers."
 
 [[fields]]
 name = "command"
 type = "string"
-description = "Command to start a local (stdio) server."
+description = "Command to start a local server."
 
 [[fields]]
 name = "args"
@@ -33,21 +49,97 @@ type = "string[]"
 description = "Arguments passed to the command."
 
 [[fields]]
+name = "tools"
+type = "string[]"
+required = true
+description = "Tools to enable: [\"*\"] for all, or a list of tool names."
+
+[[fields]]
 name = "env"
 type = "record<string, string>"
-description = "Environment variables for the server."
+description = "Environment variables for local servers. Supports $VAR, ${VAR}, and ${VAR:-default} expansion."
+
+[[fields]]
+name = "cwd"
+type = "string"
+description = "Working directory for a local server."
 
 [[fields]]
 name = "url"
 type = "string"
-description = "Endpoint URL for a remote server."
+description = "Server URL for remote (http/sse) servers."
 
 [[fields]]
 name = "headers"
 type = "record<string, string>"
-description = "HTTP headers for a remote server."
+description = "HTTP headers for remote servers; supports variable expansion."
 
 [[fields]]
-name = "tools"
-type = "string[]"
-description = "Tool allow-list; global entries use [\"*\"] for all tools."
+name = "timeout"
+type = "number"
+description = "Tool call timeout in milliseconds."
+
+[[fields]]
+name = "oauthClientId"
+type = "string"
+description = "Static OAuth client ID (skips dynamic client registration)."
+
+[[fields]]
+name = "oauthGrantType"
+type = "\"authorization_code\" | \"client_credentials\""
+description = "OAuth grant type. client_credentials enables fully headless auth (no browser) with oauthPublicClient: false and a keychain-stored client secret."
+
+[[fields]]
+name = "oidc"
+type = "boolean"
+description = "Inject GitHub OIDC tokens into the server's env (local) or as a Bearer Authorization header (remote)."
+
+[[fields]]
+name = "deferTools"
+type = "\"auto\" | \"never\""
+description = "Set to never to keep the server's tools always visible when tool search (deferred tool loading) is active."
+
+[[capabilities]]
+name = "Tools"
+status = "supported"
+
+[[capabilities]]
+name = "Sampling"
+status = "supported"
+note = "Sampling requests require approval; persist per server via the mcp-sampling approval kind in permissions-config.json."
+
+[[capabilities]]
+name = "Elicitation"
+status = "supported"
+note = "Elicitation dialogs surface as CLI notifications (notification_type elicitation_dialog)."
+
+[[examples]]
+title = "Local and remote servers"
+language = "json"
+code = '''
+{
+  "mcpServers": {
+    "playwright": {
+      "type": "local",
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"],
+      "env": {},
+      "tools": ["*"]
+    },
+    "context7": {
+      "type": "http",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": { "CONTEXT7_API_KEY": "YOUR-API-KEY" },
+      "tools": ["*"]
+    }
+  }
+}
+'''
+
+[[examples]]
+title = "Add servers from the terminal"
+language = "bash"
+code = '''
+copilot mcp add context7 -- npx -y @upstash/context7-mcp
+copilot mcp add --transport http notion https://mcp.notion.com/mcp
+'''

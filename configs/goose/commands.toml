@@ -1,0 +1,53 @@
+status = "supported"
+summary = "Custom slash commands are shortcuts that run recipes (reusable YAML/JSON task templates), mapped under the slash_commands key in config.yaml or assigned in the Desktop Recipes UI. Built-in CLI slash commands cover session control."
+invocation = ["/command-name", "/command-name <parameter>"]
+docs = "https://block.github.io/goose/docs/guides/context-engineering/slash-commands"
+notes = [
+  "Running a custom command loads the recipe's instructions and prompt into the conversation without displaying them in chat.",
+  "Custom commands accept at most one parameter; any other recipe parameters must have defaults. Names are case-insensitive, unique, and must not contain spaces.",
+  "Custom names cannot shadow built-in CLI slash commands such as /recipe, /compact, /help, /plan, /mode, /prompts, /prompt, /skills, /extension, /builtin, /clear, /exit.",
+  "Recipes are defined in .yaml (recommended, CLI + Desktop) or .json files; .yml is not supported by the CLI. See the recipe reference for the full schema (instructions, prompt, parameters, extensions, settings, retry, response, sub_recipes).",
+  "If a mapped recipe file is missing or invalid, the command text is sent to the model as regular text.",
+]
+
+[[files]]
+path = "~/.config/goose/config.yaml"
+scope = "global"
+format = "yaml"
+key = "slash_commands"
+note = "List of { command, recipe_path } mappings. On Windows: %APPDATA%/Block/goose/config/config.yaml."
+
+[[fields]]
+name = "command"
+type = "string"
+required = true
+description = "Command name without the leading slash."
+
+[[fields]]
+name = "recipe_path"
+type = "string"
+required = true
+description = "Absolute path to the recipe .yaml file to run."
+
+[[examples]]
+title = "Map slash commands to recipes"
+language = "yaml"
+code = '''
+slash_commands:
+  - command: "run-tests"
+    recipe_path: "/path/to/recipe.yaml"
+  - command: "daily-report"
+    recipe_path: "/Users/me/.local/share/goose/recipes/report.yaml"
+'''
+
+[[examples]]
+title = "Minimal recipe file"
+language = "yaml"
+code = '''
+version: "1.0.0"
+title: "Code Review Assistant"
+description: "Automated code review with best practices"
+instructions: "You are a code reviewer..."
+prompt: "Review the code in this repository"
+extensions: []
+'''

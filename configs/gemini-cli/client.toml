@@ -1,4 +1,7 @@
 name = "Gemini CLI"
 type = "cli"
 vendor = "Google"
-homepage = "https://github.com/google-gemini/gemini-cli"
+description = "Google's open-source AI agent that brings the power of Gemini directly into your terminal."
+homepage = "https://geminicli.com"
+docs = "https://github.com/google-gemini/gemini-cli/tree/main/docs"
+repo = "https://github.com/google-gemini/gemini-cli"

@@ -1,38 +1,56 @@
 status = "supported"
-summary = "SKILL.md skills following the open Agent Skills standard."
-invocation = ["/skill-name"]
-notes = ["Skill discovery paths from the open skills CLI (vercel-labs/skills)."]
+summary = "SKILL.md skills (Agent Skills format) that the agent invokes automatically. Skills can bundle resources and MCP servers (mcp.json) in the skill directory."
+invocation = ["automatic"]
+docs = "https://ampcode.com/manual#agent-skills"
+notes = [
+  "User-invokable skills were removed; the model invokes skills based on name and description (see ampcode.com/news/neo).",
+  "Skill precedence (first wins): ~/.config/agents/skills/, ~/.agents/skills/, ~/.config/amp/skills/, .agents/skills/, .claude/skills/, ~/.claude/skills/, then plugins, legacy toolbox directories, and built-in skills.",
+  "name and description are always visible to the model; the SKILL.md body loads on demand when the skill is invoked.",
+  "Skills can bundle MCP servers via an mcp.json file in the skill directory — Amp's recommended way to use MCP.",
+  "amp.skills.path adds extra skill directories; amp.skills.disableClaudeCodeSkills disables loading from Claude Code directories.",
+  "Amp ships a built-in building-skills skill that creates skills tailored to your codebase.",
+]
 
 [[files]]
 path = ".agents/skills/<name>/SKILL.md"
 scope = "project"
 format = "markdown"
+note = "Project skills, can be committed to git so the team shares them."
 
 [[files]]
 path = "~/.config/agents/skills/<name>/SKILL.md"
 scope = "global"
 format = "markdown"
+note = "User-wide skills; ~/.agents/skills/ and ~/.config/amp/skills/ are also scanned."
+
+[[files]]
+path = ".claude/skills/<name>/SKILL.md"
+scope = "project"
+format = "markdown"
+note = "Claude Code compatibility path (also ~/.claude/skills/); disable with amp.skills.disableClaudeCodeSkills."
 
 [[fields]]
 name = "name"
 type = "string"
 required = true
-description = "Skill identifier (required by the Agent Skills standard)."
+description = "Skill identifier. Must be unique; project skills override user-wide, both override built-ins."
 
 [[fields]]
 name = "description"
 type = "string"
 required = true
-description = "What the skill does and when to use it."
+description = "What the skill does. Always visible to the model and determines when it invokes the skill."
 
-[[capabilities]]
-name = "allowed-tools"
-status = "supported"
+[[examples]]
+title = "SKILL.md"
+language = "markdown"
+code = '''
+---
+name: my-skill
+description: A description of what this skill does
+---
 
-[[capabilities]]
-name = "context: fork"
-status = "unsupported"
+# My Skill Instructions
 
-[[capabilities]]
-name = "Hooks"
-status = "unsupported"
+Detailed instructions for the agent...
+'''

@@ -1,19 +1,26 @@
 status = "supported"
-summary = "Configure MCP servers in JSON under the mcpServers key."
+summary = "Configure MCP servers for Cascade in mcp_config.json under the mcpServers key, or install from the built-in MCP Marketplace. Supports stdio, Streamable HTTP, and SSE with OAuth for each transport."
 transports = ["stdio", "http", "sse"]
-auth = ["headers"]
-notes = ["Remote entries use serverUrl (no type field)."]
+auth = ["oauth", "headers"]
+docs = "https://docs.devin.ai/desktop/cascade/mcp"
+notes = [
+  "Remote servers use a serverUrl (or url) field instead of command/args.",
+  "Cascade has a limit of 100 total MCP tools enabled at any given time; individual tools can be toggled per server.",
+  "command, args, env, serverUrl, url, and headers support ${env:VAR_NAME} and ${file:/path/to/file} interpolation to avoid hardcoding secrets.",
+  "One-click installs via windsurf://windsurf-mcp-registry deeplinks; teams can whitelist servers or point at custom MCP registries (enterprise).",
+]
 
 [[files]]
 path = "~/.codeium/windsurf/mcp_config.json"
 scope = "global"
 format = "json"
 key = "mcpServers"
+note = "Also editable via the MCP Marketplace / MCP Servers settings UI."
 
 [[fields]]
 name = "command"
 type = "string"
-description = "Command to start a local (stdio) server."
+description = "Command to start a local (stdio) server, e.g. npx, docker, node."
 
 [[fields]]
 name = "args"
@@ -23,14 +30,64 @@ description = "Arguments passed to the command."
 [[fields]]
 name = "env"
 type = "record<string, string>"
-description = "Environment variables for the server."
+description = "Environment variables for the server. Supports ${env:...} and ${file:...} interpolation."
 
 [[fields]]
 name = "serverUrl"
 type = "string"
-description = "Endpoint URL for a remote server."
+description = "Endpoint URL for a remote (HTTP/SSE) server. url is also accepted."
 
 [[fields]]
 name = "headers"
 type = "record<string, string>"
-description = "HTTP headers for a remote server."
+description = "HTTP headers for a remote server (e.g. API keys, Authorization). Supports interpolation."
+
+[[fields]]
+name = "disabledTools"
+type = "string[]"
+description = "Tools to disable for this server (excluded from enterprise whitelist matching)."
+
+[[capabilities]]
+name = "Tools"
+status = "supported"
+
+[[capabilities]]
+name = "Prompts"
+status = "supported"
+
+[[capabilities]]
+name = "Resources"
+status = "supported"
+
+[[examples]]
+title = "Local stdio server"
+language = "json"
+code = '''
+{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "<YOUR_PERSONAL_ACCESS_TOKEN>"
+      }
+    }
+  }
+}
+'''
+
+[[examples]]
+title = "Remote HTTP server with header interpolation"
+language = "json"
+code = '''
+{
+  "mcpServers": {
+    "remote-http-mcp": {
+      "serverUrl": "<your-server-url>/mcp",
+      "headers": {
+        "API_KEY": "Bearer ${env:AUTH_TOKEN}"
+      }
+    }
+  }
+}
+'''

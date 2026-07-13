@@ -1,0 +1,30 @@
+status = "supported"
+summary = "Project Rules in AGENTS.md (or legacy WARP.md) files at repo root and subdirectories, plus cloud-managed Global Rules in Warp Drive."
+docs = "https://docs.warp.dev/agent-platform/capabilities/rules/"
+notes = [
+  "AGENTS.md is the default project rules file; existing WARP.md files remain fully supported and take priority if both exist in the same directory.",
+  "The filename must be all caps (AGENTS.md, not agents.md).",
+  "Warp automatically applies the rules file in the repo root and the current directory, and makes a best-effort attempt to include a subdirectory's rules file when editing files there.",
+  "Precedence: current subdirectory rules > root directory rules > Global Rules.",
+  "/init generates an AGENTS.md or links an existing rules file (CLAUDE.md, .cursorrules, AGENT.md, GEMINI.md, .clinerules, .windsurfrules, .github/copilot-instructions.md); /add-rule creates a Global Rule; /open-project-rules opens project rules in Warp's editor.",
+  "Global Rules are managed in Warp Drive (Personal > Rules), not as local files; rules usage can be toggled with the agents.knowledge.rules_enabled setting.",
+]
+
+[[files]]
+path = "AGENTS.md"
+scope = "project"
+format = "markdown"
+note = "Repo root and subdirectories; closest file takes precedence."
+
+[[files]]
+path = "WARP.md"
+scope = "project"
+format = "markdown"
+note = "Legacy name, still fully supported; wins over AGENTS.md in the same directory."
+
+[[examples]]
+title = "Generate project rules"
+language = "text"
+code = '''
+/init
+'''

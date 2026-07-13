@@ -1,0 +1,83 @@
+status = "supported"
+summary = "Agent behavior is configured in settings.json under the agent key: tool permissions, profiles, auto-compaction, feature-specific models, and model parameters."
+docs = "https://zed.dev/docs/ai/agent-settings"
+notes = [
+  "The Settings Editor (agent: open settings) exposes LLM providers, External Agents, and MCP servers; zed: open settings file opens the raw JSON.",
+  "MCP servers live in the same settings.json under the context_servers key (see the mcp surface).",
+  "In Zed v0.224.0+ tool approval is controlled by agent.tool_permissions.default; earlier versions used the agent.always_allow_tool_actions boolean (default false).",
+  "Per-tool permission rules support MCP tools with the key format mcp:<server>:<tool>.",
+]
+
+[[files]]
+path = "~/.config/zed/settings.json"
+scope = "global"
+format = "json"
+key = "agent"
+note = "macOS/Linux. On Windows: %APPDATA%/Zed/settings.json."
+
+[[files]]
+path = ".zed/settings.json"
+scope = "project"
+format = "json"
+key = "agent"
+note = "Project settings override user settings for this worktree."
+
+[[fields]]
+name = "tool_permissions.default"
+type = "\"confirm\" | \"allow\" | \"deny\""
+description = "Default tool-approval behavior for the Zed Agent. confirm (default) prompts before every tool action."
+
+[[fields]]
+name = "profiles"
+type = "object"
+description = "Named agent profiles that toggle built-in tools and context servers (e.g. enable_all_context_servers, per-server tools)."
+
+[[fields]]
+name = "auto_compact"
+type = "{ enabled: boolean, threshold: string | number }"
+description = "Automatic thread compaction. Threshold is a percentage string (\"90%\"), a token count, or a negative remaining-token count."
+
+[[fields]]
+name = "model_parameters"
+type = "array"
+description = "Temperature overrides per provider, model, or provider/model pair; matching entries are checked last to first."
+
+[[fields]]
+name = "inline_assistant_model"
+type = "object"
+description = "Model override for the Inline Assistant."
+
+[[fields]]
+name = "commit_message_model"
+type = "object"
+description = "Model override for Git commit message generation."
+
+[[fields]]
+name = "thread_summary_model"
+type = "object"
+description = "Model override for thread summaries."
+
+[[fields]]
+name = "subagent_model"
+type = "object"
+description = "Model override for subagents."
+
+[[fields]]
+name = "commit_message_instructions"
+type = "string"
+description = "Instructions applied only to generated Git commit messages."
+
+[[examples]]
+title = "Auto-compaction and commit message instructions"
+language = "json"
+code = '''
+{
+  "agent": {
+    "auto_compact": {
+      "enabled": true,
+      "threshold": "90%"
+    },
+    "commit_message_instructions": "Use the Conventional Commits format: <type>(<scope>): <description>."
+  }
+}
+'''

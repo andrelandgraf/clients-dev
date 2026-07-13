@@ -1,0 +1,66 @@
+status = "supported"
+summary = "Custom slash commands as Markdown prompts or shebang executables in .factory/commands/, now merged into skills (which offer the same /command plus more features)."
+invocation = ["/command-name"]
+docs = "https://docs.factory.ai/cli/configuration/custom-slash-commands"
+notes = [
+  "Slash commands are merged into skills: .factory/commands/review.md and .factory/skills/review/SKILL.md both create /review. Existing commands keep working; Factory recommends skills for new commands.",
+  "Only Markdown (*.md) files and files with a leading shebang (#!) are registered; filenames are slugged (Code Review.mdx becomes /code-review). Nested folders are ignored.",
+  "Workspace commands override personal commands with the same slug.",
+  "$ARGUMENTS expands to everything typed after the command name in Markdown commands; positional $1/$2 placeholders are not supported in Markdown (executables receive them as script arguments).",
+  "Executable stdout/stderr (up to 64 KB) plus the script contents are posted back to the chat transcript; scripts run from the cwd and inherit your environment.",
+  "Run /commands to browse, reload (R), or import (I) commands from .agents or .claude directories.",
+]
+
+[[files]]
+path = ".factory/commands/<name>.md"
+scope = "project"
+format = "markdown"
+note = "Project commands shared with teammates; executables with a shebang also register."
+
+[[files]]
+path = "~/.factory/commands/<name>.md"
+scope = "global"
+format = "markdown"
+note = "Personal cross-project shortcuts, always scanned."
+
+[[fields]]
+name = "description"
+type = "string"
+description = "Overrides the generated summary shown in slash suggestions."
+
+[[fields]]
+name = "argument-hint"
+type = "string"
+description = "Appends inline usage hints (e.g. /code-review <branch-name>)."
+
+[[fields]]
+name = "allowed-tools"
+type = "string"
+description = "Reserved for future use. Safe to omit."
+
+[[examples]]
+title = "Markdown command"
+language = "markdown"
+code = '''
+---
+description: Send a code review checklist
+argument-hint: <branch-name>
+---
+
+Please review `$ARGUMENTS` and summarize any merge blockers, test gaps, and risky areas.
+
+- Highlight security or performance concerns
+- Suggest follow-up tasks with owners
+'''
+
+[[examples]]
+title = "Executable command (smoke.sh registers as /smoke)"
+language = "bash"
+code = '''
+#!/usr/bin/env bash
+set -euo pipefail
+
+target=${1:-"src"}
+npm run lint -- "$target"
+npm test -- --runTestsByPath "$target"
+'''

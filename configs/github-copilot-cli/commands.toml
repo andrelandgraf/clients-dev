@@ -1,0 +1,36 @@
+status = "partial"
+summary = "No native .prompt.md prompt files (GitHub's cheat sheet marks prompt files unsupported for Copilot CLI), but Claude-compatible command files in .claude/commands/ are read as an alternative skill format, and plugins can contribute command directories."
+invocation = ["/command-name"]
+docs = "https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference"
+notes = [
+  "Commands are individual .md files in .claude/commands/; the command name is derived from the filename and no name frontmatter field is required.",
+  "Commands have lower priority than skills with the same name — skills are the primary mechanism for user-invocable workflows (invoked as /skill-name).",
+  "Plugins can contribute command directories via the commands field in plugin.json (see the CLI plugin reference).",
+  "Built-in slash commands (/init, /mcp, /skills, /review, ...) are separate and not user-defined.",
+]
+
+[[files]]
+path = ".claude/commands/<name>.md"
+scope = "project"
+format = "markdown"
+note = "Claude-compatible simplified skill format."
+
+[[fields]]
+name = "description"
+type = "string"
+description = "What the command does."
+
+[[fields]]
+name = "argument-hint"
+type = "string"
+description = "Hint describing expected arguments."
+
+[[fields]]
+name = "allowed-tools"
+type = "string | string[]"
+description = "Tools automatically allowed while the command runs."
+
+[[fields]]
+name = "disable-model-invocation"
+type = "boolean"
+description = "Prevent the agent from automatically invoking the command."

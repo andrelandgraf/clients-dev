@@ -1,26 +1,35 @@
 status = "supported"
-summary = "Configure MCP servers in JSON under the servers key."
+summary = "Configure MCP servers in mcp.json under the servers key (not mcpServers). Supports stdio, Streamable HTTP, and legacy SSE, plus an MCP server gallery in the Extensions view and optional sandboxing for local servers."
 transports = ["stdio", "http", "sse"]
 auth = ["headers"]
-notes = ["Servers live under the servers key (not mcpServers)."]
-
-[[files]]
-path = "<VS Code User>/mcp.json"
-scope = "global"
-format = "json"
-key = "servers"
-note = "e.g. ~/Library/Application Support/Code/User/mcp.json on macOS."
+docs = "https://code.visualstudio.com/docs/copilot/customization/mcp-servers"
+notes = [
+  "Servers live under the servers key (not mcpServers).",
+  "Servers can also be installed from the MCP gallery (search @mcp in the Extensions view), added via MCP: Add Server, or via the code --add-mcp CLI flag.",
+  "MCP servers can be configured in devcontainer.json under customizations.vscode.mcp.servers.",
+  "chat.mcp.discovery.enabled can auto-discover MCP configs from other apps (e.g. Claude Desktop).",
+  "New or changed servers require an explicit trust confirmation before they start.",
+  "On macOS and Linux, local stdio servers can be sandboxed with sandboxEnabled plus a top-level sandbox object (filesystem/network rules).",
+]
 
 [[files]]
 path = ".vscode/mcp.json"
 scope = "project"
 format = "json"
 key = "servers"
+note = "Check into source control to share servers with your team."
+
+[[files]]
+path = "<VS Code profile>/mcp.json"
+scope = "global"
+format = "json"
+key = "servers"
+note = "Open with the MCP: Open User Configuration command; lives in the VS Code user-profile folder (e.g. ~/Library/Application Support/Code/User/mcp.json on macOS). Each profile can have its own servers."
 
 [[fields]]
 name = "type"
-type = "\"http\" | \"sse\""
-description = "Remote transport type."
+type = "\"stdio\" | \"http\" | \"sse\""
+description = "Server transport. stdio for local command servers, http (Streamable HTTP) or sse (legacy) for remote servers."
 
 [[fields]]
 name = "command"
@@ -35,7 +44,7 @@ description = "Arguments passed to the command."
 [[fields]]
 name = "env"
 type = "record<string, string>"
-description = "Environment variables for the server."
+description = "Environment variables for the server. Avoid hardcoding secrets; use input variables or environment files."
 
 [[fields]]
 name = "url"
@@ -46,3 +55,70 @@ description = "Endpoint URL for a remote server."
 name = "headers"
 type = "record<string, string>"
 description = "HTTP headers for a remote server."
+
+[[fields]]
+name = "sandboxEnabled"
+type = "boolean"
+description = "Run a local stdio server in an isolated sandbox (macOS and Linux). Tool calls from sandboxed servers are auto-approved."
+
+[[capabilities]]
+name = "Tools"
+status = "supported"
+
+[[capabilities]]
+name = "Prompts"
+status = "supported"
+note = "Invoke server prompts by typing / in the chat input."
+
+[[capabilities]]
+name = "Resources"
+status = "supported"
+note = "Attach via Add Context > MCP Resources or the MCP: Browse Resources command."
+
+[[capabilities]]
+name = "Sampling"
+status = "supported"
+note = "Models exposed to servers are controlled by the chat.mcp.serverSampling setting."
+
+[[capabilities]]
+name = "Apps"
+status = "supported"
+note = "Interactive UI components rendered inline in chat (chat.mcp.apps.enabled)."
+
+[[examples]]
+title = "Remote and local servers"
+language = "json"
+code = '''
+{
+  "servers": {
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp"
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@microsoft/mcp-server-playwright"]
+    }
+  }
+}
+'''
+
+[[examples]]
+title = "Sandboxed local server"
+language = "json"
+code = '''
+{
+  "servers": {
+    "myServer": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@example/mcp-server"],
+      "sandboxEnabled": true
+    }
+  },
+  "sandbox": {
+    "filesystem": { "allowWrite": ["${workspaceFolder}"] },
+    "network": { "allowedDomains": ["api.example.com"] }
+  }
+}
+'''

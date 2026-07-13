@@ -1,0 +1,54 @@
+status = "supported"
+summary = "Hierarchical GEMINI.md context files loaded from the global, workspace, and just-in-time (per-directory) tiers, concatenated and sent with every prompt. Supports @file.md imports and configurable file names (e.g. AGENTS.md)."
+docs = "https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/gemini-md.md"
+notes = [
+  "Load order: ~/.gemini/GEMINI.md, then GEMINI.md files found in workspace directories and their parents, then just-in-time files discovered when tools touch a directory.",
+  "Compose instructions with @./path/file.md imports (relative or absolute paths); see the memory import processor docs.",
+  "Rename or add context file names via the context.fileName setting, e.g. [\"AGENTS.md\", \"GEMINI.md\"].",
+  "Inspect and reload with /memory show and /memory reload.",
+  "The experimental Auto Memory feature (experimental.autoMemory) mines past sessions and proposes memory patches for review via /memory inbox.",
+]
+
+[[files]]
+path = "GEMINI.md"
+scope = "project"
+format = "markdown"
+note = "Found in workspace directories and their parents; subdirectory files load just-in-time when tools access them."
+
+[[files]]
+path = "~/.gemini/GEMINI.md"
+scope = "global"
+format = "markdown"
+note = "Default instructions for all projects."
+
+[[fields]]
+name = "context.fileName"
+type = "string | string[]"
+description = "settings.json option that overrides the context file name(s), e.g. [\"AGENTS.md\", \"CONTEXT.md\", \"GEMINI.md\"]."
+
+[[examples]]
+title = "Project GEMINI.md"
+language = "markdown"
+code = '''
+# Project: My TypeScript Library
+
+## General Instructions
+
+- When you generate new TypeScript code, follow the existing coding style.
+- Ensure all new functions and classes have JSDoc comments.
+
+## Imports
+
+@./components/instructions.md
+'''
+
+[[examples]]
+title = "Use AGENTS.md as the context file"
+language = "json"
+code = '''
+{
+  "context": {
+    "fileName": ["AGENTS.md", "GEMINI.md"]
+  }
+}
+'''

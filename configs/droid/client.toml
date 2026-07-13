@@ -1,4 +1,6 @@
 name = "Droid"
 type = "cli"
 vendor = "Factory"
+description = "Factory's AI coding agent for the terminal — interactive TUI and headless droid exec, with MCP, hooks, skills, and custom subagents."
 homepage = "https://factory.ai/"
+docs = "https://docs.factory.ai/"

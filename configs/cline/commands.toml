@@ -1,0 +1,33 @@
+status = "supported"
+summary = "Built-in slash commands (/newtask, /smol, /newrule, /deep-planning, /reportbug), plus user-defined workflows: markdown files invoked by filename (e.g. /release.md) and enabled skills triggered as slash commands."
+invocation = ["/command", "/workflow-name.md", "/skill-name"]
+docs = "https://docs.cline.bot/core-workflows/using-commands"
+notes = [
+  "Workflows are manual-only markdown step lists; type / in chat to see autocomplete for built-ins, workflows, and enabled skills.",
+  "Workflow files can reference Cline's built-in tools (e.g. ask_followup_question), CLI tools, and MCP tools, and chain steps in sequence.",
+  "Workspace workflows take precedence over global workflows with the same name; each workflow has an enable/disable toggle in the Workflows tab.",
+  "Workspace workflow location .clinerules/workflows/ verified from the official repo; the CLI/SDK also resolve global workflows from ~/.cline/data/workflows/.",
+  "/smol has alias /compact.",
+]
+
+[[files]]
+path = ".clinerules/workflows/*.md"
+scope = "project"
+format = "markdown"
+note = "Workspace workflows, version-controlled with the repo."
+
+[[files]]
+path = "~/Documents/Cline/Workflows/*.md"
+scope = "global"
+format = "markdown"
+note = "Global workflows for all projects (Windows: Documents\\Cline\\Workflows)."
+
+[[examples]]
+title = "PR review workflow (.clinerules/workflows/pr-review.md)"
+language = "markdown"
+code = '''
+1. Check out the PR branch: `gh pr checkout [id]`
+2. Run the test suite and note any failures
+3. Review the diff against our coding standards
+4. Summarize findings and suggest changes
+'''

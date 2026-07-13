@@ -1,26 +1,59 @@
 status = "supported"
-summary = "SKILL.md skills following the open Agent Skills standard."
-invocation = ["/skill-name"]
-notes = ["Skill discovery paths from the open skills CLI (vercel-labs/skills)."]
+summary = "SKILL.md skill folders following the open Agent Skills standard, discovered at session start and loaded automatically when a request matches, or listed and loaded via the CLI /skills command."
+invocation = ["automatic", "/skills <name>", "natural language (e.g. 'use the code-review skill')"]
+docs = "https://block.github.io/goose/docs/guides/context-engineering/using-skills"
+notes = [
+  "Requires the built-in Summon platform extension (enabled by default, v1.25.0+); Summon replaced the deprecated Skills extension (v1.16.0-v1.24.0).",
+  "Skills can bundle supporting files (scripts, templates); goose accesses them with the Developer extension's file tools.",
+  "Skills can also come from installed plugins under ~/.agents/plugins/<plugin-name>/; Open Plugin skill names are namespaced as <plugin>:<skill>.",
+  "Backward compatibility: goose also discovers skills from .goose/skills/, .claude/skills/, ~/.claude/skills/, and platform-specific config directories, but .agents/skills/ is the recommended standard.",
+  "goose skills are compatible with Claude Desktop and other agents that support the Agent Skills standard.",
+]
 
 [[files]]
-path = ".goose/skills/<name>/SKILL.md"
+path = ".agents/skills/<name>/SKILL.md"
 scope = "project"
 format = "markdown"
+note = "Project-level skills, scoped to the current project."
 
 [[files]]
-path = "~/.config/goose/skills/<name>/SKILL.md"
+path = "~/.agents/skills/<name>/SKILL.md"
 scope = "global"
 format = "markdown"
+note = "Global skills, available in all sessions."
+
+[[files]]
+path = "~/.agents/plugins/<plugin-name>/"
+scope = "global"
+format = "markdown"
+note = "Skills provided by installed plugins, discovered at session startup."
 
 [[fields]]
 name = "name"
 type = "string"
 required = true
-description = "Skill identifier (required by the Agent Skills standard)."
+description = "Skill identifier in the YAML frontmatter."
 
 [[fields]]
 name = "description"
 type = "string"
 required = true
-description = "What the skill does and when to use it."
+description = "What the skill does and when to use it; goose matches requests against it for automatic loading."
+
+[[examples]]
+title = "Code review skill"
+language = "markdown"
+code = '''
+---
+name: code-review
+description: Comprehensive code review checklist for pull requests
+---
+
+# Code Review Checklist
+
+When reviewing code, check each of these areas:
+
+## Functionality
+- [ ] Code does what the PR description claims
+- [ ] Edge cases are handled
+'''

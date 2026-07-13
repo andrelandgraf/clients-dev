@@ -1,4 +1,7 @@
 name = "Crush"
 type = "cli"
 vendor = "Charm"
+description = "Charm's open-source terminal coding agent with multi-model support, LSP-enhanced context, MCP extensibility, and first-class support on every major platform."
 homepage = "https://github.com/charmbracelet/crush"
+docs = "https://github.com/charmbracelet/crush#readme"
+repo = "https://github.com/charmbracelet/crush"

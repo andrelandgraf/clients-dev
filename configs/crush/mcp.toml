@@ -1,0 +1,109 @@
+status = "supported"
+summary = "Configure MCP servers under the mcp key in crush.json. Supports stdio, HTTP, and SSE transports with shell-style value expansion for secrets."
+transports = ["stdio", "http", "sse"]
+auth = ["headers"]
+docs = "https://github.com/charmbracelet/crush#mcps"
+notes = [
+  "Shell-style expansion ($VAR, ${VAR:-default}, ${VAR:?message}, $(command)) works in command, args, env, headers, and url, via Crush's embedded shell on all platforms including Windows.",
+  "Headers whose value resolves to the empty string are dropped from the outgoing request.",
+  "crush.json is trusted code: any $(...) in it runs at load time with your shell's privileges.",
+  "Individual server tools can be hidden with disabled_tools; MCP tools are named mcp_<server>_<tool> and can be allowlisted in permissions.allowed_tools.",
+]
+
+[[files]]
+path = "crush.json"
+scope = "project"
+format = "json"
+key = "mcp"
+note = ".crush.json takes precedence over crush.json."
+
+[[files]]
+path = "~/.config/crush/crush.json"
+scope = "global"
+format = "json"
+key = "mcp"
+
+[[fields]]
+name = "type"
+type = "\"stdio\" | \"http\" | \"sse\""
+required = true
+description = "Transport type: stdio for command-line servers, http for HTTP endpoints, sse for Server-Sent Events."
+values = ["stdio", "http", "sse"]
+
+[[fields]]
+name = "command"
+type = "string"
+required = true
+description = "For stdio servers: the command to run."
+
+[[fields]]
+name = "args"
+type = "string[]"
+description = "Arguments passed to the stdio command."
+
+[[fields]]
+name = "env"
+type = "record<string, string>"
+description = "Environment variables for stdio servers. Supports shell-style expansion."
+
+[[fields]]
+name = "url"
+type = "string"
+required = true
+description = "For http/sse servers: the endpoint URL."
+
+[[fields]]
+name = "headers"
+type = "record<string, string>"
+description = "HTTP headers for http/sse servers, e.g. Authorization: Bearer $GH_PAT."
+
+[[fields]]
+name = "timeout"
+type = "number"
+description = "Timeout in seconds for the server."
+
+[[fields]]
+name = "disabled"
+type = "boolean"
+description = "Disable the server without removing it from config."
+
+[[fields]]
+name = "disabled_tools"
+type = "string[]"
+description = "Tool names from this server to hide from the agent."
+
+[[capabilities]]
+name = "Tools"
+status = "supported"
+
+[[capabilities]]
+name = "Prompts"
+status = "supported"
+note = "MCP prompts appear as invocable commands in the command palette (verified in source)."
+
+[[examples]]
+title = "stdio, http, and sse servers"
+language = "json"
+code = '''
+{
+  "$schema": "https://charm.land/crush.json",
+  "mcp": {
+    "filesystem": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["/path/to/mcp-server.js"],
+      "env": { "NODE_ENV": "production" }
+    },
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "disabled_tools": ["create_issue"],
+      "headers": { "Authorization": "Bearer $GH_PAT" }
+    },
+    "streaming-service": {
+      "type": "sse",
+      "url": "https://example.com/mcp/sse"
+    }
+  }
+}
+'''

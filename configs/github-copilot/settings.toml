@@ -1,0 +1,76 @@
+status = "supported"
+summary = "The cloud agent's environment is configured with a .github/workflows/copilot-setup-steps.yml Actions workflow (preinstall dependencies, choose runners) plus .github/copilot/settings.json for plugins. Remaining configuration (MCP, firewall, secrets, code review toggles) lives in repository settings on github.com."
+docs = "https://docs.github.com/en/copilot/how-tos/use-copilot-agents/coding-agent/customize-the-agent-environment"
+notes = [
+  "copilot-setup-steps.yml must contain a single job named copilot-setup-steps and be present on the default branch to take effect; it runs before the agent starts work.",
+  "Only steps, permissions, runs-on, services, snapshot, and timeout-minutes (max 59) can be customized on the job; other job settings are ignored.",
+  "Supports larger GitHub-hosted runners, self-hosted runners (Ubuntu x64 or Windows only), Windows environments, and Git LFS via actions/checkout with lfs: true.",
+  "Agents secrets and variables (e.g. COPILOT_MCP_* for MCP servers) are configured in repository or organization settings on github.com.",
+  "The integrated firewall can be customized or disabled in repository settings; it must be disabled for self-hosted runners.",
+  "The enabledPlugins and extraKnownMarketplaces keys of .github/copilot/settings.json are read by both the cloud agent and Copilot CLI.",
+]
+
+[[files]]
+path = ".github/workflows/copilot-setup-steps.yml"
+scope = "project"
+format = "yaml"
+key = "jobs.copilot-setup-steps"
+note = "Standard GitHub Actions workflow syntax; runs as a normal workflow when changed so it can be validated."
+
+[[files]]
+path = ".github/copilot/settings.json"
+scope = "project"
+format = "json"
+note = "Shared repository configuration; the cloud agent reads the plugin-related keys (enabledPlugins, extraKnownMarketplaces) and hooks-related keys."
+
+[[fields]]
+name = "steps"
+type = "step[]"
+description = "Actions steps executed before the agent starts (checkout, toolchain setup, dependency install). A failing step skips the rest and the agent starts anyway."
+
+[[fields]]
+name = "permissions"
+type = "object"
+description = "Workflow token permissions for the setup job (use least privilege; contents: read to clone). Copilot gets its own token for its work."
+
+[[fields]]
+name = "runs-on"
+type = "string | string[]"
+description = "Runner selection: standard, larger GitHub-hosted, or self-hosted runner labels/groups. Ubuntu x64 and Windows only."
+
+[[fields]]
+name = "services"
+type = "object"
+description = "Service containers available during the job."
+
+[[fields]]
+name = "timeout-minutes"
+type = "number"
+description = "Setup job timeout. Maximum value 59."
+
+[[examples]]
+title = "copilot-setup-steps.yml"
+language = "yaml"
+code = '''
+name: "Copilot Setup Steps"
+on:
+  workflow_dispatch:
+  push:
+    paths: [.github/workflows/copilot-setup-steps.yml]
+
+jobs:
+  copilot-setup-steps:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - name: Install JavaScript dependencies
+        run: npm ci
+'''
