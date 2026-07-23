@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -30,6 +31,12 @@ export const metadata: Metadata = {
       "How every AI coding client is configured — MCP, skills, rules, hooks, commands, settings.",
     url: "https://clients.dev",
     siteName: "clients.dev",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "clients.dev",
+    description:
+      "How every AI coding client is configured — MCP, skills, rules, hooks, commands, settings.",
   },
 };
 
@@ -70,6 +77,7 @@ export default function RootLayout({
           <SiteFooter />
           <Toaster richColors position="top-center" />
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
