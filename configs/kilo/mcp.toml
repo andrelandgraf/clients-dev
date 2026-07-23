@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "MCP servers configured under the top-level mcp key of kilo.jsonc (project or global). Local (STDIO) and remote (Streamable HTTP with SSE fallback) servers, with OAuth 2.0 for remote servers."
 transports = ["stdio", "http", "sse"]
 auth = ["oauth", "headers"]

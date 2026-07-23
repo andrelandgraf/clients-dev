@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Prompt files (.prompt.md) are reusable Markdown prompts invoked as slash commands in chat, with YAML frontmatter for agent, model, and tool selection."
 invocation = ["/prompt-name"]
 docs = "https://code.visualstudio.com/docs/copilot/customization/prompt-files"

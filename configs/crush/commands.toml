@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Custom commands (saved prompts) as plain markdown files, invoked from the command palette with user:/project: prefixes and $NAME argument placeholders."
 invocation = ["command palette (Ctrl+P)"]
 docs = "https://github.com/charmbracelet/crush/blob/99edcbf1c17dbb1d74dc1a3f03a5e30bcfc58b39/COMMANDS.md"

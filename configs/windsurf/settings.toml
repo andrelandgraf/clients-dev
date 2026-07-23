@@ -1,4 +1,5 @@
 status = "partial"
+verified = "2026-07-12"
 summary = "Agent-relevant settings live in the in-app settings UI (Cascade gitignore access, diff zones, terminal allow/deny lists, marketplace URL); there is no documented user-editable settings file for agent behavior. Enterprises can enforce settings centrally via OS-level policies."
 docs = "https://docs.devin.ai/desktop/enterprise-policies"
 notes = [

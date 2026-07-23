@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-06-21"
 summary = "Add MCP servers via claude mcp add or .mcp.json. Three scopes (local/project/user), stdio/HTTP/SSE/WebSocket transports, OAuth, and tool search."
 transports = ["stdio", "http", "sse", "ws"]
 auth = ["oauth", "headers", "headersHelper"]

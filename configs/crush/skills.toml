@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "SKILL.md skills following the Agent Skills open standard, discovered from many global and project paths and activated on demand; user-invocable skills appear in the command palette."
 invocation = ["automatic (model-invoked)", "command palette (Ctrl+P) for user-invocable skills"]
 docs = "https://github.com/charmbracelet/crush#agent-skills"

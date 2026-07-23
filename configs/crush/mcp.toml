@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Configure MCP servers under the mcp key in crush.json. Supports stdio, HTTP, and SSE transports with shell-style value expansion for secrets."
 transports = ["stdio", "http", "sse"]
 auth = ["headers"]

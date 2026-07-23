@@ -1,6 +1,7 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Primary configuration lives in ~/.config/goose/config.yaml: provider and model, tool-execution mode, extensions, slash commands, and general settings."
-docs = "https://block.github.io/goose/docs/guides/config-files"
+docs = "https://goose-docs.ai/docs/guides/config-files"
 notes = [
   "Environment variables take precedence over config file settings, which take precedence over defaults.",
   "Companion files in ~/.config/goose/: permission.yaml (tool permission levels via goose configure), secrets.yaml (only with file-based secret storage), permissions/tool_permissions.json (auto-managed), and prompts/ (custom prompt templates).",

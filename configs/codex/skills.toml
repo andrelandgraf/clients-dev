@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-06-21"
 summary = "SKILL.md skills following the open Agent Skills standard, discovered from .agents/skills up to the repo root. Invoke with $ or /skills."
 invocation = ["$skill-name", "/skills", "implicit"]
 docs = "https://developers.openai.com/codex/skills"

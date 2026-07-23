@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "The cloud agent runs .github/hooks/*.json hooks inside its ephemeral Linux sandbox. A subset of events fires; only bash (or the cross-platform command) entries are honored, and HTTP hooks must target firewall-allowed hosts."
 events = [
   "sessionStart",

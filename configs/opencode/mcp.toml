@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Configure MCP servers under the mcp key in opencode.json. Local servers run as commands; remote servers connect over HTTP with header or OAuth auth."
 transports = ["stdio", "http"]
 auth = ["oauth", "headers"]

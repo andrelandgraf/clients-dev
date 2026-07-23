@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Configure MCP servers in cline_mcp_settings.json under the mcpServers key (editable via the MCP Servers panel). Supports local stdio servers and remote servers over Streamable HTTP or legacy SSE."
 transports = ["stdio", "http", "sse"]
 auth = ["headers", "oauth"]

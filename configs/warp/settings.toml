@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "TOML settings file with hot reload; the [agents] sections control model, knowledge (rules), MCP auto-spawn, and permission profiles for the agent."
 docs = "https://docs.warp.dev/terminal/settings/all-settings/"
 notes = [

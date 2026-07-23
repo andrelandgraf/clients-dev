@@ -112,6 +112,11 @@ export type CodeExample = z.infer<typeof CodeExample>;
 /** Everything we know about one surface for one client. */
 export const SurfaceConfig = z.object({
   status: SupportStatus,
+  /** Date (YYYY-MM-DD) this surface was last verified against official docs. */
+  verified: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "verified must be YYYY-MM-DD")
+    .optional(),
   summary: z.string().optional(),
   files: z.array(ConfigFile).default([]),
   fields: z.array(ConfigField).default([]),
@@ -149,8 +154,6 @@ export const ClientMeta = z.object({
   homepage: z.string().optional(),
   repo: z.string().optional(),
   docs: z.string().optional(),
-  /** Logo filename stored next to the client config, served from /logos. */
-  logo: z.string().optional(),
 });
 export type ClientMeta = z.infer<typeof ClientMeta>;
 

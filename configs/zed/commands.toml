@@ -1,4 +1,5 @@
 status = "partial"
+verified = "2026-07-12"
 summary = "Slash commands in the Agent Panel invoke skills by name, plus the built-in /compact. There is no separate custom prompt-template command format; custom commands are authored as skills."
 invocation = ["/skill-name", "/compact", "/create-skill"]
 docs = "https://zed.dev/docs/ai/skills"

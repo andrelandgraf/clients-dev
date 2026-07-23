@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "SKILL.md Agent Skills (open standard) loaded from project and personal skill folders, invoked automatically by the agent or manually as /skill-name. Managed with /skills and copilot skill commands."
 invocation = ["/skill-name"]
 docs = "https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-skills"

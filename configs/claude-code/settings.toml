@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-06-21"
 summary = "Hierarchical settings.json controls permissions, environment, hooks, model, and skill behavior across user, project, local, and managed scopes."
 docs = "https://docs.claude.com/en/docs/claude-code/settings"
 

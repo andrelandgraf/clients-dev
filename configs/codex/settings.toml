@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-06-21"
 summary = "config.toml is the single settings file for models, reasoning, sandboxing, approvals, and tools. requirements.toml enforces admin policy."
 docs = "https://developers.openai.com/codex/config-reference"
 notes = [

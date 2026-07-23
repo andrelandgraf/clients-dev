@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-06-21"
 summary = "Local (stdio) MCP servers in JSON under the mcpServers key."
 transports = ["stdio"]
 notes = ["Only local (stdio) servers are configured via the file. Add remote servers through Settings → Connectors in the app."]

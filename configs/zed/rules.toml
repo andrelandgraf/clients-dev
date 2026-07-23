@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Always-on instructions via AGENTS.md: a personal global file plus one project instruction file, with compatibility for .rules, .cursorrules, CLAUDE.md, and similar."
 docs = "https://zed.dev/docs/ai/instructions"
 notes = [

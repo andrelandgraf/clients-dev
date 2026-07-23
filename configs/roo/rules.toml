@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Persistent custom instructions from .roo/rules/ directories (global and workspace), mode-specific rules-{modeSlug}/ variants, .roorules fallback files, and AGENTS.md."
 docs = "https://docs.roocode.com/features/custom-instructions"
 notes = [

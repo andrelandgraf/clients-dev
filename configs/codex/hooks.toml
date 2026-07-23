@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-06-21"
 summary = "Lifecycle hooks loaded from hooks.json or an inline [hooks] table in config.toml. Gated behind the features.hooks flag; command hooks are executed."
 events = [
   "PreToolUse", "PermissionRequest", "PostToolUse",

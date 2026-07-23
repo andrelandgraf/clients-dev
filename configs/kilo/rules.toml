@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Persistent instructions via auto-discovered AGENTS.md files (project root, subdirectories, and global config dir) plus the instructions array in kilo.jsonc pointing at rule files, globs, or URLs."
 docs = "https://kilocode.ai/docs/advanced-usage/custom-rules"
 notes = [

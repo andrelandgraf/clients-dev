@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Markdown rule files in .clinerules/ (workspace) and a global Cline Rules directory, with per-file enable/disable toggles and optional paths frontmatter for conditional activation. Cursor rules, Windsurf rules, and AGENTS.md are auto-detected."
 docs = "https://docs.cline.bot/customization/cline-rules"
 notes = [

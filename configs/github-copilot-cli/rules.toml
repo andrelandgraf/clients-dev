@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Custom instructions from the repository (.github/copilot-instructions.md, .github/instructions/**/*.instructions.md, AGENTS.md) plus personal instructions in ~/.copilot (copilot-instructions.md and instructions/*.instructions.md) applied to every session."
 docs = "https://docs.github.com/en/copilot/reference/custom-instructions-support"
 notes = [

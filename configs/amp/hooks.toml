@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Lifecycle event handling via TypeScript plugins: amp.on(...) handlers can observe, approve, reject, or modify tool calls and agent turns."
 events = ["session.start", "agent.start", "tool.call", "tool.result", "agent.end"]
 docs = "https://ampcode.com/manual#plugins"

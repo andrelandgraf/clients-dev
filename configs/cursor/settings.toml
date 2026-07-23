@@ -1,13 +1,37 @@
 status = "partial"
-summary = "Most settings live in the Cursor Settings UI. permissions.json controls Agent Run Mode allowlists and MCP auto-run behavior."
-docs = "https://cursor.com/docs/agent/mcp"
+verified = "2026-07-22"
+summary = "Most settings live in the Cursor Settings UI. permissions.json controls Run Mode allowlists (MCP tools, terminal commands) and steers the Auto-review classifier."
+docs = "https://cursor.com/docs/reference/permissions"
 notes = [
-  "Pre-configure which MCP tools run without approval by adding them to permissions.json.",
-  "autoRun instructions in permissions.json steer the Auto-review classifier per server or tool.",
+  "permissions.json only takes effect when a Run Mode is enabled in Cursor Settings (Auto-review, Allowlist, or Run Everything).",
+  "When a key is defined in permissions.json it overrides the corresponding in-app allowlist, which becomes read-only.",
+  "Arrays from the global and project files are concatenated before being applied.",
+  "autoRun instructions steer the Auto-review classifier; they have no effect in Allowlist or Run Everything modes.",
 ]
 
 [[files]]
 path = ".cursor/permissions.json"
 scope = "project"
 format = "json"
-note = "Allowlist MCP tools and shell commands for Run Mode."
+note = "Applies to one project directory. Commit it to share guidance with the team."
+
+[[files]]
+path = "~/.cursor/permissions.json"
+scope = "global"
+format = "json"
+note = "Applies to all project directories on the machine."
+
+[[fields]]
+name = "mcpAllowlist"
+type = "string[]"
+description = "MCP tools that run without approval, as server:tool patterns (wildcards supported, e.g. *:search). Overrides the in-app MCP allowlist when set."
+
+[[fields]]
+name = "terminalAllowlist"
+type = "string[]"
+description = "Terminal commands that run without approval. Overrides the in-app terminal allowlist when set."
+
+[[fields]]
+name = "autoRun"
+type = "{ allow_instructions?: string[], block_instructions?: string[] }"
+description = "Natural-language guidance for the Auto-review classifier: actions to lean toward allowing or blocking."

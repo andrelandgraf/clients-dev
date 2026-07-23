@@ -62,17 +62,27 @@ export function ConfigSurface({
             </p>
           </div>
         </div>
-        {config.docs ? (
-          <a
-            href={config.docs}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground transition-colors hover:text-primary"
-          >
-            Docs
-            <ArrowUpRight className="h-3 w-3" />
-          </a>
-        ) : null}
+        <div className="flex items-center gap-3">
+          {config.verified ? (
+            <span
+              className="text-xs text-muted-foreground"
+              title="Date this surface was last verified against official docs"
+            >
+              Verified {config.verified}
+            </span>
+          ) : null}
+          {config.docs ? (
+            <a
+              href={config.docs}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground transition-colors hover:text-primary"
+            >
+              Docs
+              <ArrowUpRight className="h-3 w-3" />
+            </a>
+          ) : null}
+        </div>
       </div>
 
       {(config.transports.length > 0 ||

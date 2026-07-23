@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "SKILL.md instruction sets discovered from project and home directories, listed in the native skill tool and loaded on demand by the agent."
 invocation = ["automatic (skill tool)"]
 docs = "https://opencode.ai/docs/skills/"

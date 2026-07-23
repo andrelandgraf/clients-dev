@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "AGENTS.md files hold persistent project and global instructions, with CLAUDE.md fallbacks and an instructions option for extra rule files."
 docs = "https://opencode.ai/docs/rules/"
 notes = [

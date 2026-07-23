@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "MCP servers are configured under the mcpServers key in ~/.copilot/mcp-config.json (user level) or in workspace .mcp.json / .github/mcp.json files, or managed with /mcp and copilot mcp commands. Supports stdio, Streamable HTTP, and legacy SSE with OAuth (including headless client_credentials)."
 transports = ["stdio", "http", "sse"]
 auth = ["oauth", "headers", "env-secrets", "oidc"]

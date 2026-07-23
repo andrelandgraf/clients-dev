@@ -1,7 +1,8 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "SKILL.md skill folders following the open Agent Skills standard, discovered at session start and loaded automatically when a request matches, or listed and loaded via the CLI /skills command."
 invocation = ["automatic", "/skills <name>", "natural language (e.g. 'use the code-review skill')"]
-docs = "https://block.github.io/goose/docs/guides/context-engineering/using-skills"
+docs = "https://goose-docs.ai/docs/guides/context-engineering/using-skills"
 notes = [
   "Requires the built-in Summon platform extension (enabled by default, v1.25.0+); Summon replaced the deprecated Skills extension (v1.16.0-v1.24.0).",
   "Skills can bundle supporting files (scripts, templates); goose accesses them with the Developer extension's file tools.",

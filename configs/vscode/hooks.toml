@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Preview: JSON hook files run shell commands at agent lifecycle events. Hooks receive event JSON on stdin and can return JSON on stdout to block tools, decide permissions, or inject context."
 events = [
   "SessionStart",

@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Configure MCP servers (context servers) in settings.json under the context_servers key, or install them as Zed extensions. Supports local stdio and remote servers with OAuth."
 transports = ["stdio", "http"]
 auth = ["oauth", "headers"]

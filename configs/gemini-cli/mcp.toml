@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "MCP servers configured under the mcpServers key in settings.json. Supports stdio, SSE, and Streamable HTTP transports, OAuth (including Google credentials and service-account impersonation), tool filtering, and the gemini mcp CLI for managing entries."
 transports = ["stdio", "sse", "http"]
 auth = ["oauth", "headers", "google-credentials", "service-account-impersonation"]

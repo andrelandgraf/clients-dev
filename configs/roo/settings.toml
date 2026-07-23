@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Settings live in the Roo Code settings UI backed by extension storage, exportable/importable as JSON. Agent-relevant knobs (command allowlists, AGENTS.md loading, timeouts) are VS Code settings under the roo-cline.* namespace."
 docs = "https://docs.roocode.com/features/settings-management"
 notes = [

@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Built-in slash commands (/newtask, /smol, /newrule, /deep-planning, /reportbug), plus user-defined workflows: markdown files invoked by filename (e.g. /release.md) and enabled skills triggered as slash commands."
 invocation = ["/command", "/workflow-name.md", "/skill-name"]
 docs = "https://docs.cline.bot/core-workflows/using-commands"

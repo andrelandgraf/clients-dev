@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Folder-based SKILL.md skills (Agent Skills standard) that bundle instructions with supporting files. Cascade sees only name and description until it invokes the skill (progressive disclosure)."
 invocation = ["automatic", "@skill-name"]
 docs = "https://docs.devin.ai/desktop/cascade/skills"

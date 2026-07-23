@@ -1,4 +1,5 @@
 status = "unsupported"
+verified = "2026-07-12"
 summary = "Zed has no lifecycle hook system for the Agent Panel: no user-configurable scripts fire on agent events such as tool use, prompt submit, or session start/end."
 notes = [
   "Agent lifecycle hooks (custom commands, pre/post tool-use scripts) are open feature requests on the Zed GitHub repo (e.g. issues #57890, #52688) but are not shipped.",

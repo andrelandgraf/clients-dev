@@ -1,4 +1,5 @@
 status = "unsupported"
+verified = "2026-07-12"
 summary = "Kilo Code does not expose user-configurable lifecycle hooks."
 notes = [
   "The official documentation has no hooks feature and no hook configuration file.",

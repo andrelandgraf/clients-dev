@@ -1,4 +1,5 @@
 status = "deprecated"
+verified = "2026-07-12"
 summary = "Custom slash commands (.agents/commands/) were removed in favor of skills; command-palette commands can still be added programmatically via the plugin API."
 invocation = ["command palette (Ctrl+O)"]
 docs = "https://ampcode.com/news/slashing-custom-commands"

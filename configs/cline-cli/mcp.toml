@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-06-21"
 summary = "Configure MCP servers in JSON under the mcpServers key."
 transports = ["stdio", "http", "sse"]
 auth = ["headers"]

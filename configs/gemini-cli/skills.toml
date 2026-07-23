@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Agent Skills based on the agentskills.io open standard: SKILL.md directories discovered from built-in, extension, user, and workspace tiers, activated by the model via the activate_skill tool with user consent."
 invocation = ["automatic (activate_skill tool)", "/skills list"]
 docs = "https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/skills.md"

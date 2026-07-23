@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Layered settings.json files (system defaults, user, project, system overrides) organized into category objects like general, ui, model, context, tools, security, mcp, memory, and hooks. Legacy flat settings are migrated automatically."
 docs = "https://github.com/QwenLM/qwen-code/blob/main/docs/users/configuration/settings.md"
 notes = [

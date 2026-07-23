@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Cascade Hooks run shell commands at key points in the agent workflow, configured in hooks.json at system, user, and workspace level (merged, executed system -> user -> workspace). Hooks receive event JSON on stdin; pre-hooks can block the action by exiting with code 2."
 events = [
   "pre_read_code", "post_read_code",

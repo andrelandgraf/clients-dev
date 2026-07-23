@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Synchronous shell commands that run at lifecycle events across the agent loop, configured under the hooks key in settings.json. Hooks communicate via JSON on stdin/stdout and can inject context, rewrite tool arguments, block actions, mock model responses, or filter tools."
 events = [
   "SessionStart", "SessionEnd",

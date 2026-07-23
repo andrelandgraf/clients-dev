@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "SKILL.md skills (Agent Skills format) discovered from .agents/skills/ and many compatible directories, invocable by the agent or directly via /{skill-name} with argument placeholders."
 invocation = ["/skill-name", "automatic"]
 docs = "https://docs.warp.dev/agent-platform/capabilities/skills/"

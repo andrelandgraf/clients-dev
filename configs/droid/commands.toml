@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Custom slash commands as Markdown prompts or shebang executables in .factory/commands/, now merged into skills (which offer the same /command plus more features)."
 invocation = ["/command-name"]
 docs = "https://docs.factory.ai/cli/configuration/custom-slash-commands"

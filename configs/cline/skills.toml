@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "SKILL.md skill folders with progressive loading: only name and description (~100 tokens) load at startup; the full instructions load when Cline triggers the skill via the use_skill tool or you invoke it as a slash command."
 invocation = ["automatic", "/skill-name"]
 docs = "https://docs.cline.bot/customization/skills"

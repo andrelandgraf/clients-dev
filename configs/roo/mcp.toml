@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "MCP servers configured under mcpServers in a project .roo/mcp.json or the global mcp_settings.json. Supports STDIO, Streamable HTTP, and legacy SSE transports."
 transports = ["stdio", "http", "sse"]
 auth = ["headers", "env"]

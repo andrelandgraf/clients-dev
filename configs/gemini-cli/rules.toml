@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Hierarchical GEMINI.md context files loaded from the global, workspace, and just-in-time (per-directory) tiers, concatenated and sent with every prompt. Supports @file.md imports and configurable file names (e.g. AGENTS.md)."
 docs = "https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/gemini-md.md"
 notes = [

@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Configure MCP servers in mcp.json under the servers key (not mcpServers). Supports stdio, Streamable HTTP, and legacy SSE, plus an MCP server gallery in the Extensions view and optional sandboxing for local servers."
 transports = ["stdio", "http", "sse"]
 auth = ["headers"]

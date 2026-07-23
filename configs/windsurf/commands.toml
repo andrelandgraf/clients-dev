@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Workflows are markdown prompt templates invoked manually with /workflow-name slash commands. Cascade processes the steps sequentially; workflows can call other workflows."
 invocation = ["/workflow-name"]
 docs = "https://docs.devin.ai/desktop/cascade/workflows"

@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Lifecycle hooks configured under the hooks key in settings.json, with four executor types: shell command, HTTP POST, registered function (internal), and LLM prompt. Hooks can inject context, block tools, and audit the session across a wide event set."
 events = [
   "PreToolUse", "PostToolUse", "PostToolUseFailure",

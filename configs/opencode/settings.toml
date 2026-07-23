@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "opencode.json (or .jsonc) configures models, agents, permissions, tools, MCP, commands, and plugins, merged across remote, global, project, and managed scopes."
 docs = "https://opencode.ai/docs/config/"
 notes = [

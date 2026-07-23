@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-06-21"
 summary = "Shell commands that fire on lifecycle events, configured in settings.json under the hooks key (or scoped to a skill/subagent)."
 events = [
   "PreToolUse", "PostToolUse",

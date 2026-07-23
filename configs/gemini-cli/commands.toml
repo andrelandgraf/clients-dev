@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Custom slash commands defined as TOML files under .gemini/commands/. Subdirectories create namespaced names (git/commit.toml becomes /git:commit). Prompts support {{args}} injection, !{...} shell execution, and @{...} file embedding."
 invocation = ["/command-name", "/namespace:command-name"]
 docs = "https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/custom-commands.md"

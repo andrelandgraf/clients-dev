@@ -1,4 +1,5 @@
 status = "unsupported"
+verified = "2026-07-12"
 summary = "Prompt files (.github/prompts/*.prompt.md) are not supported on GitHub.com; GitHub's customization cheat sheet marks prompt files as unsupported for the GitHub.com surface."
 docs = "https://docs.github.com/en/copilot/reference/customization-cheat-sheet"
 notes = [

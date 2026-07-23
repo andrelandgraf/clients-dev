@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Repository administrators configure MCP servers as JSON (mcpServers key) in the repository settings on github.com (Settings > Copilot > MCP servers). The config is shared by the cloud agent and Copilot code review; secrets are injected via COPILOT_MCP_-prefixed Agents secrets."
 transports = ["stdio", "http", "sse"]
 auth = ["headers", "env-secrets"]

@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "MCP servers configured in Settings > Agents > MCP servers, in Warp Drive, or via file-based .warp/.mcp.json config. Warp also picks up MCP config from Claude Code, Codex, and other agent providers."
 transports = ["stdio", "sse", "http"]
 auth = ["oauth", "headers", "env"]

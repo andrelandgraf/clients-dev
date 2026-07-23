@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Always-on instructions via .github/copilot-instructions.md, AGENTS.md, and CLAUDE.md, plus file-based *.instructions.md files that apply conditionally via applyTo glob patterns."
 docs = "https://code.visualstudio.com/docs/copilot/customization/custom-instructions"
 notes = [

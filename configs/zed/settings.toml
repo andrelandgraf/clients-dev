@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Agent behavior is configured in settings.json under the agent key: tool permissions, profiles, auto-compaction, feature-specific models, and model parameters."
 docs = "https://zed.dev/docs/ai/agent-settings"
 notes = [

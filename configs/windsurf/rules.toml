@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "User-defined rules at global, workspace, and system level, with per-rule activation modes (always_on, glob, model_decision, manual). AGENTS.md files are fed into the same rules engine with location-based scoping."
 invocation = ["@rule-name"]
 docs = "https://docs.devin.ai/desktop/cascade/memories"

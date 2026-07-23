@@ -1,4 +1,5 @@
 status = "partial"
+verified = "2026-07-12"
 summary = "Extension behavior (Auto Approve permissions, YOLO Mode, feature toggles) is configured through the Cline settings UI; persistent configuration lives under ~/.cline/ in documented settings files shared by the IDE extension, CLI, and SDK."
 docs = "https://docs.cline.bot/getting-started/config"
 notes = [

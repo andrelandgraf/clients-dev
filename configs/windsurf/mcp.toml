@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Configure MCP servers for Cascade in mcp_config.json under the mcpServers key, or install from the built-in MCP Marketplace. Supports stdio, Streamable HTTP, and SSE with OAuth for each transport."
 transports = ["stdio", "http", "sse"]
 auth = ["oauth", "headers"]

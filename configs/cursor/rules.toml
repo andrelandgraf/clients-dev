@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-06-21"
 summary = "Project rules as .mdc files with frontmatter, plus plain-markdown AGENTS.md (root and nested)."
 invocation = ["@rule-name"]
 docs = "https://cursor.com/docs/context/rules"

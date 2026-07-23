@@ -1,4 +1,5 @@
 status = "deprecated"
+verified = "2026-06-21"
 summary = "Custom prompts (~/.codex/prompts/*.md, invoked /prompts:name) were deprecated and removed in codex-cli 0.117.0. Convert custom prompts to Skills."
 invocation = ["/prompts:name"]
 docs = "https://developers.openai.com/codex/cli/features"

@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "SKILL.md skills in .factory/skills/ that both the user (/skill-name) and the Droid can invoke, with frontmatter to control invocation and optional supporting files."
 invocation = ["/skill-name", "automatic"]
 docs = "https://docs.factory.ai/cli/configuration/skills"

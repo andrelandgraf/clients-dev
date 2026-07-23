@@ -1,7 +1,8 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Custom slash commands are shortcuts that run recipes (reusable YAML/JSON task templates), mapped under the slash_commands key in config.yaml or assigned in the Desktop Recipes UI. Built-in CLI slash commands cover session control."
 invocation = ["/command-name", "/command-name <parameter>"]
-docs = "https://block.github.io/goose/docs/guides/context-engineering/slash-commands"
+docs = "https://goose-docs.ai/docs/guides/context-engineering/slash-commands"
 notes = [
   "Running a custom command loads the recipe's instructions and prompt into the conversation without displaying them in chat.",
   "Custom commands accept at most one parameter; any other recipe parameters must have defaults. Names are case-insensitive, unique, and must not contain spaces.",

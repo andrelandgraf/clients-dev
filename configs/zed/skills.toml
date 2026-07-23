@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "SKILL.md skill folders following the open Agent Skills standard, loaded autonomously from a catalog or invoked manually via slash command or @-mention."
 invocation = ["/skill-name", "@skill", "automatic"]
 docs = "https://zed.dev/docs/ai/skills"

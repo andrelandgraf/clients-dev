@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "JSON/JSONC settings with an amp. prefix at user, workspace, and enterprise-managed scope. Workspace settings override user settings (except keymaps)."
 docs = "https://ampcode.com/manual#configuration"
 notes = [

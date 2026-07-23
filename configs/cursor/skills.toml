@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-06-21"
 summary = "SKILL.md skills loaded from .cursor/skills and .agents/skills, invoked with / or @. Also reads Claude and Codex skill dirs."
 invocation = ["/skill-name", "@skill-name"]
 docs = "https://cursor.com/docs/context/skills"

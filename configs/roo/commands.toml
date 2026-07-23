@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Custom slash commands as markdown files in .roo/commands/ (project) or ~/.roo/commands/ (global); the filename becomes the command name."
 invocation = ["/command-name"]
 docs = "https://docs.roocode.com/features/slash-commands"

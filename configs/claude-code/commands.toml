@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-06-21"
 summary = "Custom slash commands as markdown files. Merged into Skills — a command and a skill of the same name behave identically; skills add supporting files and auto-invocation."
 invocation = ["/command-name"]
 docs = "https://docs.claude.com/en/docs/claude-code/slash-commands"

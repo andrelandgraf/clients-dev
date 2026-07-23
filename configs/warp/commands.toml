@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Slash commands in Agent Mode combine built-in static commands (/init, /agent, /model, /add-mcp, ...) with user-defined Agent Prompts saved in Warp Drive and skills invoked as /{skill-name}."
 invocation = ["/command-name", "/skill-name", "command palette"]
 docs = "https://docs.warp.dev/agent-platform/capabilities/slash-commands/"

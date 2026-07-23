@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Custom slash commands defined as markdown files with frontmatter or inline in opencode.json, with argument placeholders, shell output injection, and file references."
 invocation = ["/command-name"]
 docs = "https://opencode.ai/docs/commands/"

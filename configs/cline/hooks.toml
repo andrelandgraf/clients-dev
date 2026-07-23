@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Executable hook scripts named after lifecycle events, placed in .clinerules/hooks/ (workspace) or the global hooks directory. Hooks receive event JSON on stdin and return JSON on stdout that can block execution or inject context."
 events = [
   "TaskStart", "TaskResume", "TaskCancel", "TaskComplete",

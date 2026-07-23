@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Versioned JSON hook files run command, HTTP, or prompt handlers at lifecycle events on the local machine. Sources are combined in order: policy, repository .github/hooks, user ~/.copilot/hooks, inline hooks blocks in settings files, and plugins."
 events = [
   "sessionStart",

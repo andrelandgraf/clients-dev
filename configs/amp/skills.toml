@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "SKILL.md skills (Agent Skills format) that the agent invokes automatically. Skills can bundle resources and MCP servers (mcp.json) in the skill directory."
 invocation = ["automatic"]
 docs = "https://ampcode.com/manual#agent-skills"

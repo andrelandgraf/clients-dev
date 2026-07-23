@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-06-21"
 summary = "MCP servers are defined as [mcp_servers.<name>] tables in config.toml. Supports stdio and Streamable HTTP, with bearer-token and OAuth auth."
 transports = ["stdio", "http"]
 auth = ["oauth", "bearer-token", "headers"]

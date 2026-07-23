@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "settings.json in .factory/ folders controls model, autonomy, command allow/deny/block lists, hooks toggle, and more, with local overrides and enterprise org-managed settings."
 docs = "https://docs.factory.ai/cli/configuration/settings"
 notes = [

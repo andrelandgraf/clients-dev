@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Project Rules in AGENTS.md (or legacy WARP.md) files at repo root and subdirectories, plus cloud-managed Global Rules in Warp Drive."
 docs = "https://docs.warp.dev/agent-platform/capabilities/rules/"
 notes = [

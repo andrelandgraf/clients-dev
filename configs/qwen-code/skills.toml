@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "SKILL.md Agent Skills discovered from personal (~/.qwen/skills/), project (.qwen/skills/), and extension directories. Model-invoked by default, user-invocable as /<skill-name>, with optional path gating and priority ordering."
 invocation = ["/skill-name", "automatic", "/skills (panel)"]
 docs = "https://github.com/QwenLM/qwen-code/blob/main/docs/users/features/skills.md"

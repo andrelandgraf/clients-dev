@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-06-21"
 summary = "SKILL.md skills following the open Agent Skills standard."
 invocation = ["/skill-name"]
 notes = ["Skill discovery paths from the open skills CLI (vercel-labs/skills).", "Custom agents must add \"resources\": [\"skill://.kiro/skills/**/SKILL.md\"] to .kiro/agents/<agent>.json."]

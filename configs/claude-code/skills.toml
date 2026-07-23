@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-06-21"
 summary = "SKILL.md skills with rich frontmatter, invoked with /name or loaded automatically by Claude. Custom commands are merged into skills."
 invocation = ["/skill-name", "automatic"]
 docs = "https://docs.claude.com/en/docs/claude-code/skills"

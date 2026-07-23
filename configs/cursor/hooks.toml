@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-06-21"
 summary = "hooks.json defines scripts that observe, block, or modify the agent loop. Command and prompt hook types. Claude Code hook compatible."
 events = [
   "sessionStart", "sessionEnd",

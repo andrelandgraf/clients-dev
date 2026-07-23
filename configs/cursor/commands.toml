@@ -1,4 +1,5 @@
 status = "deprecated"
+verified = "2026-06-21"
 summary = "Cursor merged slash commands into Skills. Existing user- and workspace-level commands can be converted with /migrate-to-skills; author new workflows as Skills."
 invocation = ["/command-name"]
 docs = "https://cursor.com/docs/context/skills"

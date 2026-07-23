@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Agent Skills (SKILL.md packages) loaded from .kilo/skills/ (project) and ~/.kilo/skills/ (global), plus cross-agent compatibility directories and extra paths/URLs configured in kilo.jsonc."
 invocation = [
   "automatic (request matches skill description)",

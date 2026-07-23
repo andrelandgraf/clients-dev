@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Lifecycle hooks are implemented through the plugin system: JS/TS modules that hook into agent events to observe, block, or rewrite behavior."
 events = [
   "tool.execute.before", "tool.execute.after",

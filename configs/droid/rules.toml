@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "AGENTS.md files at repo root, subdirectories, and a personal override in ~/.factory/AGENTS.md brief the agent on build/test commands, architecture, and conventions."
 docs = "https://docs.factory.ai/cli/configuration/agents-md"
 notes = [

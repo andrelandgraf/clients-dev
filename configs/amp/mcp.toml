@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "MCP servers configured under amp.mcpServers in settings, added via `amp mcp add`, or bundled inside skills via mcp.json (the recommended approach to keep the tool list clean)."
 transports = ["stdio", "sse", "http"]
 auth = ["oauth", "headers", "env"]

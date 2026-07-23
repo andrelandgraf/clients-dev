@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-06-21"
 summary = "AGENTS.md instruction files, layered from the Codex home directory down to the working directory, with override files and configurable fallbacks."
 docs = "https://developers.openai.com/codex/guides/agents-md"
 notes = [

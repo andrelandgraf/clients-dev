@@ -1,8 +1,9 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "MCP servers are configured as extensions under the extensions key in config.yaml. Supports local stdio and remote Streamable HTTP servers, plus built-in, platform, and inline Python extension types."
 transports = ["stdio", "http"]
 auth = ["headers"]
-docs = "https://block.github.io/goose/docs/getting-started/using-extensions"
+docs = "https://goose-docs.ai/docs/getting-started/using-extensions"
 notes = [
   "Servers are configured as entries under the extensions key (not mcpServers).",
   "SSE transport is no longer supported; the sse type is kept only for config file compatibility (per the goose source).",

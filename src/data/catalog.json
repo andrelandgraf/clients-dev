@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T04:06:40.058Z",
+  "generatedAt": "2026-07-23T04:01:17.929Z",
   "clients": [
     {
       "name": "AdaL",
@@ -7,6 +7,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -55,6 +56,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -107,6 +109,7 @@
       "surfaces": {
         "mcp": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "MCP servers configured under amp.mcpServers in settings, added via `amp mcp add`, or bundled inside skills via mcp.json (the recommended approach to keep the tool list clean).",
           "files": [
             {
@@ -208,6 +211,7 @@
         },
         "skills": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "SKILL.md skills (Agent Skills format) that the agent invokes automatically. Skills can bundle resources and MCP servers (mcp.json) in the skill directory.",
           "files": [
             {
@@ -269,6 +273,7 @@
         },
         "rules": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "AGENTS.md guidance files at project, user, and system scope, with @-file mentions and glob-scoped granular guidance in mentioned files.",
           "files": [
             {
@@ -328,6 +333,7 @@
         },
         "hooks": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Lifecycle event handling via TypeScript plugins: amp.on(...) handlers can observe, approve, reject, or modify tool calls and agent turns.",
           "files": [
             {
@@ -372,6 +378,7 @@
         },
         "commands": {
           "status": "deprecated",
+          "verified": "2026-07-12",
           "summary": "Custom slash commands (.agents/commands/) were removed in favor of skills; command-palette commands can still be added programmatically via the plugin API.",
           "files": [
             {
@@ -410,6 +417,7 @@
         },
         "settings": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "JSON/JSONC settings with an amp. prefix at user, workspace, and enterprise-managed scope. Workspace settings override user settings (except keymaps).",
           "files": [
             {
@@ -571,6 +579,7 @@
       "surfaces": {
         "mcp": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "Configure MCP servers in JSON under the mcpServers key.",
           "files": [
             {
@@ -630,6 +639,7 @@
         },
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -692,6 +702,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -739,6 +750,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -789,6 +801,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -836,6 +849,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -889,6 +903,7 @@
       "surfaces": {
         "mcp": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "Add MCP servers via claude mcp add or .mcp.json. Three scopes (local/project/user), stdio/HTTP/SSE/WebSocket transports, OAuth, and tool search.",
           "files": [
             {
@@ -1022,6 +1037,7 @@
         },
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills with rich frontmatter, invoked with /name or loaded automatically by Claude. Custom commands are merged into skills.",
           "files": [
             {
@@ -1157,6 +1173,7 @@
         },
         "rules": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "CLAUDE.md memory files (project/user/managed) plus modular .claude/rules/*.md with optional path scoping. Auto memory accumulates learnings.",
           "files": [
             {
@@ -1213,6 +1230,7 @@
         },
         "hooks": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "Shell commands that fire on lifecycle events, configured in settings.json under the hooks key (or scoped to a skill/subagent).",
           "files": [
             {
@@ -1283,6 +1301,7 @@
         },
         "commands": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "Custom slash commands as markdown files. Merged into Skills — a command and a skill of the same name behave identically; skills add supporting files and auto-invocation.",
           "files": [
             {
@@ -1338,6 +1357,7 @@
         },
         "settings": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "Hierarchical settings.json controls permissions, environment, hooks, model, and skill behavior across user, project, local, and managed scopes.",
           "files": [
             {
@@ -1435,6 +1455,7 @@
       "surfaces": {
         "mcp": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "Local (stdio) MCP servers in JSON under the mcpServers key.",
           "files": [
             {
@@ -1491,6 +1512,7 @@
       "surfaces": {
         "mcp": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Configure MCP servers in cline_mcp_settings.json under the mcpServers key (editable via the MCP Servers panel). Supports local stdio servers and remote servers over Streamable HTTP or legacy SSE.",
           "files": [
             {
@@ -1614,6 +1636,7 @@
         },
         "skills": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "SKILL.md skill folders with progressive loading: only name and description (~100 tokens) load at startup; the full instructions load when Cline triggers the skill via the use_skill tool or you invoke it as a slash command.",
           "files": [
             {
@@ -1668,6 +1691,7 @@
         },
         "rules": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Markdown rule files in .clinerules/ (workspace) and a global Cline Rules directory, with per-file enable/disable toggles and optional paths frontmatter for conditional activation. Cursor rules, Windsurf rules, and AGENTS.md are auto-detected.",
           "files": [
             {
@@ -1726,6 +1750,7 @@
         },
         "hooks": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Executable hook scripts named after lifecycle events, placed in .clinerules/hooks/ (workspace) or the global hooks directory. Hooks receive event JSON on stdin and return JSON on stdout that can block execution or inject context.",
           "files": [
             {
@@ -1793,6 +1818,7 @@
         },
         "commands": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Built-in slash commands (/newtask, /smol, /newrule, /deep-planning, /reportbug), plus user-defined workflows: markdown files invoked by filename (e.g. /release.md) and enabled skills triggered as slash commands.",
           "files": [
             {
@@ -1836,6 +1862,7 @@
         },
         "settings": {
           "status": "partial",
+          "verified": "2026-07-12",
           "summary": "Extension behavior (Auto Approve permissions, YOLO Mode, feature toggles) is configured through the Cline settings UI; persistent configuration lives under ~/.cline/ in documented settings files shared by the IDE extension, CLI, and SDK.",
           "files": [
             {
@@ -1902,6 +1929,7 @@
       "surfaces": {
         "mcp": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "Configure MCP servers in JSON under the mcpServers key.",
           "files": [
             {
@@ -1978,6 +2006,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -2026,6 +2055,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -2074,6 +2104,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -2134,6 +2165,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -2187,6 +2219,7 @@
       "surfaces": {
         "mcp": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "MCP servers are defined as [mcp_servers.<name>] tables in config.toml. Supports stdio and Streamable HTTP, with bearer-token and OAuth auth.",
           "files": [
             {
@@ -2332,6 +2365,7 @@
         },
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard, discovered from .agents/skills up to the repo root. Invoke with $ or /skills.",
           "files": [
             {
@@ -2392,6 +2426,7 @@
         },
         "rules": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "AGENTS.md instruction files, layered from the Codex home directory down to the working directory, with override files and configurable fallbacks.",
           "files": [
             {
@@ -2429,6 +2464,7 @@
         },
         "hooks": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "Lifecycle hooks loaded from hooks.json or an inline [hooks] table in config.toml. Gated behind the features.hooks flag; command hooks are executed.",
           "files": [
             {
@@ -2498,6 +2534,7 @@
         },
         "commands": {
           "status": "deprecated",
+          "verified": "2026-06-21",
           "summary": "Custom prompts (~/.codex/prompts/*.md, invoked /prompts:name) were deprecated and removed in codex-cli 0.117.0. Convert custom prompts to Skills.",
           "files": [],
           "fields": [],
@@ -2517,6 +2554,7 @@
         },
         "settings": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "config.toml is the single settings file for models, reasoning, sandboxing, approvals, and tools. requirements.toml enforces admin policy.",
           "files": [
             {
@@ -2607,6 +2645,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -2670,6 +2709,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -2719,6 +2759,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -2772,6 +2813,7 @@
       "surfaces": {
         "mcp": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Configure MCP servers under the mcp key in crush.json. Supports stdio, HTTP, and SSE transports with shell-style value expansion for secrets.",
           "files": [
             {
@@ -2887,6 +2929,7 @@
         },
         "skills": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "SKILL.md skills following the Agent Skills open standard, discovered from many global and project paths and activated on demand; user-invocable skills appear in the command palette.",
           "files": [
             {
@@ -2976,6 +3019,7 @@
         },
         "rules": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Project context files (AGENTS.md, CRUSH.md, and compatible variants) plus global context files in ~/.config, with configurable paths.",
           "files": [
             {
@@ -3045,6 +3089,7 @@
         },
         "hooks": {
           "status": "partial",
+          "verified": "2026-07-12",
           "summary": "Shell-command hooks configured under the hooks key in crush.json. Preliminary support: currently only PreToolUse fires, with plans to add more events.",
           "files": [
             {
@@ -3120,6 +3165,7 @@
         },
         "commands": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Custom commands (saved prompts) as plain markdown files, invoked from the command palette with user:/project: prefixes and $NAME argument placeholders.",
           "files": [
             {
@@ -3166,6 +3212,7 @@
         },
         "settings": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "crush.json configures providers, models, LSPs, MCP servers, hooks, permissions, and options, at project and global scope with a published JSON schema.",
           "files": [
             {
@@ -3326,6 +3373,7 @@
       "surfaces": {
         "mcp": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "Configure MCP servers via mcp.json. Supports stdio, SSE, and Streamable HTTP, with OAuth and config interpolation.",
           "files": [
             {
@@ -3447,6 +3495,7 @@
         },
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills loaded from .cursor/skills and .agents/skills, invoked with / or @. Also reads Claude and Codex skill dirs.",
           "files": [
             {
@@ -3514,6 +3563,7 @@
         },
         "rules": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "Project rules as .mdc files with frontmatter, plus plain-markdown AGENTS.md (root and nested).",
           "files": [
             {
@@ -3568,6 +3618,7 @@
         },
         "hooks": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "hooks.json defines scripts that observe, block, or modify the agent loop. Command and prompt hook types. Claude Code hook compatible.",
           "files": [
             {
@@ -3673,6 +3724,7 @@
         },
         "commands": {
           "status": "deprecated",
+          "verified": "2026-06-21",
           "summary": "Cursor merged slash commands into Skills. Existing user- and workspace-level commands can be converted with /migrate-to-skills; author new workflows as Skills.",
           "files": [],
           "fields": [],
@@ -3692,16 +3744,42 @@
         },
         "settings": {
           "status": "partial",
-          "summary": "Most settings live in the Cursor Settings UI. permissions.json controls Agent Run Mode allowlists and MCP auto-run behavior.",
+          "verified": "2026-07-22",
+          "summary": "Most settings live in the Cursor Settings UI. permissions.json controls Run Mode allowlists (MCP tools, terminal commands) and steers the Auto-review classifier.",
           "files": [
             {
               "path": ".cursor/permissions.json",
               "scope": "project",
               "format": "json",
-              "note": "Allowlist MCP tools and shell commands for Run Mode."
+              "note": "Applies to one project directory. Commit it to share guidance with the team."
+            },
+            {
+              "path": "~/.cursor/permissions.json",
+              "scope": "global",
+              "format": "json",
+              "note": "Applies to all project directories on the machine."
             }
           ],
-          "fields": [],
+          "fields": [
+            {
+              "name": "mcpAllowlist",
+              "type": "string[]",
+              "required": false,
+              "description": "MCP tools that run without approval, as server:tool patterns (wildcards supported, e.g. *:search). Overrides the in-app MCP allowlist when set."
+            },
+            {
+              "name": "terminalAllowlist",
+              "type": "string[]",
+              "required": false,
+              "description": "Terminal commands that run without approval. Overrides the in-app terminal allowlist when set."
+            },
+            {
+              "name": "autoRun",
+              "type": "{ allow_instructions?: string[], block_instructions?: string[] }",
+              "required": false,
+              "description": "Natural-language guidance for the Auto-review classifier: actions to lean toward allowing or blocking."
+            }
+          ],
           "transports": [],
           "auth": [],
           "invocation": [],
@@ -3709,10 +3787,12 @@
           "capabilities": [],
           "examples": [],
           "notes": [
-            "Pre-configure which MCP tools run without approval by adding them to permissions.json.",
-            "autoRun instructions in permissions.json steer the Auto-review classifier per server or tool."
+            "permissions.json only takes effect when a Run Mode is enabled in Cursor Settings (Auto-review, Allowlist, or Run Everything).",
+            "When a key is defined in permissions.json it overrides the corresponding in-app allowlist, which becomes read-only.",
+            "Arrays from the global and project files are concatenated before being applied.",
+            "autoRun instructions steer the Auto-review classifier; they have no effect in Allowlist or Run Everything modes."
           ],
-          "docs": "https://cursor.com/docs/agent/mcp"
+          "docs": "https://cursor.com/docs/reference/permissions"
         }
       }
     },
@@ -3722,6 +3802,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -3772,6 +3853,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -3819,6 +3901,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -3871,6 +3954,7 @@
       "surfaces": {
         "mcp": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "MCP servers in mcp.json at user, folder, and project level, managed via the /mcp interactive UI, `droid mcp add`, or a built-in registry of 40+ servers.",
           "files": [
             {
@@ -4005,6 +4089,7 @@
         },
         "skills": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "SKILL.md skills in .factory/skills/ that both the user (/skill-name) and the Droid can invoke, with frontmatter to control invocation and optional supporting files.",
           "files": [
             {
@@ -4078,6 +4163,7 @@
         },
         "rules": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "AGENTS.md files at repo root, subdirectories, and a personal override in ~/.factory/AGENTS.md brief the agent on build/test commands, architecture, and conventions.",
           "files": [
             {
@@ -4117,6 +4203,7 @@
         },
         "hooks": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Shell-command hooks in hooks.json at user, project, plugin, and org-managed scope, with matchers, JSON stdin input, and decision control via exit codes or structured JSON output.",
           "files": [
             {
@@ -4203,6 +4290,7 @@
         },
         "commands": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Custom slash commands as Markdown prompts or shebang executables in .factory/commands/, now merged into skills (which offer the same /command plus more features).",
           "files": [
             {
@@ -4269,6 +4357,7 @@
         },
         "settings": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "settings.json in .factory/ folders controls model, autonomy, command allow/deny/block lists, hooks toggle, and more, with local overrides and enterprise org-managed settings.",
           "files": [
             {
@@ -4451,6 +4540,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -4497,6 +4587,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -4547,6 +4638,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -4600,6 +4692,7 @@
       "surfaces": {
         "mcp": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "MCP servers configured under the mcpServers key in settings.json. Supports stdio, SSE, and Streamable HTTP transports, OAuth (including Google credentials and service-account impersonation), tool filtering, and the gemini mcp CLI for managing entries.",
           "files": [
             {
@@ -4780,6 +4873,7 @@
         },
         "skills": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Agent Skills based on the agentskills.io open standard: SKILL.md directories discovered from built-in, extension, user, and workspace tiers, activated by the model via the activate_skill tool with user consent.",
           "files": [
             {
@@ -4847,6 +4941,7 @@
         },
         "rules": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Hierarchical GEMINI.md context files loaded from the global, workspace, and just-in-time (per-directory) tiers, concatenated and sent with every prompt. Supports @file.md imports and configurable file names (e.g. AGENTS.md).",
           "files": [
             {
@@ -4898,6 +4993,7 @@
         },
         "hooks": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Synchronous shell commands that run at lifecycle events across the agent loop, configured under the hooks key in settings.json. Hooks communicate via JSON on stdin/stdout and can inject context, rewrite tool arguments, block actions, mock model responses, or filter tools.",
           "files": [
             {
@@ -5000,6 +5096,7 @@
         },
         "commands": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Custom slash commands defined as TOML files under .gemini/commands/. Subdirectories create namespaced names (git/commit.toml becomes /git:commit). Prompts support {{args}} injection, !{...} shell execution, and @{...} file embedding.",
           "files": [
             {
@@ -5055,6 +5152,7 @@
         },
         "settings": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Layered settings.json files (system defaults, user, project, system overrides) organized into category objects like general, ui, model, context, tools, security, mcp, and hooksConfig. Editable in-session with the /settings dialog.",
           "files": [
             {
@@ -5189,6 +5287,7 @@
       "surfaces": {
         "mcp": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Repository administrators configure MCP servers as JSON (mcpServers key) in the repository settings on github.com (Settings > Copilot > MCP servers). The config is shared by the cloud agent and Copilot code review; secrets are injected via COPILOT_MCP_-prefixed Agents secrets.",
           "files": [],
           "fields": [
@@ -5285,6 +5384,7 @@
         },
         "skills": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "SKILL.md Agent Skills (open standard) stored in the repository; loaded automatically when relevant to the cloud agent's task and also used by Copilot code review.",
           "files": [
             {
@@ -5349,6 +5449,7 @@
         },
         "rules": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Repository custom instructions: repo-wide .github/copilot-instructions.md, path-specific .github/instructions/*.instructions.md with applyTo globs, and AGENTS.md files anywhere in the repo (nearest file wins).",
           "files": [
             {
@@ -5419,6 +5520,7 @@
         },
         "hooks": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "The cloud agent runs .github/hooks/*.json hooks inside its ephemeral Linux sandbox. A subset of events fires; only bash (or the cross-platform command) entries are honored, and HTTP hooks must target firewall-allowed hosts.",
           "files": [
             {
@@ -5515,6 +5617,7 @@
         },
         "commands": {
           "status": "unsupported",
+          "verified": "2026-07-12",
           "summary": "Prompt files (.github/prompts/*.prompt.md) are not supported on GitHub.com; GitHub's customization cheat sheet marks prompt files as unsupported for the GitHub.com surface.",
           "files": [],
           "fields": [],
@@ -5531,6 +5634,7 @@
         },
         "settings": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "The cloud agent's environment is configured with a .github/workflows/copilot-setup-steps.yml Actions workflow (preinstall dependencies, choose runners) plus .github/copilot/settings.json for plugins. Remaining configuration (MCP, firewall, secrets, code review toggles) lives in repository settings on github.com.",
           "files": [
             {
@@ -5614,6 +5718,7 @@
       "surfaces": {
         "mcp": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "MCP servers are configured under the mcpServers key in ~/.copilot/mcp-config.json (user level) or in workspace .mcp.json / .github/mcp.json files, or managed with /mcp and copilot mcp commands. Supports stdio, Streamable HTTP, and legacy SSE with OAuth (including headless client_credentials).",
           "files": [
             {
@@ -5771,6 +5876,7 @@
         },
         "skills": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "SKILL.md Agent Skills (open standard) loaded from project and personal skill folders, invoked automatically by the agent or manually as /skill-name. Managed with /skills and copilot skill commands.",
           "files": [
             {
@@ -5872,6 +5978,7 @@
         },
         "rules": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Custom instructions from the repository (.github/copilot-instructions.md, .github/instructions/**/*.instructions.md, AGENTS.md) plus personal instructions in ~/.copilot (copilot-instructions.md and instructions/*.instructions.md) applied to every session.",
           "files": [
             {
@@ -5934,6 +6041,7 @@
         },
         "hooks": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Versioned JSON hook files run command, HTTP, or prompt handlers at lifecycle events on the local machine. Sources are combined in order: policy, repository .github/hooks, user ~/.copilot/hooks, inline hooks blocks in settings files, and plugins.",
           "files": [
             {
@@ -6078,6 +6186,7 @@
         },
         "commands": {
           "status": "partial",
+          "verified": "2026-07-12",
           "summary": "No native .prompt.md prompt files (GitHub's cheat sheet marks prompt files unsupported for Copilot CLI), but Claude-compatible command files in .claude/commands/ are read as an alternative skill format, and plugins can contribute command directories.",
           "files": [
             {
@@ -6131,6 +6240,7 @@
         },
         "settings": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Layered settings: ~/.copilot/settings.json (user), .github/copilot/settings.json (repository, limited key set), .github/copilot/settings.local.json (personal overrides), and MDM managed settings. Edit via /settings or directly.",
           "files": [
             {
@@ -6284,11 +6394,12 @@
       "description": "An open source, extensible AI agent from Block that automates engineering tasks via MCP extensions, available as a CLI and desktop app.",
       "homepage": "https://block.github.io/goose/",
       "repo": "https://github.com/block/goose",
-      "docs": "https://block.github.io/goose/docs/quickstart",
+      "docs": "https://goose-docs.ai/docs/quickstart",
       "id": "goose",
       "surfaces": {
         "mcp": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "MCP servers are configured as extensions under the extensions key in config.yaml. Supports local stdio and remote Streamable HTTP servers, plus built-in, platform, and inline Python extension types.",
           "files": [
             {
@@ -6438,10 +6549,11 @@
             "Secrets referenced via env_keys are stored in the system keyring (or secrets.yaml with file-based storage), not in config.yaml.",
             "goose automatically checks external extensions for known malware before activation."
           ],
-          "docs": "https://block.github.io/goose/docs/getting-started/using-extensions"
+          "docs": "https://goose-docs.ai/docs/getting-started/using-extensions"
         },
         "skills": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "SKILL.md skill folders following the open Agent Skills standard, discovered at session start and loaded automatically when a request matches, or listed and loaded via the CLI /skills command.",
           "files": [
             {
@@ -6500,10 +6612,11 @@
             "Backward compatibility: goose also discovers skills from .goose/skills/, .claude/skills/, ~/.claude/skills/, and platform-specific config directories, but .agents/skills/ is the recommended standard.",
             "goose skills are compatible with Claude Desktop and other agents that support the Agent Skills standard."
           ],
-          "docs": "https://block.github.io/goose/docs/guides/context-engineering/using-skills"
+          "docs": "https://goose-docs.ai/docs/guides/context-engineering/using-skills"
         },
         "rules": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Persistent context via .goosehints and AGENTS.md files, loaded globally from the config directory and locally from the project hierarchy into every request's system prompt.",
           "files": [
             {
@@ -6552,10 +6665,11 @@
             "Hints require the Developer extension to be enabled.",
             "Hint files are plain text; markdown formatting is conventional but not required."
           ],
-          "docs": "https://block.github.io/goose/docs/guides/context-engineering/using-goosehints"
+          "docs": "https://goose-docs.ai/docs/guides/context-engineering/using-goosehints"
         },
         "hooks": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Shell-command hooks that fire on session, prompt, tool, file, and shell lifecycle events, defined in hooks/hooks.json inside plugin directories following the Open Plugins hooks specification.",
           "files": [
             {
@@ -6631,10 +6745,11 @@
             "AfterFileEdit and AfterShellExecution only run after successful tool calls; use PostToolUseFailure for failures. SubagentStart/SubagentStop are not currently emitted.",
             "Hook failures and timeouts are logged but never crash goose. Disable a plugin via disabledPlugins in ~/.config/goose/settings.json (or <project>/.config/goose/settings.json)."
           ],
-          "docs": "https://block.github.io/goose/docs/guides/context-engineering/hooks"
+          "docs": "https://goose-docs.ai/docs/guides/context-engineering/hooks"
         },
         "commands": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Custom slash commands are shortcuts that run recipes (reusable YAML/JSON task templates), mapped under the slash_commands key in config.yaml or assigned in the Desktop Recipes UI. Built-in CLI slash commands cover session control.",
           "files": [
             {
@@ -6686,10 +6801,11 @@
             "Recipes are defined in .yaml (recommended, CLI + Desktop) or .json files; .yml is not supported by the CLI. See the recipe reference for the full schema (instructions, prompt, parameters, extensions, settings, retry, response, sub_recipes).",
             "If a mapped recipe file is missing or invalid, the command text is sent to the model as regular text."
           ],
-          "docs": "https://block.github.io/goose/docs/guides/context-engineering/slash-commands"
+          "docs": "https://goose-docs.ai/docs/guides/context-engineering/slash-commands"
         },
         "settings": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Primary configuration lives in ~/.config/goose/config.yaml: provider and model, tool-execution mode, extensions, slash commands, and general settings.",
           "files": [
             {
@@ -6791,7 +6907,7 @@
             "Store secrets in the system keyring, not in config.yaml.",
             "Many settings can also be managed via `goose configure` (CLI) or the Desktop Settings page."
           ],
-          "docs": "https://block.github.io/goose/docs/guides/config-files"
+          "docs": "https://goose-docs.ai/docs/guides/config-files"
         }
       }
     },
@@ -6801,6 +6917,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -6849,6 +6966,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -6898,6 +7016,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -6945,6 +7064,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -6992,6 +7112,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -7042,6 +7163,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -7095,6 +7217,7 @@
       "surfaces": {
         "mcp": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "MCP servers configured under the top-level mcp key of kilo.jsonc (project or global). Local (STDIO) and remote (Streamable HTTP with SSE fallback) servers, with OAuth 2.0 for remote servers.",
           "files": [
             {
@@ -7219,6 +7342,7 @@
         },
         "skills": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Agent Skills (SKILL.md packages) loaded from .kilo/skills/ (project) and ~/.kilo/skills/ (global), plus cross-agent compatibility directories and extra paths/URLs configured in kilo.jsonc.",
           "files": [
             {
@@ -7309,6 +7433,7 @@
         },
         "rules": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Persistent instructions via auto-discovered AGENTS.md files (project root, subdirectories, and global config dir) plus the instructions array in kilo.jsonc pointing at rule files, globs, or URLs.",
           "files": [
             {
@@ -7374,6 +7499,7 @@
         },
         "hooks": {
           "status": "unsupported",
+          "verified": "2026-07-12",
           "summary": "Kilo Code does not expose user-configurable lifecycle hooks.",
           "files": [],
           "fields": [],
@@ -7390,6 +7516,7 @@
         },
         "commands": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Workflows (slash commands) as markdown files in .kilo/commands/ (project) or ~/.config/kilo/commands/ (global); the filename becomes the command name.",
           "files": [
             {
@@ -7451,6 +7578,7 @@
         },
         "settings": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "kilo.jsonc is the primary config file, shared by the VS Code extension, CLI, and JetBrains. Global config at ~/.config/kilo/kilo.jsonc; project config at kilo.jsonc or .kilo/kilo.jsonc.",
           "files": [
             {
@@ -7557,6 +7685,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -7607,6 +7736,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -7668,6 +7798,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -7717,6 +7848,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -7764,6 +7896,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -7811,6 +7944,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -7859,6 +7993,7 @@
       "surfaces": {
         "mcp": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "Configure MCP servers in JSON under the mcpServers key.",
           "files": [
             {
@@ -7938,6 +8073,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -7985,6 +8121,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -8032,6 +8169,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -8079,6 +8217,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -8141,6 +8280,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -8188,6 +8328,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -8255,6 +8396,7 @@
       "surfaces": {
         "mcp": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Configure MCP servers under the mcp key in opencode.json. Local servers run as commands; remote servers connect over HTTP with header or OAuth auth.",
           "files": [
             {
@@ -8370,6 +8512,7 @@
         },
         "skills": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "SKILL.md instruction sets discovered from project and home directories, listed in the native skill tool and loaded on demand by the agent.",
           "files": [
             {
@@ -8469,6 +8612,7 @@
         },
         "rules": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "AGENTS.md files hold persistent project and global instructions, with CLAUDE.md fallbacks and an instructions option for extra rule files.",
           "files": [
             {
@@ -8533,6 +8677,7 @@
         },
         "hooks": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Lifecycle hooks are implemented through the plugin system: JS/TS modules that hook into agent events to observe, block, or rewrite behavior.",
           "files": [
             {
@@ -8597,6 +8742,7 @@
         },
         "commands": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Custom slash commands defined as markdown files with frontmatter or inline in opencode.json, with argument placeholders, shell output injection, and file references.",
           "files": [
             {
@@ -8677,6 +8823,7 @@
         },
         "settings": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "opencode.json (or .jsonc) configures models, agents, permissions, tools, MCP, commands, and plugins, merged across remote, global, project, and managed scopes.",
           "files": [
             {
@@ -8868,6 +9015,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -8928,6 +9076,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -8988,6 +9137,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -9035,6 +9185,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -9081,6 +9232,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -9143,6 +9295,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -9196,6 +9349,7 @@
       "surfaces": {
         "mcp": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "MCP servers configured under the mcpServers key in settings.json. Supports stdio, SSE, and Streamable HTTP transports, OAuth 2.0, per-server tool filtering, discovery timeouts, and the qwen mcp CLI for managing entries.",
           "files": [
             {
@@ -9358,6 +9512,7 @@
         },
         "skills": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "SKILL.md Agent Skills discovered from personal (~/.qwen/skills/), project (.qwen/skills/), and extension directories. Model-invoked by default, user-invocable as /<skill-name>, with optional path gating and priority ordering.",
           "files": [
             {
@@ -9437,6 +9592,7 @@
         },
         "rules": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "QWEN.md instruction files (global, project, and personal-local tiers) loaded at session start, plus automatic auto-memory the agent writes itself and an opt-in git-shared team memory tier.",
           "files": [
             {
@@ -9514,6 +9670,7 @@
         },
         "hooks": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Lifecycle hooks configured under the hooks key in settings.json, with four executor types: shell command, HTTP POST, registered function (internal), and LLM prompt. Hooks can inject context, block tools, and audit the session across a wide event set.",
           "files": [
             {
@@ -9661,6 +9818,7 @@
         },
         "commands": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Custom slash commands as Markdown files with optional YAML frontmatter under .qwen/commands/ (TOML format is deprecated but still read). Subdirectories create namespaced names, and prompts support {{args}}, !{...} shell execution, and @{...} file injection.",
           "files": [
             {
@@ -9716,6 +9874,7 @@
         },
         "settings": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Layered settings.json files (system defaults, user, project, system overrides) organized into category objects like general, ui, model, context, tools, security, mcp, memory, and hooks. Legacy flat settings are migrated automatically.",
           "files": [
             {
@@ -9827,6 +9986,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -9877,6 +10037,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -9930,6 +10091,7 @@
       "surfaces": {
         "mcp": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "MCP servers configured under mcpServers in a project .roo/mcp.json or the global mcp_settings.json. Supports STDIO, Streamable HTTP, and legacy SSE transports.",
           "files": [
             {
@@ -10071,6 +10233,7 @@
         },
         "skills": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "SKILL.md instruction packages following the Agent Skills format, loaded on demand when a request matches the skill description. Supports mode-specific and cross-agent (.agents) locations.",
           "files": [
             {
@@ -10138,6 +10301,7 @@
         },
         "rules": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Persistent custom instructions from .roo/rules/ directories (global and workspace), mode-specific rules-{modeSlug}/ variants, .roorules fallback files, and AGENTS.md.",
           "files": [
             {
@@ -10201,6 +10365,7 @@
         },
         "hooks": {
           "status": "unsupported",
+          "verified": "2026-07-12",
           "summary": "Roo Code does not expose user-configurable lifecycle hooks.",
           "files": [],
           "fields": [],
@@ -10217,6 +10382,7 @@
         },
         "commands": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Custom slash commands as markdown files in .roo/commands/ (project) or ~/.roo/commands/ (global); the filename becomes the command name.",
           "files": [
             {
@@ -10273,6 +10439,7 @@
         },
         "settings": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Settings live in the Roo Code settings UI backed by extension storage, exportable/importable as JSON. Agent-relevant knobs (command allowlists, AGENTS.md loading, timeouts) are VS Code settings under the roo-cline.* namespace.",
           "files": [
             {
@@ -10368,6 +10535,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -10418,6 +10586,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -10465,6 +10634,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -10512,6 +10682,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -10562,6 +10733,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -10612,6 +10784,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -10665,6 +10838,7 @@
       "surfaces": {
         "mcp": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Configure MCP servers in mcp.json under the servers key (not mcpServers). Supports stdio, Streamable HTTP, and legacy SSE, plus an MCP server gallery in the Extensions view and optional sandboxing for local servers.",
           "files": [
             {
@@ -10786,6 +10960,7 @@
         },
         "skills": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "SKILL.md Agent Skills (open standard) loaded on demand from project and personal skill folders, including Claude- and .agents-compatible locations. Skills double as slash commands in chat.",
           "files": [
             {
@@ -10885,6 +11060,7 @@
         },
         "rules": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Always-on instructions via .github/copilot-instructions.md, AGENTS.md, and CLAUDE.md, plus file-based *.instructions.md files that apply conditionally via applyTo glob patterns.",
           "files": [
             {
@@ -10969,6 +11145,7 @@
         },
         "hooks": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Preview: JSON hook files run shell commands at agent lifecycle events. Hooks receive event JSON on stdin and can return JSON on stdout to block tools, decide permissions, or inject context.",
           "files": [
             {
@@ -11074,6 +11251,7 @@
         },
         "commands": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Prompt files (.prompt.md) are reusable Markdown prompts invoked as slash commands in chat, with YAML frontmatter for agent, model, and tool selection.",
           "files": [
             {
@@ -11157,6 +11335,7 @@
         },
         "settings": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Agent behavior is configured in settings.json via chat.* and github.copilot.* keys: agent mode, tool approvals, sandboxing, MCP access, and discovery locations for instructions, prompts, skills, and hooks.",
           "files": [
             {
@@ -11319,6 +11498,7 @@
       "surfaces": {
         "mcp": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "MCP servers configured in Settings > Agents > MCP servers, in Warp Drive, or via file-based .warp/.mcp.json config. Warp also picks up MCP config from Claude Code, Codex, and other agent providers.",
           "files": [
             {
@@ -11416,6 +11596,7 @@
         },
         "skills": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "SKILL.md skills (Agent Skills format) discovered from .agents/skills/ and many compatible directories, invocable by the agent or directly via /{skill-name} with argument placeholders.",
           "files": [
             {
@@ -11484,6 +11665,7 @@
         },
         "rules": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Project Rules in AGENTS.md (or legacy WARP.md) files at repo root and subdirectories, plus cloud-managed Global Rules in Warp Drive.",
           "files": [
             {
@@ -11524,6 +11706,7 @@
         },
         "hooks": {
           "status": "unsupported",
+          "verified": "2026-07-12",
           "summary": "Warp has no lifecycle hook mechanism for its agents.",
           "files": [],
           "fields": [],
@@ -11539,6 +11722,7 @@
         },
         "commands": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Slash commands in Agent Mode combine built-in static commands (/init, /agent, /model, /add-mcp, ...) with user-defined Agent Prompts saved in Warp Drive and skills invoked as /{skill-name}.",
           "files": [],
           "fields": [
@@ -11588,6 +11772,7 @@
         },
         "settings": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "TOML settings file with hot reload; the [agents] sections control model, knowledge (rules), MCP auto-spawn, and permission profiles for the agent.",
           "files": [
             {
@@ -11726,6 +11911,7 @@
       "surfaces": {
         "mcp": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Configure MCP servers for Cascade in mcp_config.json under the mcpServers key, or install from the built-in MCP Marketplace. Supports stdio, Streamable HTTP, and SSE with OAuth for each transport.",
           "files": [
             {
@@ -11821,6 +12007,7 @@
         },
         "skills": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Folder-based SKILL.md skills (Agent Skills standard) that bundle instructions with supporting files. Cascade sees only name and description until it invokes the skill (progressive disclosure).",
           "files": [
             {
@@ -11880,6 +12067,7 @@
         },
         "rules": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "User-defined rules at global, workspace, and system level, with per-rule activation modes (always_on, glob, model_decision, manual). AGENTS.md files are fed into the same rules engine with location-based scoping.",
           "files": [
             {
@@ -11964,6 +12152,7 @@
         },
         "hooks": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Cascade Hooks run shell commands at key points in the agent workflow, configured in hooks.json at system, user, and workspace level (merged, executed system -> user -> workspace). Hooks receive event JSON on stdin; pre-hooks can block the action by exiting with code 2.",
           "files": [
             {
@@ -12050,6 +12239,7 @@
         },
         "commands": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Workflows are markdown prompt templates invoked manually with /workflow-name slash commands. Cascade processes the steps sequentially; workflows can call other workflows.",
           "files": [
             {
@@ -12097,6 +12287,7 @@
         },
         "settings": {
           "status": "partial",
+          "verified": "2026-07-12",
           "summary": "Agent-relevant settings live in the in-app settings UI (Cascade gitignore access, diff zones, terminal allow/deny lists, marketplace URL); there is no documented user-editable settings file for agent behavior. Enterprises can enforce settings centrally via OS-level policies.",
           "files": [
             {
@@ -12160,6 +12351,7 @@
       "surfaces": {
         "mcp": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Configure MCP servers (context servers) in settings.json under the context_servers key, or install them as Zed extensions. Supports local stdio and remote servers with OAuth.",
           "files": [
             {
@@ -12273,6 +12465,7 @@
         },
         "skills": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "SKILL.md skill folders following the open Agent Skills standard, loaded autonomously from a catalog or invoked manually via slash command or @-mention.",
           "files": [
             {
@@ -12338,6 +12531,7 @@
         },
         "rules": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Always-on instructions via AGENTS.md: a personal global file plus one project instruction file, with compatibility for .rules, .cursorrules, CLAUDE.md, and similar.",
           "files": [
             {
@@ -12382,6 +12576,7 @@
         },
         "hooks": {
           "status": "unsupported",
+          "verified": "2026-07-12",
           "summary": "Zed has no lifecycle hook system for the Agent Panel: no user-configurable scripts fire on agent events such as tool use, prompt submit, or session start/end.",
           "files": [],
           "fields": [],
@@ -12398,6 +12593,7 @@
         },
         "commands": {
           "status": "partial",
+          "verified": "2026-07-12",
           "summary": "Slash commands in the Agent Panel invoke skills by name, plus the built-in /compact. There is no separate custom prompt-template command format; custom commands are authored as skills.",
           "files": [
             {
@@ -12435,6 +12631,7 @@
         },
         "settings": {
           "status": "supported",
+          "verified": "2026-07-12",
           "summary": "Agent behavior is configured in settings.json under the agent key: tool permissions, profiles, auto-compaction, feature-specific models, and model parameters.",
           "files": [
             {
@@ -12539,6 +12736,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {
@@ -12602,6 +12800,7 @@
       "surfaces": {
         "skills": {
           "status": "supported",
+          "verified": "2026-06-21",
           "summary": "SKILL.md skills following the open Agent Skills standard.",
           "files": [
             {

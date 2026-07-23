@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Shell-command hooks in hooks.json at user, project, plugin, and org-managed scope, with matchers, JSON stdin input, and decision control via exit codes or structured JSON output."
 events = [
   "PreToolUse", "PostToolUse",

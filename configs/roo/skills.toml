@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "SKILL.md instruction packages following the Agent Skills format, loaded on demand when a request matches the skill description. Supports mode-specific and cross-agent (.agents) locations."
 invocation = [
   "automatic (request matches skill description)",

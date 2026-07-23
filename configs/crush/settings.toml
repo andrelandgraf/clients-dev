@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "crush.json configures providers, models, LSPs, MCP servers, hooks, permissions, and options, at project and global scope with a published JSON schema."
 docs = "https://github.com/charmbracelet/crush#configuration"
 notes = [

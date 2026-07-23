@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "SKILL.md Agent Skills (open standard) loaded on demand from project and personal skill folders, including Claude- and .agents-compatible locations. Skills double as slash commands in chat."
 invocation = ["/skill-name"]
 docs = "https://code.visualstudio.com/docs/copilot/customization/agent-skills"

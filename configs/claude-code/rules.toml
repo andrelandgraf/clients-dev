@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-06-21"
 summary = "CLAUDE.md memory files (project/user/managed) plus modular .claude/rules/*.md with optional path scoping. Auto memory accumulates learnings."
 docs = "https://docs.claude.com/en/docs/claude-code/memory"
 notes = [

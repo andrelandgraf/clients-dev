@@ -1,4 +1,5 @@
 status = "partial"
+verified = "2026-07-12"
 summary = "No native .prompt.md prompt files (GitHub's cheat sheet marks prompt files unsupported for Copilot CLI), but Claude-compatible command files in .claude/commands/ are read as an alternative skill format, and plugins can contribute command directories."
 invocation = ["/command-name"]
 docs = "https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference"

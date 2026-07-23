@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "AGENTS.md guidance files at project, user, and system scope, with @-file mentions and glob-scoped granular guidance in mentioned files."
 invocation = ["@file-mention"]
 docs = "https://ampcode.com/manual#agents-md"

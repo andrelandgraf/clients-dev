@@ -1,4 +1,5 @@
 status = "partial"
+verified = "2026-07-12"
 summary = "Shell-command hooks configured under the hooks key in crush.json. Preliminary support: currently only PreToolUse fires, with plans to add more events."
 events = ["PreToolUse"]
 docs = "https://github.com/charmbracelet/crush/tree/main/docs/hooks"

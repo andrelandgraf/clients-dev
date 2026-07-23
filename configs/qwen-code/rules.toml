@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "QWEN.md instruction files (global, project, and personal-local tiers) loaded at session start, plus automatic auto-memory the agent writes itself and an opt-in git-shared team memory tier."
 docs = "https://github.com/QwenLM/qwen-code/blob/main/docs/users/features/memory.md"
 notes = [

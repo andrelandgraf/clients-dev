@@ -1,6 +1,7 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Persistent context via .goosehints and AGENTS.md files, loaded globally from the config directory and locally from the project hierarchy into every request's system prompt."
-docs = "https://block.github.io/goose/docs/guides/context-engineering/using-goosehints"
+docs = "https://goose-docs.ai/docs/guides/context-engineering/using-goosehints"
 notes = [
   "By default goose looks for AGENTS.md then .goosehints at each level (both global and local); local hints take priority over global hints on conflict.",
   "Nested hint files are supported in git repositories: files load from the working directory up to the repo root at session start, and from nested subdirectories as goose accesses them.",

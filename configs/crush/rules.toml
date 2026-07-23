@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Project context files (AGENTS.md, CRUSH.md, and compatible variants) plus global context files in ~/.config, with configurable paths."
 docs = "https://github.com/charmbracelet/crush#global-context-files"
 notes = [

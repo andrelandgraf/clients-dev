@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "Agent behavior is configured in settings.json via chat.* and github.copilot.* keys: agent mode, tool approvals, sandboxing, MCP access, and discovery locations for instructions, prompts, skills, and hooks."
 docs = "https://code.visualstudio.com/docs/copilot/reference/copilot-settings"
 notes = [

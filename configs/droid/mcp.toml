@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "MCP servers in mcp.json at user, folder, and project level, managed via the /mcp interactive UI, `droid mcp add`, or a built-in registry of 40+ servers."
 transports = ["stdio", "sse", "http"]
 auth = ["oauth", "headers", "env"]

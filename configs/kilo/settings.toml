@@ -1,4 +1,5 @@
 status = "supported"
+verified = "2026-07-12"
 summary = "kilo.jsonc is the primary config file, shared by the VS Code extension, CLI, and JetBrains. Global config at ~/.config/kilo/kilo.jsonc; project config at kilo.jsonc or .kilo/kilo.jsonc."
 docs = "https://kilocode.ai/docs/getting-started/settings"
 notes = [
