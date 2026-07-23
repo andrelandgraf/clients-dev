@@ -113,8 +113,14 @@ Stack: **Next.js 16** (App Router, static pages + a serverless Hono API),
 
 Contributions of new clients and corrections are very welcome — open a PR that
 adds or edits the relevant TOML under `configs/`. Keep entries faithful to the
-official documentation.
+official documentation and bump the `verified` date on every surface you
+check. See [CONTRIBUTING.md](./CONTRIBUTING.md) for the full workflow; CI
+validates every PR (schema validation, lint, build, catalog sync).
 
 ## License
 
-MIT © agent-tooling
+Code: MIT © agent-tooling.
+
+Data: the contents of `configs/` and the generated catalog are dedicated to
+the public domain under [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) —
+use them in your own tools, docs, or datasets without asking.

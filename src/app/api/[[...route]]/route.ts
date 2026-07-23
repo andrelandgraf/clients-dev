@@ -15,6 +15,18 @@ const app = new Hono().basePath("/api");
 
 app.use("*", cors());
 
+// The catalog only changes on deploy, so let Vercel's CDN cache API responses.
+// The MCP endpoint is a stateful-ish POST protocol and must not be cached.
+app.use("*", async (c, next) => {
+  await next();
+  if (c.req.method === "GET" && !c.req.path.startsWith("/api/mcp")) {
+    c.header(
+      "Cache-Control",
+      "public, s-maxage=3600, stale-while-revalidate=86400",
+    );
+  }
+});
+
 const stripJson = (value: string) => value.replace(/\.json$/, "");
 
 const isSurface = (value: string): value is SurfaceId =>
@@ -25,6 +37,8 @@ app.get("/", (c) =>
     name: "clients.dev API",
     description:
       "Machine-readable configuration surfaces for AI coding clients.",
+    license:
+      "Data is public domain (CC0 1.0). https://github.com/agent-tooling/clients-dev",
     endpoints: {
       catalog: "/api/catalog.json",
       clients: "/api/clients.json",

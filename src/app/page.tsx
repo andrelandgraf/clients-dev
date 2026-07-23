@@ -20,12 +20,13 @@ export default function HomePage() {
             How AI coding agents are configured
           </h1>
           <p className="mt-2 max-w-2xl text-sm text-muted-foreground sm:text-base">
-            The exact file paths and typed fields every client reads —{" "}
-            {SURFACES.length} surfaces across{" "}
+            The exact file paths and typed fields each client reads —{" "}
             <span className="font-medium text-foreground">
-              {complete.length + partial.length} clients
-            </span>
-            , verified from official docs. Readable by you and your agent.
+              {complete.length} clients
+            </span>{" "}
+            fully documented across all {SURFACES.length} surfaces, verified
+            from official docs, plus {partial.length} more partially tracked.
+            Readable by you and your agent.
           </p>
         </div>
         <div className="flex flex-col gap-1.5 text-xs">
