@@ -1,0 +1,42 @@
+{
+  "name": "@agent-tooling/clients",
+  "version": "0.1.0",
+  "description": "Evidence-backed AI client configuration and behavior data",
+  "type": "module",
+  "license": "MIT AND CC0-1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agent-tooling/clients-dev.git",
+    "directory": "packages/clients"
+  },
+  "homepage": "https://clients.dev",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "LICENSE-DATA"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./validate": {
+      "types": "./dist/validate.d.ts",
+      "import": "./dist/validate.js"
+    },
+    "./catalog.json": "./dist/catalog.json",
+    "./schema.json": "./dist/catalog-schema.json",
+    "./clients/*.json": "./dist/clients/*.json"
+  },
+  "sideEffects": false,
+  "engines": {
+    "node": ">=22"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "zod": "^4.4.3"
+  }
+}

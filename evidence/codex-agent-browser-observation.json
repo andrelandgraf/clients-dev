@@ -1,0 +1,11 @@
+{
+  "id": "codex-agent-browser-observation",
+  "kind": "observation",
+  "title": "Codex optional agent-browser: two local runs",
+  "url": "https://github.com/agent-tooling/clients-dev/blob/main/observations/codex-agent-browser.json",
+  "checked": "2026-09-06",
+  "locator": "records: /html, /negotiate, /redirect, /json; checks: #js text in both runs",
+  "revision": "agent-browser 0.9.1; HeadlessChrome/145.0.7632.6",
+  "trace": "observations/codex-agent-browser.json",
+  "reproduction": "bun run scripts/observe-browser.ts; requires agent-browser 0.9.1 and its installed browser. Local headless execution through Codex shell; no configured header overrides."
+}

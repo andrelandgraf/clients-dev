@@ -10,7 +10,11 @@ import { SURFACES, SURFACE_META } from "@/lib/clients/schema";
 
 function GitHubMark() {
   return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4 fill-current">
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      className="h-4 w-4 fill-current"
+    >
       <path d="M12 .5C5.37.5 0 5.78 0 12.29c0 5.21 3.44 9.63 8.21 11.19.6.11.82-.25.82-.57 0-.28-.01-1.02-.02-2-3.34.71-4.04-1.58-4.04-1.58-.55-1.37-1.34-1.74-1.34-1.74-1.09-.73.08-.72.08-.72 1.21.08 1.84 1.22 1.84 1.22 1.07 1.8 2.81 1.28 3.5.98.11-.76.42-1.28.76-1.58-2.67-.3-5.47-1.31-5.47-5.81 0-1.28.47-2.33 1.23-3.15-.12-.3-.53-1.51.12-3.15 0 0 1-.31 3.3 1.2a11.6 11.6 0 0 1 6 0c2.3-1.51 3.3-1.2 3.3-1.2.65 1.64.24 2.85.12 3.15.77.82 1.23 1.87 1.23 3.15 0 4.51-2.81 5.5-5.49 5.79.43.36.81 1.08.81 2.18 0 1.58-.01 2.85-.01 3.24 0 .32.21.69.83.57A12.02 12.02 0 0 0 24 12.29C24 5.78 18.63.5 12 .5Z" />
     </svg>
   );
@@ -43,7 +47,7 @@ export function SiteHeader({ searchItems }: { searchItems: SearchItem[] }) {
             </span>
           </Link>
           <span className="hidden truncate text-sm text-muted-foreground md:inline">
-            An open database of AI coding client configuration
+            AI client configuration & behavior
           </span>
         </div>
 
@@ -83,6 +87,15 @@ export function SiteHeader({ searchItems }: { searchItems: SearchItem[] }) {
           <HowToUse />
         </div>
       </div>
+      <nav
+        className="flex gap-5 overflow-x-auto border-t border-border/40 px-4 py-2 text-xs sm:px-6"
+        aria-label="Explore"
+      >
+        <Link href="/">Configuration</Link>
+        <Link href="/behaviors">Search & browsers</Link>
+        <Link href="/methodology">Evidence</Link>
+        <Link href="/developers">Developers</Link>
+      </nav>
       <SearchCommand open={open} onOpenChange={setOpen} items={searchItems} />
     </header>
   );

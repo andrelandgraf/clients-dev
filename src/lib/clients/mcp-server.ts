@@ -1,3 +1,5 @@
+import { ClaimKey } from "../../../packages/clients/src/behavior";
+import { compareBehavior } from "../../../packages/clients/src/query";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import {
@@ -21,9 +23,7 @@ const surfaceParam = z
 
 function json(value: unknown) {
   return {
-    content: [
-      { type: "text" as const, text: JSON.stringify(value, null, 2) },
-    ],
+    content: [{ type: "text" as const, text: JSON.stringify(value, null, 2) }],
   };
 }
 
@@ -50,6 +50,10 @@ export function createClientsMcpServer(): McpServer {
           type: client.type,
           homepage: client.homepage,
           fullyDocumented: isComplete(client),
+          configurationCoverage: isComplete(client)
+            ? "six-surfaces"
+            : "partial",
+          behaviorProfiles: client.behaviors.length,
           surfaces: Object.fromEntries(
             SURFACES.filter((surface) => client.surfaces[surface]).map(
               (surface) => [surface, client.surfaces[surface]?.status],
@@ -64,7 +68,7 @@ export function createClientsMcpServer(): McpServer {
     {
       title: "Get a client's full configuration reference",
       description:
-        "Everything documented about one client: config file paths (project/global/enterprise), formats, and the typed fields each surface accepts. Use the client id from list_clients (e.g. cursor, claude-code, codex).",
+        "Everything documented about one client, including behavior profiles and evidence references: config file paths (project/global/enterprise), formats, and the typed fields each surface accepts. Use the client id from list_clients (e.g. cursor, claude-code, codex).",
       inputSchema: {
         id: z.string().describe("Client id, e.g. cursor or claude-code"),
       },
@@ -77,7 +81,16 @@ export function createClientsMcpServer(): McpServer {
           availableIds: getClients().map((c) => c.id),
         });
       }
-      return json(client);
+      return json({
+        ...client,
+        evidence: getCatalog().evidence.filter((e) =>
+          client.behaviors.some(
+            (b) =>
+              b.claims.some((c) => c.evidence.includes(e.id)) ||
+              b.identification.some((r) => r.evidence.includes(e.id)),
+          ),
+        ),
+      });
     },
   );
 
@@ -131,6 +144,23 @@ export function createClientsMcpServer(): McpServer {
       }
       return json(schema);
     },
+  );
+
+  server.registerTool(
+    "compare_behavior",
+    {
+      title: "Compare client behavior",
+      description:
+        "Compare search, browsers, request formats or identity signals. Unknown is not unsupported. Includes evidence and applicability conditions.",
+      inputSchema: { key: ClaimKey },
+    },
+    async ({ key }) =>
+      json({
+        dataVersion: getCatalog().dataVersion,
+        clients: compareBehavior(getCatalog(), key),
+        evidence: getCatalog().evidence,
+        tools: getCatalog().tools,
+      }),
   );
 
   server.registerResource(

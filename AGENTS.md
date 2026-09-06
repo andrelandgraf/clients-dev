@@ -1,17 +1,21 @@
 <!-- BEGIN:nextjs-agent-rules -->
+
 # This is NOT the Next.js you know
 
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
+
 <!-- END:nextjs-agent-rules -->
 
 # clients.dev
 
-An open database of how AI coding clients are configured. See `README.md` for the full overview.
+An open database of AI client configuration, web behavior, and identification signals. See `README.md` for the full overview.
 
 ## Project layout
 
 - `configs/<client-id>/` — TOML source of truth (one folder per client, one file per surface).
-- `src/lib/clients/schema.ts` — Zod schema for clients and surfaces (the contract).
+- `packages/clients/src/schema.ts` and `behavior.ts` — shared Zod contract; the app re-exports it from `src/lib/clients/schema.ts`.
+- `configs/<client-id>/behaviors/`, `tools/`, `evidence/`, `observations/` — behavior claims, tools and evidence.
+- `registry/` — reusable components; `bun run build:registry` validates and generates `public/r/`.
 - `scripts/generate-catalog.ts` — compiles `configs/**` → `src/data/catalog.json` (validated).
 - `src/lib/clients/catalog.ts` — loads + re-validates the catalog for the app and API.
 - `src/lib/clients/facts.ts` — derived facts: completeness (all six surfaces verified), path summaries.
@@ -39,3 +43,10 @@ An open database of how AI coding clients are configured. See `README.md` for th
 3. A client joins the homepage main table only when **all six** surface files
    exist with verified statuses (`unsupported` counts; `missing` does not).
    Until then it is listed under "More clients" with partial data.
+
+## Behavior evidence
+
+- Known behavior claims require a source, verification date, tool and applicability conditions.
+- Official docs/source are preferred. Observations are accepted only with a committed sanitized trace, exact tool version and reproduction steps. Label them `observed` and scope them to the tested environment.
+- Unknown values remain absent, not false. Never infer a client identity from shared provider or browser headers.
+- Use `bun run test`, `bun run lint`, and `bun run build` before shipping. The generator preserves bytes when content is unchanged.

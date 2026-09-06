@@ -1,0 +1,50 @@
+id = "web-search"
+variant = "Codex / local chats"
+operation = "search"
+tool = "codex-web-search"
+availability = "built-in"
+conditions = ["Applies to hosted web search, separate from local command networking.", "Default mode depends on permissions: cached normally, live with full access.", "Documentation checked September 6, 2026; managed settings can restrict modes."]
+
+[[claims]]
+key = "searchMode"
+status = "documented"
+value = ["cached", "live", "disabled", "indexed"]
+note = "Cached is the local default; full access defaults to live."
+evidence = ["codex-search"]
+verified = "2026-09-06"
+
+[[claims]]
+key = "provider"
+status = "documented"
+value = "OpenAI-maintained index (cached mode)"
+note = "Cached mode uses the index rather than arbitrary live page fetches."
+evidence = ["codex-search"]
+verified = "2026-09-06"
+
+[[claims]]
+key = "execution"
+status = "documented"
+value = "Hosted tool"
+note = "Local sandbox networking and search controls are separate."
+evidence = ["codex-search"]
+verified = "2026-09-06"
+
+[[claims]]
+key = "accept"
+status = "unknown"
+note = "Not established by the reviewed official documentation."
+
+[[claims]]
+key = "markdownPreference"
+status = "unknown"
+note = "Not established by the reviewed official documentation."
+
+[[claims]]
+key = "userAgent"
+status = "unknown"
+note = "Not established by the reviewed official documentation."
+
+[[claims]]
+key = "customHeaders"
+status = "unknown"
+note = "Not established by the reviewed official documentation."

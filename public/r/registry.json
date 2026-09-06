@@ -1,0 +1,93 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "clients-dev",
+  "homepage": "https://clients.dev",
+  "items": [
+    {
+      "name": "client-picker",
+      "title": "Client picker",
+      "description": "Search and select from a caller-supplied client catalog.",
+      "dependencies": [
+        "clsx@2.1.1",
+        "tailwind-merge@3.6.0"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/input.tsx",
+          "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nfunction Input({ className, type, ...props }: React.ComponentProps<\"input\">) {\n  return (\n    <input\n      type={type}\n      data-slot=\"input\"\n      className={cn(\n        \"h-9 w-full min-w-0 rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none selection:bg-primary selection:text-primary-foreground file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm dark:bg-input/30\",\n        \"focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50\",\n        \"aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nexport { Input }\n",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/lib/utils.ts",
+          "content": "import { clsx, type ClassValue } from \"clsx\";\nimport { twMerge } from \"tailwind-merge\";\n\nexport function cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs));\n}\n",
+          "type": "registry:lib"
+        },
+        {
+          "path": "registry/client-picker.tsx",
+          "content": "\"use client\";\n\nimport { useId } from \"react\";\nimport { Input } from \"@/components/ui/input\";\n\nexport function ClientPicker({\n  clients,\n  value,\n  onChange,\n}: {\n  clients: { id: string; name: string }[];\n  value: string;\n  onChange: (id: string) => void;\n}) {\n  const listId = useId();\n  return (\n    <label className=\"block space-y-2 text-sm font-medium\">\n      <span>Client</span>\n      <Input\n        list={listId}\n        value={value}\n        onChange={(event) => onChange(event.target.value)}\n        placeholder=\"Choose or search a client\"\n      />\n      <datalist id={listId}>\n        {clients.map((client) => (\n          <option key={client.id} value={client.id}>\n            {client.name}\n          </option>\n        ))}\n      </datalist>\n    </label>\n  );\n}\n",
+          "type": "registry:component",
+          "target": "components/client-picker.tsx"
+        }
+      ],
+      "type": "registry:component"
+    },
+    {
+      "name": "evidence-badge",
+      "title": "Evidence badge",
+      "description": "Show evidence status, verification date and source.",
+      "dependencies": [
+        "clsx@2.1.1",
+        "tailwind-merge@3.6.0",
+        "class-variance-authority@0.7.1",
+        "radix-ui@1.6.0-rc.1781217402884"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/badge.tsx",
+          "content": "import * as React from \"react\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\nimport { Slot } from \"radix-ui\"\n\nimport { cn } from \"@/lib/utils\"\n\nconst badgeVariants = cva(\n  \"inline-flex w-fit shrink-0 items-center justify-center gap-1 overflow-hidden rounded-full border border-transparent px-2 py-0.5 text-xs font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&>svg]:pointer-events-none [&>svg]:size-3\",\n  {\n    variants: {\n      variant: {\n        default: \"bg-primary text-primary-foreground [a&]:hover:bg-primary/90\",\n        secondary:\n          \"bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90\",\n        destructive:\n          \"bg-destructive text-white focus-visible:ring-destructive/20 dark:bg-destructive/60 dark:focus-visible:ring-destructive/40 [a&]:hover:bg-destructive/90\",\n        outline:\n          \"border-border text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground\",\n        ghost: \"[a&]:hover:bg-accent [a&]:hover:text-accent-foreground\",\n        link: \"text-primary underline-offset-4 [a&]:hover:underline\",\n      },\n    },\n    defaultVariants: {\n      variant: \"default\",\n    },\n  }\n)\n\nfunction Badge({\n  className,\n  variant = \"default\",\n  asChild = false,\n  ...props\n}: React.ComponentProps<\"span\"> &\n  VariantProps<typeof badgeVariants> & { asChild?: boolean }) {\n  const Comp = asChild ? Slot.Root : \"span\"\n\n  return (\n    <Comp\n      data-slot=\"badge\"\n      data-variant={variant}\n      className={cn(badgeVariants({ variant }), className)}\n      {...props}\n    />\n  )\n}\n\nexport { Badge, badgeVariants }\n",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/lib/utils.ts",
+          "content": "import { clsx, type ClassValue } from \"clsx\";\nimport { twMerge } from \"tailwind-merge\";\n\nexport function cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs));\n}\n",
+          "type": "registry:lib"
+        },
+        {
+          "path": "registry/evidence-badge.tsx",
+          "content": "import { Badge } from \"@/components/ui/badge\";\n\nexport function EvidenceBadge({\n  status,\n  verified,\n  source,\n  checkedAt,\n}: {\n  status: \"documented\" | \"observed\" | \"disputed\" | \"unknown\" | \"unsupported\";\n  verified?: string;\n  source?: { title: string; url: string };\n  /** Pass a fixed date from the server for stable rendering. */\n  checkedAt?: string;\n}) {\n  const stale =\n    verified &&\n    checkedAt &&\n    Date.parse(checkedAt) - Date.parse(verified) > 90 * 86400000;\n  return (\n    <span className=\"inline-flex flex-wrap items-center gap-2 text-xs\">\n      <Badge variant=\"outline\">{status}</Badge>\n      {stale && <Badge variant=\"secondary\">Needs review</Badge>}\n      {verified && (\n        <span className=\"text-muted-foreground\">Checked {verified}</span>\n      )}\n      {source && (\n        <a\n          className=\"text-primary underline\"\n          href={source.url}\n          target=\"_blank\"\n          rel=\"noreferrer\"\n        >\n          {source.title}\n        </a>\n      )}\n    </span>\n  );\n}\n",
+          "type": "registry:component",
+          "target": "components/evidence-badge.tsx"
+        }
+      ],
+      "type": "registry:component"
+    },
+    {
+      "name": "client-behavior-table",
+      "title": "Client behavior table",
+      "description": "Compare findings from a caller-supplied catalog with its data version.",
+      "dependencies": [
+        "clsx@2.1.1",
+        "tailwind-merge@3.6.0"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/table.tsx",
+          "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nfunction Table({ className, ...props }: React.ComponentProps<\"table\">) {\n  return (\n    <div\n      data-slot=\"table-container\"\n      className=\"relative w-full overflow-x-auto\"\n    >\n      <table\n        data-slot=\"table\"\n        className={cn(\"w-full caption-bottom text-sm\", className)}\n        {...props}\n      />\n    </div>\n  )\n}\n\nfunction TableHeader({ className, ...props }: React.ComponentProps<\"thead\">) {\n  return (\n    <thead\n      data-slot=\"table-header\"\n      className={cn(\"[&_tr]:border-b\", className)}\n      {...props}\n    />\n  )\n}\n\nfunction TableBody({ className, ...props }: React.ComponentProps<\"tbody\">) {\n  return (\n    <tbody\n      data-slot=\"table-body\"\n      className={cn(\"[&_tr:last-child]:border-0\", className)}\n      {...props}\n    />\n  )\n}\n\nfunction TableFooter({ className, ...props }: React.ComponentProps<\"tfoot\">) {\n  return (\n    <tfoot\n      data-slot=\"table-footer\"\n      className={cn(\n        \"border-t bg-muted/50 font-medium [&>tr]:last:border-b-0\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction TableRow({ className, ...props }: React.ComponentProps<\"tr\">) {\n  return (\n    <tr\n      data-slot=\"table-row\"\n      className={cn(\n        \"border-b transition-colors hover:bg-muted/50 has-aria-expanded:bg-muted/50 data-[state=selected]:bg-muted\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction TableHead({ className, ...props }: React.ComponentProps<\"th\">) {\n  return (\n    <th\n      data-slot=\"table-head\"\n      className={cn(\n        \"h-10 px-2 text-left align-middle font-medium whitespace-nowrap text-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction TableCell({ className, ...props }: React.ComponentProps<\"td\">) {\n  return (\n    <td\n      data-slot=\"table-cell\"\n      className={cn(\n        \"p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction TableCaption({\n  className,\n  ...props\n}: React.ComponentProps<\"caption\">) {\n  return (\n    <caption\n      data-slot=\"table-caption\"\n      className={cn(\"mt-4 text-sm text-muted-foreground\", className)}\n      {...props}\n    />\n  )\n}\n\nexport {\n  Table,\n  TableHeader,\n  TableBody,\n  TableFooter,\n  TableHead,\n  TableRow,\n  TableCell,\n  TableCaption,\n}\n",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/lib/utils.ts",
+          "content": "import { clsx, type ClassValue } from \"clsx\";\nimport { twMerge } from \"tailwind-merge\";\n\nexport function cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs));\n}\n",
+          "type": "registry:lib"
+        },
+        {
+          "path": "registry/client-behavior-table.tsx",
+          "content": "import {\n  Table,\n  TableBody,\n  TableCell,\n  TableHead,\n  TableHeader,\n  TableRow,\n} from \"@/components/ui/table\";\n\nexport function ClientBehaviorTable({\n  rows,\n  dataVersion,\n}: {\n  rows: {\n    id: string;\n    client: string;\n    operation: string;\n    tool: string;\n    finding: string;\n    status: string;\n    source?: { title: string; url: string };\n  }[];\n  dataVersion: string;\n}) {\n  return (\n    <div className=\"space-y-3\">\n      <Table>\n        <TableHeader>\n          <TableRow>\n            <TableHead>Client / tool</TableHead>\n            <TableHead>Finding</TableHead>\n            <TableHead>Evidence</TableHead>\n          </TableRow>\n        </TableHeader>\n        <TableBody>\n          {rows.map((row) => (\n            <TableRow key={row.id}>\n              <TableCell className=\"align-top\">\n                <p className=\"font-medium\">{row.client}</p>\n                <p className=\"text-xs text-muted-foreground\">\n                  {row.operation} · {row.tool}\n                </p>\n              </TableCell>\n              <TableCell className=\"whitespace-normal align-top\">\n                {row.finding}\n              </TableCell>\n              <TableCell className=\"whitespace-normal align-top\">\n                <p>{row.status}</p>\n                {row.source && (\n                  <a className=\"text-primary underline\" href={row.source.url}>\n                    {row.source.title}\n                  </a>\n                )}\n              </TableCell>\n            </TableRow>\n          ))}\n        </TableBody>\n      </Table>\n      {!rows.length && (\n        <p className=\"text-sm text-muted-foreground\">\n          No researched profiles for this selection.\n        </p>\n      )}\n      <p className=\"break-all font-mono text-xs text-muted-foreground\">\n        Data: {dataVersion}\n      </p>\n    </div>\n  );\n}\n",
+          "type": "registry:component",
+          "target": "components/client-behavior-table.tsx"
+        }
+      ],
+      "type": "registry:component"
+    }
+  ]
+}

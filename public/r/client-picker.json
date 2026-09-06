@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "client-picker",
+  "title": "Client picker",
+  "description": "Search and select from a caller-supplied client catalog.",
+  "dependencies": [
+    "clsx@2.1.1",
+    "tailwind-merge@3.6.0"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/input.tsx",
+      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nfunction Input({ className, type, ...props }: React.ComponentProps<\"input\">) {\n  return (\n    <input\n      type={type}\n      data-slot=\"input\"\n      className={cn(\n        \"h-9 w-full min-w-0 rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none selection:bg-primary selection:text-primary-foreground file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm dark:bg-input/30\",\n        \"focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50\",\n        \"aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nexport { Input }\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "src/lib/utils.ts",
+      "content": "import { clsx, type ClassValue } from \"clsx\";\nimport { twMerge } from \"tailwind-merge\";\n\nexport function cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs));\n}\n",
+      "type": "registry:lib"
+    },
+    {
+      "path": "registry/client-picker.tsx",
+      "content": "\"use client\";\n\nimport { useId } from \"react\";\nimport { Input } from \"@/components/ui/input\";\n\nexport function ClientPicker({\n  clients,\n  value,\n  onChange,\n}: {\n  clients: { id: string; name: string }[];\n  value: string;\n  onChange: (id: string) => void;\n}) {\n  const listId = useId();\n  return (\n    <label className=\"block space-y-2 text-sm font-medium\">\n      <span>Client</span>\n      <Input\n        list={listId}\n        value={value}\n        onChange={(event) => onChange(event.target.value)}\n        placeholder=\"Choose or search a client\"\n      />\n      <datalist id={listId}>\n        {clients.map((client) => (\n          <option key={client.id} value={client.id}>\n            {client.name}\n          </option>\n        ))}\n      </datalist>\n    </label>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "components/client-picker.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

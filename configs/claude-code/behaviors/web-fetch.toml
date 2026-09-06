@@ -1,0 +1,61 @@
+id = "web-fetch"
+variant = "Claude Code / built-in WebFetch"
+operation = "fetch"
+tool = "claude-web-fetch"
+availability = "built-in"
+conditions = ["Documentation snapshot checked September 6, 2026; exact version range not specified.", "Applies to WebFetch, not shell commands or installed MCP tools."]
+
+[[claims]]
+key = "markdownPreference"
+status = "documented"
+value = true
+note = "The request Accept header prefers Markdown over HTML."
+evidence = ["claude-code-tools"]
+verified = "2026-09-06"
+
+[[claims]]
+key = "userAgent"
+status = "documented"
+value = "Claude-User prefix"
+note = "The documentation specifies the prefix, not a complete versioned UA string."
+evidence = ["claude-code-tools"]
+verified = "2026-09-06"
+
+[[claims]]
+key = "redirects"
+status = "documented"
+value = "Separate fetch for cross-host redirects"
+note = "WebFetch returns the original and target URLs for a subsequent fetch."
+evidence = ["claude-code-tools"]
+verified = "2026-09-06"
+
+[[claims]]
+key = "accept"
+status = "unknown"
+note = "Not established by the reviewed official documentation."
+
+[[claims]]
+key = "customHeaders"
+status = "unknown"
+note = "Not established by the reviewed official documentation."
+
+[[claims]]
+key = "browserEngine"
+status = "unknown"
+note = "Not established by the reviewed official documentation."
+
+[[claims]]
+key = "javascript"
+status = "unknown"
+note = "Not established by the reviewed official documentation."
+
+[[identification]]
+id = "claude-user"
+location = "header"
+key = "user-agent"
+match = "product-token"
+pattern = "Claude-User"
+actor = "Claude user retrieval"
+attribution = "tool"
+ambiguity = "Claude-User is shared with other Claude retrieval contexts; this does not uniquely identify Claude Code. User-Agent is spoofable."
+evidence = ["claude-code-tools"]

@@ -13,13 +13,34 @@ import {
 const SITE = "https://clients.dev";
 
 const ENDPOINTS: { cmd: string; desc: string }[] = [
-  { cmd: `curl ${SITE}/api/clients.json`, desc: "All clients with their config surfaces" },
-  { cmd: `curl ${SITE}/api/catalog.json`, desc: "Full catalog ({ generatedAt, clients })" },
-  { cmd: `curl ${SITE}/api/clients/cursor.json`, desc: "A single client by id" },
-  { cmd: `curl ${SITE}/api/mcp.json`, desc: "One surface compared across all clients" },
-  { cmd: `curl ${SITE}/api/schemas/cursor/mcp.json`, desc: "JSON Schema for a client's config entries" },
-  { cmd: `curl ${SITE}/llms.txt`, desc: "The whole catalog summarized for LLMs" },
-  { cmd: `npx add-mcp ${SITE}/api/mcp`, desc: "Connect your agent to the catalog over MCP" },
+  {
+    cmd: `curl ${SITE}/api/clients.json`,
+    desc: "All clients with their config surfaces",
+  },
+  {
+    cmd: `curl ${SITE}/api/catalog.json`,
+    desc: "Full catalog ({ generatedAt, clients })",
+  },
+  {
+    cmd: `curl ${SITE}/api/clients/cursor.json`,
+    desc: "A single client by id",
+  },
+  {
+    cmd: `curl ${SITE}/api/mcp.json`,
+    desc: "One surface compared across all clients",
+  },
+  {
+    cmd: `curl ${SITE}/api/schemas/cursor/mcp.json`,
+    desc: "JSON Schema for a client's config entries",
+  },
+  {
+    cmd: `curl ${SITE}/llms.txt`,
+    desc: "The whole catalog summarized for LLMs",
+  },
+  {
+    cmd: `npx add-mcp ${SITE}/api/mcp`,
+    desc: "Connect your agent to the catalog over MCP",
+  },
 ];
 
 function CurlRow({ cmd, desc }: { cmd: string; desc: string }) {
@@ -47,7 +68,7 @@ export function HowToUse() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex h-9 items-center rounded-md bg-primary px-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+        className="inline-flex h-9 shrink-0 items-center whitespace-nowrap rounded-md bg-primary px-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
       >
         How to use
       </button>
@@ -68,9 +89,9 @@ export function HowToUse() {
             <section>
               <p className="text-sm text-muted-foreground">
                 The homepage table shows the actual config file paths for every
-                fully documented client. Each client has a detail page with
-                formats and typed field schemas; surface pages compare one
-                surface side by side across all clients.
+                client with six configuration surfaces. Each client has a detail
+                page with formats and typed field schemas; surface pages compare
+                one surface side by side across all clients.
               </p>
             </section>
 

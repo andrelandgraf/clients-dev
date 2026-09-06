@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "evidence-badge",
+  "title": "Evidence badge",
+  "description": "Show evidence status, verification date and source.",
+  "dependencies": [
+    "clsx@2.1.1",
+    "tailwind-merge@3.6.0",
+    "class-variance-authority@0.7.1",
+    "radix-ui@1.6.0-rc.1781217402884"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/badge.tsx",
+      "content": "import * as React from \"react\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\nimport { Slot } from \"radix-ui\"\n\nimport { cn } from \"@/lib/utils\"\n\nconst badgeVariants = cva(\n  \"inline-flex w-fit shrink-0 items-center justify-center gap-1 overflow-hidden rounded-full border border-transparent px-2 py-0.5 text-xs font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&>svg]:pointer-events-none [&>svg]:size-3\",\n  {\n    variants: {\n      variant: {\n        default: \"bg-primary text-primary-foreground [a&]:hover:bg-primary/90\",\n        secondary:\n          \"bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90\",\n        destructive:\n          \"bg-destructive text-white focus-visible:ring-destructive/20 dark:bg-destructive/60 dark:focus-visible:ring-destructive/40 [a&]:hover:bg-destructive/90\",\n        outline:\n          \"border-border text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground\",\n        ghost: \"[a&]:hover:bg-accent [a&]:hover:text-accent-foreground\",\n        link: \"text-primary underline-offset-4 [a&]:hover:underline\",\n      },\n    },\n    defaultVariants: {\n      variant: \"default\",\n    },\n  }\n)\n\nfunction Badge({\n  className,\n  variant = \"default\",\n  asChild = false,\n  ...props\n}: React.ComponentProps<\"span\"> &\n  VariantProps<typeof badgeVariants> & { asChild?: boolean }) {\n  const Comp = asChild ? Slot.Root : \"span\"\n\n  return (\n    <Comp\n      data-slot=\"badge\"\n      data-variant={variant}\n      className={cn(badgeVariants({ variant }), className)}\n      {...props}\n    />\n  )\n}\n\nexport { Badge, badgeVariants }\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "src/lib/utils.ts",
+      "content": "import { clsx, type ClassValue } from \"clsx\";\nimport { twMerge } from \"tailwind-merge\";\n\nexport function cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs));\n}\n",
+      "type": "registry:lib"
+    },
+    {
+      "path": "registry/evidence-badge.tsx",
+      "content": "import { Badge } from \"@/components/ui/badge\";\n\nexport function EvidenceBadge({\n  status,\n  verified,\n  source,\n  checkedAt,\n}: {\n  status: \"documented\" | \"observed\" | \"disputed\" | \"unknown\" | \"unsupported\";\n  verified?: string;\n  source?: { title: string; url: string };\n  /** Pass a fixed date from the server for stable rendering. */\n  checkedAt?: string;\n}) {\n  const stale =\n    verified &&\n    checkedAt &&\n    Date.parse(checkedAt) - Date.parse(verified) > 90 * 86400000;\n  return (\n    <span className=\"inline-flex flex-wrap items-center gap-2 text-xs\">\n      <Badge variant=\"outline\">{status}</Badge>\n      {stale && <Badge variant=\"secondary\">Needs review</Badge>}\n      {verified && (\n        <span className=\"text-muted-foreground\">Checked {verified}</span>\n      )}\n      {source && (\n        <a\n          className=\"text-primary underline\"\n          href={source.url}\n          target=\"_blank\"\n          rel=\"noreferrer\"\n        >\n          {source.title}\n        </a>\n      )}\n    </span>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "components/evidence-badge.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

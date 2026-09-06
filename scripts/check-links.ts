@@ -8,7 +8,7 @@
 import catalog from "../src/data/catalog.json";
 import { Catalog } from "../src/lib/clients/schema";
 
-const { clients } = Catalog.parse(catalog);
+const { clients, evidence, tools } = Catalog.parse(catalog);
 
 const urls = new Map<string, string[]>();
 const add = (url: string | undefined, source: string) => {
@@ -26,6 +26,9 @@ for (const client of clients) {
     if (config) add(config.docs, `${client.id}/${surface}: docs`);
   }
 }
+
+for (const source of evidence) add(source.url, `evidence/${source.id}`);
+for (const tool of tools) add(tool.docs, `tools/${tool.id}`);
 
 const HEADERS = {
   // Some doc sites block requests without a browser-like user agent.

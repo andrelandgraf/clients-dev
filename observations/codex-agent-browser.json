@@ -1,0 +1,171 @@
+{
+  "tool": "agent-browser 0.9.1",
+  "observedAt": "2026-09-06T19:31:24.312Z",
+  "context": "Codex desktop task invoking the separately installed agent-browser CLI through shell execution; optional tool, not built-in web search or fetch.",
+  "environment": "darwin/arm64; local headless browser; fresh named session; no custom headers configured",
+  "reproduction": "bun run scripts/observe-browser.ts (requires installed agent-browser and its browser runtime)",
+  "records": [
+    {
+      "method": "GET",
+      "path": "/html",
+      "headers": {
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/145.0.7632.6 Safari/537.36",
+        "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "sec-ch-ua": "\"Not:A-Brand\";v=\"99\", \"HeadlessChrome\";v=\"145\", \"Chromium\";v=\"145\"",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-dest": "document"
+      },
+      "responseType": "text/html"
+    },
+    {
+      "method": "GET",
+      "path": "/negotiate",
+      "headers": {
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/145.0.7632.6 Safari/537.36",
+        "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "sec-ch-ua": "\"Not:A-Brand\";v=\"99\", \"HeadlessChrome\";v=\"145\", \"Chromium\";v=\"145\"",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-dest": "document"
+      },
+      "responseType": "text/html"
+    },
+    {
+      "method": "GET",
+      "path": "/redirect",
+      "headers": {
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/145.0.7632.6 Safari/537.36",
+        "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "sec-ch-ua": "\"Not:A-Brand\";v=\"99\", \"HeadlessChrome\";v=\"145\", \"Chromium\";v=\"145\"",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-dest": "document"
+      },
+      "responseType": "text/html"
+    },
+    {
+      "method": "GET",
+      "path": "/html",
+      "headers": {
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/145.0.7632.6 Safari/537.36",
+        "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "sec-ch-ua": "\"Not:A-Brand\";v=\"99\", \"HeadlessChrome\";v=\"145\", \"Chromium\";v=\"145\"",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-dest": "document"
+      },
+      "responseType": "text/html"
+    },
+    {
+      "method": "GET",
+      "path": "/json",
+      "headers": {
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/145.0.7632.6 Safari/537.36",
+        "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "sec-ch-ua": "\"Not:A-Brand\";v=\"99\", \"HeadlessChrome\";v=\"145\", \"Chromium\";v=\"145\"",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-dest": "document"
+      },
+      "responseType": "application/json"
+    },
+    {
+      "method": "GET",
+      "path": "/html",
+      "headers": {
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/145.0.7632.6 Safari/537.36",
+        "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "sec-ch-ua": "\"Not:A-Brand\";v=\"99\", \"HeadlessChrome\";v=\"145\", \"Chromium\";v=\"145\"",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-dest": "document"
+      },
+      "responseType": "text/html"
+    },
+    {
+      "method": "GET",
+      "path": "/negotiate",
+      "headers": {
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/145.0.7632.6 Safari/537.36",
+        "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "sec-ch-ua": "\"Not:A-Brand\";v=\"99\", \"HeadlessChrome\";v=\"145\", \"Chromium\";v=\"145\"",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-dest": "document"
+      },
+      "responseType": "text/html"
+    },
+    {
+      "method": "GET",
+      "path": "/redirect",
+      "headers": {
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/145.0.7632.6 Safari/537.36",
+        "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "sec-ch-ua": "\"Not:A-Brand\";v=\"99\", \"HeadlessChrome\";v=\"145\", \"Chromium\";v=\"145\"",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-dest": "document"
+      },
+      "responseType": "text/html"
+    },
+    {
+      "method": "GET",
+      "path": "/html",
+      "headers": {
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/145.0.7632.6 Safari/537.36",
+        "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "sec-ch-ua": "\"Not:A-Brand\";v=\"99\", \"HeadlessChrome\";v=\"145\", \"Chromium\";v=\"145\"",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-dest": "document"
+      },
+      "responseType": "text/html"
+    },
+    {
+      "method": "GET",
+      "path": "/json",
+      "headers": {
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/145.0.7632.6 Safari/537.36",
+        "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "sec-ch-ua": "\"Not:A-Brand\";v=\"99\", \"HeadlessChrome\";v=\"145\", \"Chromium\";v=\"145\"",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-dest": "document"
+      },
+      "responseType": "application/json"
+    }
+  ],
+  "checks": [
+    {
+      "run": 1,
+      "path": "/html",
+      "result": "JavaScript executed"
+    },
+    {
+      "run": 1,
+      "path": "/negotiate",
+      "result": "JavaScript executed"
+    },
+    {
+      "run": 1,
+      "path": "/redirect",
+      "result": "JavaScript executed"
+    },
+    {
+      "run": 1,
+      "path": "/json",
+      "result": "{\"fixture\":\"client-behavior\"}"
+    },
+    {
+      "run": 2,
+      "path": "/html",
+      "result": "JavaScript executed"
+    },
+    {
+      "run": 2,
+      "path": "/negotiate",
+      "result": "JavaScript executed"
+    },
+    {
+      "run": 2,
+      "path": "/redirect",
+      "result": "JavaScript executed"
+    },
+    {
+      "run": 2,
+      "path": "/json",
+      "result": "{\"fixture\":\"client-behavior\"}"
+    }
+  ]
+}

@@ -57,7 +57,7 @@ export default function OpengraphImage() {
         <div style={{ display: "flex", gap: 56, fontSize: 28 }}>
           <Stat
             value={String(completeCount)}
-            label="clients fully documented"
+            label="clients with six config surfaces"
           />
           <Stat
             value="6"

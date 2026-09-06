@@ -1,4 +1,8 @@
-import { getClients } from "@/lib/clients/catalog";
+import {
+  CLAIM_LABELS,
+  claimText,
+} from "../../../packages/clients/src/behavior";
+import { getCatalog, getClients } from "@/lib/clients/catalog";
 import { isComplete } from "@/lib/clients/facts";
 import { SURFACES, SURFACE_META } from "@/lib/clients/schema";
 
@@ -28,7 +32,7 @@ export function GET(): Response {
     "- [JSON Schemas](https://clients.dev/api/schemas.json): validate/generate config entries per client per surface",
     "- MCP server (Streamable HTTP): https://clients.dev/api/mcp — tools: list_clients, get_client, compare_surface, get_config_schema",
     "",
-    "## Fully documented clients",
+    "## Clients with records for six configuration surfaces",
     "",
   ];
 
@@ -62,6 +66,23 @@ export function GET(): Response {
 
   lines.push(
     "",
+    "## Client behavior",
+    "",
+    "Search, fetching and browser control are distinct. Unknown does not mean unsupported.",
+    "- Behavior comparisons: https://clients.dev/behaviors",
+    "- Evidence and methodology: https://clients.dev/methodology",
+    "- Per-client Markdown: https://clients.dev/clients/{id}.md",
+    ...clients.flatMap((client) =>
+      client.behaviors.flatMap((profile) => [
+        `### ${client.name}: ${profile.variant} / ${profile.operation}`,
+        `Tool: ${profile.tool}; ${profile.availability}. ${profile.conditions.join(" ")}`,
+        ...profile.claims.map(
+          (claim) =>
+            `${CLAIM_LABELS[claim.key]}: ${claimText(claim)} (${claim.status}). ${claim.note} ${claim.evidence.map((id) => getCatalog().evidence.find((e) => e.id === id)?.url ?? "").join(" ")}`,
+        ),
+        "",
+      ]),
+    ),
     "## Contributing",
     "",
     "- [GitHub](https://github.com/agent-tooling/clients-dev): data is plain TOML under configs/<client-id>/, one file per surface; PRs welcome, official docs only",

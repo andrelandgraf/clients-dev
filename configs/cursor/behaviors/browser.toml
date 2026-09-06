@@ -1,0 +1,44 @@
+id = "browser"
+variant = "Cursor / Agent"
+operation = "browse"
+tool = "cursor-browser"
+availability = "built-in"
+conditions = ["Agent overview checked September 6, 2026; exact version range not specified."]
+
+[[claims]]
+key = "screenshots"
+status = "documented"
+value = true
+note = "Browser can navigate pages, interact with elements, and capture screenshots."
+evidence = ["cursor-tools"]
+verified = "2026-09-06"
+
+[[claims]]
+key = "browserEngine"
+status = "unknown"
+note = "Not established by the reviewed official documentation."
+
+[[claims]]
+key = "accept"
+status = "unknown"
+note = "Not established by the reviewed official documentation."
+
+[[claims]]
+key = "markdownPreference"
+status = "unknown"
+note = "Not established by the reviewed official documentation."
+
+[[claims]]
+key = "userAgent"
+status = "unknown"
+note = "Not established by the reviewed official documentation."
+
+[[claims]]
+key = "javascript"
+status = "unknown"
+note = "Not established by the reviewed official documentation."
+
+[[claims]]
+key = "cookies"
+status = "unknown"
+note = "Not established by the reviewed official documentation."

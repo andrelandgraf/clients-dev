@@ -11,7 +11,7 @@ import { CLIENT_TYPE_LABEL, clientTypeLabel } from "@/lib/clients/display";
 import { cn } from "@/lib/utils";
 
 /**
- * The homepage facts table: one row per fully documented client, one column
+ * The homepage facts table: one row per client with six configuration surfaces, one column
  * per surface, and every cell a real file path (models.dev-style) instead of
  * a status dot.
  */

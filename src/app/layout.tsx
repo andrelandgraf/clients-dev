@@ -20,7 +20,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://clients.dev"),
   title: {
-    default: "clients.dev — AI coding client configuration database",
+    default: "clients.dev — AI client configuration & behavior database",
     template: "%s | clients.dev",
   },
   description:
@@ -55,7 +55,26 @@ function buildSearchItems(): SearchItem[] {
     href: `/${surface}`,
     keywords: [surface],
   }));
-  return [...clients, ...surfaces];
+  return [
+    ...clients,
+    ...surfaces,
+    ...[
+      {
+        type: "surface",
+        title: "Search & browsers",
+        subtitle: "Behavior and identification",
+        href: "/behaviors",
+        keywords: ["markdown", "user agent", "search", "browser", "headers"],
+      },
+      {
+        type: "surface",
+        title: "Developers",
+        subtitle: "Package and shadcn registry",
+        href: "/developers",
+        keywords: ["npm", "registry"],
+      },
+    ].map<SearchItem>((item) => ({ ...item, type: "surface" })),
+  ];
 }
 
 export default function RootLayout({

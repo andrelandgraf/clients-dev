@@ -1,0 +1,3 @@
+id = "claude-web-fetch"
+name = "WebFetch"
+docs = "https://code.claude.com/docs/en/tools-reference"

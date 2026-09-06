@@ -1,0 +1,37 @@
+id = "web-search"
+variant = "Claude Code / built-in WebSearch"
+operation = "search"
+tool = "claude-web-search"
+availability = "built-in"
+conditions = ["Documentation snapshot checked September 6, 2026; platform availability varies."]
+
+[[claims]]
+key = "provider"
+status = "documented"
+value = "Anthropic search backend"
+note = "The built-in backend is not configurable; alternatives can be installed through MCP."
+evidence = ["claude-code-tools"]
+verified = "2026-09-06"
+
+[[claims]]
+key = "output"
+status = "documented"
+value = "Result titles and URLs"
+note = "Search does not fetch the result pages; WebFetch is a separate operation."
+evidence = ["claude-code-tools"]
+verified = "2026-09-06"
+
+[[claims]]
+key = "accept"
+status = "unknown"
+note = "Not established by the reviewed official documentation."
+
+[[claims]]
+key = "markdownPreference"
+status = "unknown"
+note = "Not established by the reviewed official documentation."
+
+[[claims]]
+key = "userAgent"
+status = "unknown"
+note = "Not established by the reviewed official documentation."

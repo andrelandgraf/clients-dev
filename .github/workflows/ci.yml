@@ -33,5 +33,14 @@ jobs:
       - name: Lint
         run: bun run lint
 
+      - name: Build registry
+        run: bun run build:registry
+
+      - name: Test behavior contracts
+        run: bun run test
+
       - name: Build
         run: bun run build
+
+      - name: Verify generated registry is in sync
+        run: git diff --exit-code public/r

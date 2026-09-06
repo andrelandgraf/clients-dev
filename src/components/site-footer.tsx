@@ -6,8 +6,8 @@ export function SiteFooter() {
           clients<span className="text-primary">.dev</span>
         </p>
         <p className="text-center sm:text-right">
-          An open database of AI coding client configuration. Contributions
-          welcome on{" "}
+          An open database of AI client configuration and behavior.
+          Contributions welcome on{" "}
           <a
             href="https://github.com/agent-tooling/clients-dev"
             target="_blank"

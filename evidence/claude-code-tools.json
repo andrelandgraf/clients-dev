@@ -1,0 +1,8 @@
+{
+  "id": "claude-code-tools",
+  "kind": "official-docs",
+  "url": "https://code.claude.com/docs/en/tools-reference",
+  "title": "Claude Code tool reference",
+  "checked": "2026-09-06",
+  "locator": "WebFetch and WebSearch tool behavior"
+}

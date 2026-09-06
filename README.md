@@ -1,8 +1,8 @@
 # clients.dev
 
-An open, machine-readable database of **how AI coding clients are configured**.
+An open, machine-readable database of **AI client configuration and behavior**.
 
-Think [models.dev](https://models.dev), but for the *clients* (Cursor, Claude
+Think [models.dev](https://models.dev), but for the _clients_ (Cursor, Claude
 Code, Codex, …) instead of the models. For every client and every
 configuration **surface** it answers two questions:
 
@@ -13,18 +13,40 @@ configuration **surface** it answers two questions:
 Browse it at [clients.dev](https://clients.dev), or consume it as JSON via the
 [API](#api).
 
+## Search, browsers, and identification
+
+Browse `/behaviors` to compare search providers, Markdown request preferences,
+browser capabilities, and identification signals. Each profile names the tool,
+variant, conditions, evidence and verification date. Unknown is distinct from
+unsupported. `/methodology` explains how documented and observed claims differ.
+
+The initial profiles cover Claude Code, Cursor, and Codex, including two real
+runs of Codex using the optional agent-browser CLI. The observed browser path
+is not a fingerprint of Codex's built-in web search.
+
+`/clients/<id>.md` exposes a client as Markdown. `/api/v1/catalog.json`,
+`/api/behaviors/<key>.json`, `/api/evidence.json`, and
+`/api/catalog-schema.json` provide behavior data and its contract.
+The MCP server includes `compare_behavior`.
+
+The shared core builds from `packages/clients` using `bun run build:package`;
+see its README for lookup, comparison, identification and validation exports.
+The first npm publication requires release setup. The shadcn registry at
+`/r/registry.json` serves a client picker, evidence badge and behavior table.
+See `/developers` for installation and a live preview.
+
 ## Surfaces
 
 Each client is described across six configuration surfaces:
 
-| Surface     | What it covers                                                        |
-| ----------- | --------------------------------------------------------------------- |
-| `mcp`       | Model Context Protocol servers — transports, auth, protocol features. |
-| `skills`    | `SKILL.md` instruction sets and where they're discovered.             |
-| `rules`     | Persistent instruction/memory files (`AGENTS.md`, `CLAUDE.md`, …).    |
-| `hooks`     | Lifecycle hooks that observe or gate the agent loop.                  |
-| `commands`  | User-invocable slash commands / custom prompts.                       |
-| `settings`  | The primary configuration file and its key fields.                    |
+| Surface    | What it covers                                                        |
+| ---------- | --------------------------------------------------------------------- |
+| `mcp`      | Model Context Protocol servers — transports, auth, protocol features. |
+| `skills`   | `SKILL.md` instruction sets and where they're discovered.             |
+| `rules`    | Persistent instruction/memory files (`AGENTS.md`, `CLAUDE.md`, …).    |
+| `hooks`    | Lifecycle hooks that observe or gate the agent loop.                  |
+| `commands` | User-invocable slash commands / custom prompts.                       |
+| `settings` | The primary configuration file and its key fields.                    |
 
 ## Data model
 
@@ -58,13 +80,13 @@ validates every file with Zod and compiles them into a single
 3. Run `bun run generate` to compile and validate.
 4. Run `bun run dev` and check the client at `/clients/<client-id>`.
 
-**Only document what's in the official docs.** Every field, path, and format
-should be verifiable from the vendor's documentation — no guessing.
+**Configuration:** every field, path, and format should be verifiable from
+the vendor's documentation — no guessing. **Behavior:** official sources or
+reviewed, reproducible observations; see CONTRIBUTING.md.
 
 ## Completeness
 
-The homepage table only lists clients where **all six surfaces are verified**
-from official docs (a surface can be verified as `unsupported` — knowing a
+The homepage table only lists clients where **all six surfaces have non-missing records** (a surface can be recorded as `unsupported` — knowing a
 client has no hooks is a fact). Clients with partial data appear in a separate
 "More clients" section and are never shown as peer rows, so a missing entry is
 always a documentation gap, never a claim about the client.
@@ -73,16 +95,16 @@ always a documentation gap, never a claim about the client.
 
 The data is exposed as JSON (CORS-enabled) via Hono route handlers:
 
-| Endpoint                  | Returns                                       |
-| ------------------------- | --------------------------------------------- |
-| `GET /api`                | Index of endpoints and surfaces.              |
-| `GET /api/catalog.json`   | The full catalog (`{ generatedAt, clients }`).|
-| `GET /api/clients.json`   | All clients with their surfaces.              |
-| `GET /api/clients/{id}.json` | A single client.                           |
-| `GET /api/{surface}.json` | One surface compared across all clients.      |
-| `GET /api/schemas.json`   | Index of available JSON Schemas.              |
+| Endpoint                                   | Returns                                                                                           |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------- |
+| `GET /api`                                 | Index of endpoints and surfaces.                                                                  |
+| `GET /api/catalog.json`                    | The versioned catalog, clients, tools and evidence.                                               |
+| `GET /api/clients.json`                    | All clients with their surfaces.                                                                  |
+| `GET /api/clients/{id}.json`               | A single client.                                                                                  |
+| `GET /api/{surface}.json`                  | One surface compared across all clients.                                                          |
+| `GET /api/schemas.json`                    | Index of available JSON Schemas.                                                                  |
 | `GET /api/schemas/{client}/{surface}.json` | JSON Schema for the fields a client accepts on one surface — validate or generate config entries. |
-| `GET /llms.txt`           | The whole catalog summarized for LLMs.        |
+| `GET /llms.txt`                            | The whole catalog summarized for LLMs.                                                            |
 
 ## MCP server
 
@@ -99,6 +121,8 @@ config and what fields does it accept?" directly from the source of truth.
 
 ## Development
 
+Use Bun 1.3.9+ and Node 22+.
+
 ```bash
 bun install
 bun run dev        # generate catalog + start Next.js (http://localhost:3000)
@@ -110,6 +134,10 @@ Stack: **Next.js 16** (App Router, static pages + a serverless Hono API),
 **Tailwind v4**, **shadcn/ui**, **Zod**, **smol-toml**, deployed on **Vercel**.
 
 ## Contributing
+
+For a review of current coverage and proposals for search, browser behavior,
+client identification, and package/registry distribution, see the
+[client behavior review](./docs/client-behavior-review.md).
 
 Contributions of new clients and corrections are very welcome — open a PR that
 adds or edits the relevant TOML under `configs/`. Keep entries faithful to the

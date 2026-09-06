@@ -1,3 +1,5 @@
+import { BehaviorProfiles } from "@/components/behavior-profiles";
+import { getCatalog } from "@/lib/clients/catalog";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -121,7 +123,9 @@ export default async function ClientPage({
             ) : null}
           </div>
           {client.vendor ? (
-            <p className="mt-1 text-sm text-muted-foreground">{client.vendor}</p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {client.vendor}
+            </p>
           ) : null}
           {client.description ? (
             <p className="mt-3 max-w-2xl text-muted-foreground">
@@ -153,9 +157,30 @@ export default async function ClientPage({
         </div>
       </div>
 
-      <div className="mt-6">
+      <nav
+        className="mt-6 flex flex-wrap gap-4 text-sm text-primary"
+        aria-label="Client sections"
+      >
+        <a href="#configuration">Configuration</a>
+        <a href="#behavior">Search, browser & identification</a>
+        <a href={`/clients/${client.id}.md`}>Markdown</a>
+      </nav>
+      <div className="mt-6" id="configuration">
         <ClientSurfaceTabs items={items} initialTab={initialTab} />
       </div>
+      <section className="mt-10 space-y-4" id="behavior">
+        <h2 className="text-2xl font-semibold">
+          Search, browser & identification
+        </h2>
+        <p className="text-sm text-muted-foreground">
+          Findings apply to the tool and conditions listed. Each known claim
+          links to its evidence.
+        </p>
+        <BehaviorProfiles
+          profiles={client.behaviors}
+          evidence={getCatalog().evidence}
+        />
+      </section>
     </div>
   );
 }

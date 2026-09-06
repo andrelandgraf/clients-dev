@@ -1,3 +1,8 @@
+import { z } from "zod";
+import { Catalog } from "@/lib/clients/schema";
+import { ClaimKey } from "../../../../packages/clients/src/behavior";
+import { compareBehavior } from "../../../../packages/clients/src/query";
+import { clientMarkdown } from "@/lib/clients/markdown";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { handle } from "hono/vercel";
@@ -41,6 +46,11 @@ app.get("/", (c) =>
       "Data is public domain (CC0 1.0). https://github.com/agent-tooling/clients-dev",
     endpoints: {
       catalog: "/api/catalog.json",
+      versionedCatalog: "/api/v1/catalog.json",
+      catalogSchema: "/api/catalog-schema.json",
+      behaviors: "/api/behaviors/{key}.json",
+      evidence: "/api/evidence.json",
+      markdown: "/clients/{id}.md",
       clients: "/api/clients.json",
       client: "/api/clients/{id}.json",
       surface: "/api/{surface}.json",
@@ -54,6 +64,35 @@ app.get("/", (c) =>
 );
 
 app.get("/catalog.json", (c) => c.json(getCatalog()));
+app.get("/v1/catalog.json", (c) => c.json(getCatalog()));
+app.get("/catalog-schema.json", (c) =>
+  c.json(z.toJSONSchema(Catalog, { io: "input" })),
+);
+app.get("/evidence.json", (c) =>
+  c.json({
+    dataVersion: getCatalog().dataVersion,
+    evidence: getCatalog().evidence,
+  }),
+);
+app.get("/behaviors/:key", (c) => {
+  const key = ClaimKey.safeParse(stripJson(c.req.param("key")));
+  if (!key.success)
+    return c.json({ error: "unknown behavior", keys: ClaimKey.options }, 404);
+  return c.json({
+    dataVersion: getCatalog().dataVersion,
+    key: key.data,
+    clients: compareBehavior(getCatalog(), key.data),
+    evidence: getCatalog().evidence,
+    tools: getCatalog().tools,
+  });
+});
+app.get("/markdown/:id", (c) => {
+  const client = getClient(c.req.param("id"));
+  if (!client) return c.json({ error: "client not found" }, 404);
+  return c.body(clientMarkdown(client, getCatalog()), 200, {
+    "Content-Type": "text/markdown; charset=utf-8",
+  });
+});
 
 app.get("/clients.json", (c) => c.json(getCatalog().clients));
 

@@ -1,0 +1,54 @@
+id = "optional-agent-browser"
+variant = "Codex desktop / optional agent-browser command"
+operation = "browse"
+tool = "agent-browser"
+availability = "optional"
+conditions = ["Observed September 6, 2026 on macOS arm64 with agent-browser 0.9.1 and HeadlessChrome/145.0.7632.6.", "Installed tool invoked through shell by this Codex task; not a built-in Codex browser or hosted search signature.", "Local headless navigation; two runs against controlled fixtures; no header overrides configured."]
+
+[[claims]]
+key = "accept"
+status = "observed"
+value = "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
+note = "Exact observed navigation Accept header; wildcard acceptance is not an explicit Markdown preference."
+evidence = ["codex-agent-browser-observation"]
+verified = "2026-09-06"
+
+[[claims]]
+key = "userAgent"
+status = "observed"
+value = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/145.0.7632.6 Safari/537.36"
+note = "Generic headless browser identity; no reliable Codex attribution rule follows from this."
+evidence = ["codex-agent-browser-observation"]
+verified = "2026-09-06"
+
+[[claims]]
+key = "markdownPreference"
+status = "observed"
+value = false
+note = "No explicit text/markdown preference in these navigation requests. The negotiation fixture returned HTML."
+evidence = ["codex-agent-browser-observation"]
+verified = "2026-09-06"
+
+[[claims]]
+key = "javascript"
+status = "observed"
+value = true
+note = "The rendered #js element changed from pending to executed in both runs."
+evidence = ["codex-agent-browser-observation"]
+verified = "2026-09-06"
+
+[[claims]]
+key = "redirects"
+status = "observed"
+value = "Followed same-origin 302"
+note = "Navigation to /redirect reached the /html fixture in both runs."
+evidence = ["codex-agent-browser-observation"]
+verified = "2026-09-06"
+
+[[claims]]
+key = "execution"
+status = "observed"
+value = "Local headless browser"
+note = "Browser was launched through the installed optional command-line tool."
+evidence = ["codex-agent-browser-observation"]
+verified = "2026-09-06"

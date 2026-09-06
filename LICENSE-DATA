@@ -1,0 +1,11 @@
+The data in configs/, evidence/, tools/, observations/, src/data/catalog.json,
+and the generated catalog/schema/client JSON exports is dedicated to the
+public domain under CC0 1.0 Universal.
+
+To the extent possible under law, agent-tooling has waived all copyright and
+related or neighboring rights to this data. This work is published from the
+United States. The data is provided without warranty.
+
+Full legal text: https://creativecommons.org/publicdomain/zero/1.0/legalcode
+
+Software is licensed separately under the MIT License in LICENSE.

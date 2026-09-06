@@ -9,6 +9,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     { url: BASE_URL, lastModified, priority: 1 },
+    ...["behaviors", "methodology", "developers"].map((path) => ({
+      url: `${BASE_URL}/${path}`,
+      lastModified,
+      priority: 0.8,
+    })),
     ...SURFACES.map((surface) => ({
       url: `${BASE_URL}/${surface}`,
       lastModified,

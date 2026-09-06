@@ -92,7 +92,7 @@ export default async function SurfacePage({
   const id = asSurface(surface);
   if (!id) notFound();
 
-  // Fully documented clients first, then partial ones, alphabetical within.
+  // Clients with six configuration surfaces first, then partial ones, alphabetical within.
   const clients = [...getClientsForSurface(id)].sort((a, b) => {
     const complete = Number(isComplete(b)) - Number(isComplete(a));
     return complete !== 0 ? complete : a.name.localeCompare(b.name);

@@ -1,5 +1,77 @@
 {
-  "generatedAt": "2026-07-23T04:01:17.929Z",
+  "schemaVersion": "1.0",
+  "dataVersion": "eff6aa72bba17e458292d9dcc233830424428fb6024252876a93f014e7f4a71c",
+  "generatedAt": "2026-09-06T19:39:03.728Z",
+  "evidence": [
+    {
+      "id": "claude-code-tools",
+      "kind": "official-docs",
+      "url": "https://code.claude.com/docs/en/tools-reference",
+      "title": "Claude Code tool reference",
+      "checked": "2026-09-06",
+      "locator": "WebFetch and WebSearch tool behavior"
+    },
+    {
+      "id": "codex-agent-browser-observation",
+      "kind": "observation",
+      "url": "https://github.com/agent-tooling/clients-dev/blob/main/observations/codex-agent-browser.json",
+      "title": "Codex optional agent-browser: two local runs",
+      "checked": "2026-09-06",
+      "locator": "records: /html, /negotiate, /redirect, /json; checks: #js text in both runs",
+      "revision": "agent-browser 0.9.1; HeadlessChrome/145.0.7632.6",
+      "traceSha256": "7fdb5b09f5f7eb830ffec046ac18dca2bab0ccda82a7b14c2895e38fc33eeb89",
+      "trace": "observations/codex-agent-browser.json",
+      "reproduction": "bun run scripts/observe-browser.ts; requires agent-browser 0.9.1 and its installed browser. Local headless execution through Codex shell; no configured header overrides."
+    },
+    {
+      "id": "codex-search",
+      "kind": "official-docs",
+      "url": "https://learn.chatgpt.com/docs/web-search",
+      "title": "OpenAI local web search",
+      "checked": "2026-09-06",
+      "locator": "Configure local web search"
+    },
+    {
+      "id": "cursor-tools",
+      "kind": "official-docs",
+      "url": "https://cursor.com/docs/agent/overview",
+      "title": "Cursor agent tools",
+      "checked": "2026-09-06",
+      "locator": "Tools: Web and Browser"
+    }
+  ],
+  "tools": [
+    {
+      "id": "agent-browser",
+      "name": "agent-browser CLI",
+      "docs": "https://github.com/vercel-labs/agent-browser"
+    },
+    {
+      "id": "claude-web-fetch",
+      "name": "WebFetch",
+      "docs": "https://code.claude.com/docs/en/tools-reference"
+    },
+    {
+      "id": "claude-web-search",
+      "name": "WebSearch",
+      "docs": "https://code.claude.com/docs/en/tools-reference"
+    },
+    {
+      "id": "codex-web-search",
+      "name": "Web search",
+      "docs": "https://learn.chatgpt.com/docs/web-search"
+    },
+    {
+      "id": "cursor-browser",
+      "name": "Browser",
+      "docs": "https://cursor.com/docs/agent/tools/browser"
+    },
+    {
+      "id": "cursor-web",
+      "name": "Web",
+      "docs": "https://cursor.com/docs/agent/overview"
+    }
+  ],
   "clients": [
     {
       "name": "AdaL",
@@ -47,7 +119,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "AiderDesk",
@@ -96,7 +169,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Amp",
@@ -568,7 +642,8 @@
           ],
           "docs": "https://ampcode.com/manual#configuration"
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Antigravity",
@@ -692,7 +767,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Antigravity CLI",
@@ -742,7 +818,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "AstrBot",
@@ -790,7 +867,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Augment",
@@ -841,7 +919,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Autohand Code CLI",
@@ -889,7 +968,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Claude Code",
@@ -1444,7 +1524,142 @@
           "notes": [],
           "docs": "https://docs.claude.com/en/docs/claude-code/settings"
         }
-      }
+      },
+      "behaviors": [
+        {
+          "id": "web-fetch",
+          "variant": "Claude Code / built-in WebFetch",
+          "operation": "fetch",
+          "tool": "claude-web-fetch",
+          "availability": "built-in",
+          "conditions": [
+            "Documentation snapshot checked September 6, 2026; exact version range not specified.",
+            "Applies to WebFetch, not shell commands or installed MCP tools."
+          ],
+          "claims": [
+            {
+              "key": "markdownPreference",
+              "status": "documented",
+              "value": true,
+              "note": "The request Accept header prefers Markdown over HTML.",
+              "evidence": [
+                "claude-code-tools"
+              ],
+              "verified": "2026-09-06"
+            },
+            {
+              "key": "userAgent",
+              "status": "documented",
+              "value": "Claude-User prefix",
+              "note": "The documentation specifies the prefix, not a complete versioned UA string.",
+              "evidence": [
+                "claude-code-tools"
+              ],
+              "verified": "2026-09-06"
+            },
+            {
+              "key": "redirects",
+              "status": "documented",
+              "value": "Separate fetch for cross-host redirects",
+              "note": "WebFetch returns the original and target URLs for a subsequent fetch.",
+              "evidence": [
+                "claude-code-tools"
+              ],
+              "verified": "2026-09-06"
+            },
+            {
+              "key": "accept",
+              "status": "unknown",
+              "note": "Not established by the reviewed official documentation.",
+              "evidence": []
+            },
+            {
+              "key": "customHeaders",
+              "status": "unknown",
+              "note": "Not established by the reviewed official documentation.",
+              "evidence": []
+            },
+            {
+              "key": "browserEngine",
+              "status": "unknown",
+              "note": "Not established by the reviewed official documentation.",
+              "evidence": []
+            },
+            {
+              "key": "javascript",
+              "status": "unknown",
+              "note": "Not established by the reviewed official documentation.",
+              "evidence": []
+            }
+          ],
+          "identification": [
+            {
+              "id": "claude-user",
+              "location": "header",
+              "key": "user-agent",
+              "match": "product-token",
+              "pattern": "Claude-User",
+              "actor": "Claude user retrieval",
+              "attribution": "tool",
+              "ambiguity": "Claude-User is shared with other Claude retrieval contexts; this does not uniquely identify Claude Code. User-Agent is spoofable.",
+              "evidence": [
+                "claude-code-tools"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "web-search",
+          "variant": "Claude Code / built-in WebSearch",
+          "operation": "search",
+          "tool": "claude-web-search",
+          "availability": "built-in",
+          "conditions": [
+            "Documentation snapshot checked September 6, 2026; platform availability varies."
+          ],
+          "claims": [
+            {
+              "key": "provider",
+              "status": "documented",
+              "value": "Anthropic search backend",
+              "note": "The built-in backend is not configurable; alternatives can be installed through MCP.",
+              "evidence": [
+                "claude-code-tools"
+              ],
+              "verified": "2026-09-06"
+            },
+            {
+              "key": "output",
+              "status": "documented",
+              "value": "Result titles and URLs",
+              "note": "Search does not fetch the result pages; WebFetch is a separate operation.",
+              "evidence": [
+                "claude-code-tools"
+              ],
+              "verified": "2026-09-06"
+            },
+            {
+              "key": "accept",
+              "status": "unknown",
+              "note": "Not established by the reviewed official documentation.",
+              "evidence": []
+            },
+            {
+              "key": "markdownPreference",
+              "status": "unknown",
+              "note": "Not established by the reviewed official documentation.",
+              "evidence": []
+            },
+            {
+              "key": "userAgent",
+              "status": "unknown",
+              "note": "Not established by the reviewed official documentation.",
+              "evidence": []
+            }
+          ],
+          "identification": []
+        }
+      ]
     },
     {
       "name": "Claude Desktop",
@@ -1498,7 +1713,8 @@
             "Only local (stdio) servers are configured via the file. Add remote servers through Settings → Connectors in the app."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Cline",
@@ -1918,7 +2134,8 @@
           ],
           "docs": "https://docs.cline.bot/getting-started/config"
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Cline CLI",
@@ -1998,7 +2215,8 @@
           "examples": [],
           "notes": []
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Code Studio",
@@ -2046,7 +2264,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "CodeArts Agent",
@@ -2095,7 +2314,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "CodeBuddy",
@@ -2157,7 +2377,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Codemaker",
@@ -2205,7 +2426,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Codex",
@@ -2637,7 +2859,158 @@
           ],
           "docs": "https://developers.openai.com/codex/config-reference"
         }
-      }
+      },
+      "behaviors": [
+        {
+          "id": "optional-agent-browser",
+          "variant": "Codex desktop / optional agent-browser command",
+          "operation": "browse",
+          "tool": "agent-browser",
+          "availability": "optional",
+          "conditions": [
+            "Observed September 6, 2026 on macOS arm64 with agent-browser 0.9.1 and HeadlessChrome/145.0.7632.6.",
+            "Installed tool invoked through shell by this Codex task; not a built-in Codex browser or hosted search signature.",
+            "Local headless navigation; two runs against controlled fixtures; no header overrides configured."
+          ],
+          "claims": [
+            {
+              "key": "accept",
+              "status": "observed",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+              "note": "Exact observed navigation Accept header; wildcard acceptance is not an explicit Markdown preference.",
+              "evidence": [
+                "codex-agent-browser-observation"
+              ],
+              "verified": "2026-09-06"
+            },
+            {
+              "key": "userAgent",
+              "status": "observed",
+              "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/145.0.7632.6 Safari/537.36",
+              "note": "Generic headless browser identity; no reliable Codex attribution rule follows from this.",
+              "evidence": [
+                "codex-agent-browser-observation"
+              ],
+              "verified": "2026-09-06"
+            },
+            {
+              "key": "markdownPreference",
+              "status": "observed",
+              "value": false,
+              "note": "No explicit text/markdown preference in these navigation requests. The negotiation fixture returned HTML.",
+              "evidence": [
+                "codex-agent-browser-observation"
+              ],
+              "verified": "2026-09-06"
+            },
+            {
+              "key": "javascript",
+              "status": "observed",
+              "value": true,
+              "note": "The rendered #js element changed from pending to executed in both runs.",
+              "evidence": [
+                "codex-agent-browser-observation"
+              ],
+              "verified": "2026-09-06"
+            },
+            {
+              "key": "redirects",
+              "status": "observed",
+              "value": "Followed same-origin 302",
+              "note": "Navigation to /redirect reached the /html fixture in both runs.",
+              "evidence": [
+                "codex-agent-browser-observation"
+              ],
+              "verified": "2026-09-06"
+            },
+            {
+              "key": "execution",
+              "status": "observed",
+              "value": "Local headless browser",
+              "note": "Browser was launched through the installed optional command-line tool.",
+              "evidence": [
+                "codex-agent-browser-observation"
+              ],
+              "verified": "2026-09-06"
+            }
+          ],
+          "identification": []
+        },
+        {
+          "id": "web-search",
+          "variant": "Codex / local chats",
+          "operation": "search",
+          "tool": "codex-web-search",
+          "availability": "built-in",
+          "conditions": [
+            "Applies to hosted web search, separate from local command networking.",
+            "Default mode depends on permissions: cached normally, live with full access.",
+            "Documentation checked September 6, 2026; managed settings can restrict modes."
+          ],
+          "claims": [
+            {
+              "key": "searchMode",
+              "status": "documented",
+              "value": [
+                "cached",
+                "live",
+                "disabled",
+                "indexed"
+              ],
+              "note": "Cached is the local default; full access defaults to live.",
+              "evidence": [
+                "codex-search"
+              ],
+              "verified": "2026-09-06"
+            },
+            {
+              "key": "provider",
+              "status": "documented",
+              "value": "OpenAI-maintained index (cached mode)",
+              "note": "Cached mode uses the index rather than arbitrary live page fetches.",
+              "evidence": [
+                "codex-search"
+              ],
+              "verified": "2026-09-06"
+            },
+            {
+              "key": "execution",
+              "status": "documented",
+              "value": "Hosted tool",
+              "note": "Local sandbox networking and search controls are separate.",
+              "evidence": [
+                "codex-search"
+              ],
+              "verified": "2026-09-06"
+            },
+            {
+              "key": "accept",
+              "status": "unknown",
+              "note": "Not established by the reviewed official documentation.",
+              "evidence": []
+            },
+            {
+              "key": "markdownPreference",
+              "status": "unknown",
+              "note": "Not established by the reviewed official documentation.",
+              "evidence": []
+            },
+            {
+              "key": "userAgent",
+              "status": "unknown",
+              "note": "Not established by the reviewed official documentation.",
+              "evidence": []
+            },
+            {
+              "key": "customHeaders",
+              "status": "unknown",
+              "note": "Not established by the reviewed official documentation.",
+              "evidence": []
+            }
+          ],
+          "identification": []
+        }
+      ]
     },
     {
       "name": "Command Code",
@@ -2698,7 +3071,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Continue",
@@ -2749,7 +3123,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Cortex Code",
@@ -2799,7 +3174,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Crush",
@@ -3359,7 +3735,8 @@
           ],
           "docs": "https://github.com/charmbracelet/crush#configuration"
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Cursor",
@@ -3794,7 +4171,115 @@
           ],
           "docs": "https://cursor.com/docs/reference/permissions"
         }
-      }
+      },
+      "behaviors": [
+        {
+          "id": "browser",
+          "variant": "Cursor / Agent",
+          "operation": "browse",
+          "tool": "cursor-browser",
+          "availability": "built-in",
+          "conditions": [
+            "Agent overview checked September 6, 2026; exact version range not specified."
+          ],
+          "claims": [
+            {
+              "key": "screenshots",
+              "status": "documented",
+              "value": true,
+              "note": "Browser can navigate pages, interact with elements, and capture screenshots.",
+              "evidence": [
+                "cursor-tools"
+              ],
+              "verified": "2026-09-06"
+            },
+            {
+              "key": "browserEngine",
+              "status": "unknown",
+              "note": "Not established by the reviewed official documentation.",
+              "evidence": []
+            },
+            {
+              "key": "accept",
+              "status": "unknown",
+              "note": "Not established by the reviewed official documentation.",
+              "evidence": []
+            },
+            {
+              "key": "markdownPreference",
+              "status": "unknown",
+              "note": "Not established by the reviewed official documentation.",
+              "evidence": []
+            },
+            {
+              "key": "userAgent",
+              "status": "unknown",
+              "note": "Not established by the reviewed official documentation.",
+              "evidence": []
+            },
+            {
+              "key": "javascript",
+              "status": "unknown",
+              "note": "Not established by the reviewed official documentation.",
+              "evidence": []
+            },
+            {
+              "key": "cookies",
+              "status": "unknown",
+              "note": "Not established by the reviewed official documentation.",
+              "evidence": []
+            }
+          ],
+          "identification": []
+        },
+        {
+          "id": "web-search",
+          "variant": "Cursor / Agent",
+          "operation": "search",
+          "tool": "cursor-web",
+          "availability": "built-in",
+          "conditions": [
+            "Agent overview checked September 6, 2026; exact version range not specified."
+          ],
+          "claims": [
+            {
+              "key": "output",
+              "status": "documented",
+              "value": "Web search results",
+              "note": "Agent generates search queries and performs web searches.",
+              "evidence": [
+                "cursor-tools"
+              ],
+              "verified": "2026-09-06"
+            },
+            {
+              "key": "provider",
+              "status": "unknown",
+              "note": "Not established by the reviewed official documentation.",
+              "evidence": []
+            },
+            {
+              "key": "accept",
+              "status": "unknown",
+              "note": "Not established by the reviewed official documentation.",
+              "evidence": []
+            },
+            {
+              "key": "markdownPreference",
+              "status": "unknown",
+              "note": "Not established by the reviewed official documentation.",
+              "evidence": []
+            },
+            {
+              "key": "userAgent",
+              "status": "unknown",
+              "note": "Not established by the reviewed official documentation.",
+              "evidence": []
+            }
+          ],
+          "identification": []
+        }
+      ]
     },
     {
       "name": "Deep Agents",
@@ -3842,7 +4327,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Devin for Terminal",
@@ -3893,7 +4379,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Dexto",
@@ -3941,7 +4428,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Droid",
@@ -4532,7 +5020,8 @@
           ],
           "docs": "https://docs.factory.ai/cli/configuration/settings"
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Eve",
@@ -4576,7 +5065,8 @@
             "Project-only; skills are stored as flat <name>.md files."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Firebender",
@@ -4627,7 +5117,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "ForgeCode",
@@ -4678,7 +5169,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Gemini CLI",
@@ -5274,7 +5766,8 @@
           ],
           "docs": "https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/settings.md"
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "GitHub Copilot",
@@ -5705,7 +6198,8 @@
           ],
           "docs": "https://docs.github.com/en/copilot/how-tos/use-copilot-agents/coding-agent/customize-the-agent-environment"
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "GitHub Copilot CLI",
@@ -6385,7 +6879,8 @@
           ],
           "docs": "https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-config-dir-reference"
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Goose",
@@ -6909,7 +7404,8 @@
           ],
           "docs": "https://goose-docs.ai/docs/guides/config-files"
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Hermes Agent",
@@ -6957,7 +7453,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "IBM Bob",
@@ -7006,7 +7503,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "iFlow CLI",
@@ -7056,7 +7554,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "inference.sh",
@@ -7104,7 +7603,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Jazz",
@@ -7152,7 +7652,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Junie",
@@ -7203,7 +7704,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Kilo Code",
@@ -7675,7 +8177,8 @@
           ],
           "docs": "https://kilocode.ai/docs/getting-started/settings"
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Kimi Code CLI",
@@ -7725,7 +8228,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Kiro CLI",
@@ -7790,7 +8294,8 @@
             "Custom agents must add \"resources\": [\"skill://.kiro/skills/**/SKILL.md\"] to .kiro/agents/<agent>.json."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Kode",
@@ -7838,7 +8343,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Lingma",
@@ -7888,7 +8394,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Loaf",
@@ -7936,7 +8443,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "MCPJam",
@@ -7984,7 +8492,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "MCPorter",
@@ -8062,7 +8571,8 @@
           "examples": [],
           "notes": []
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Mistral Vibe",
@@ -8113,7 +8623,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Moxby",
@@ -8161,7 +8672,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Mux",
@@ -8209,7 +8721,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Neovate",
@@ -8270,7 +8783,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Ona",
@@ -8320,7 +8834,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "OpenClaw",
@@ -8382,7 +8897,8 @@
             "Global path falls back to ~/.clawdbot/skills then ~/.moltbot/skills."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "OpenCode",
@@ -9004,7 +9520,8 @@
           ],
           "docs": "https://opencode.ai/docs/config/"
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "OpenHands",
@@ -9068,7 +9585,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Pi",
@@ -9129,7 +9647,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Pochi",
@@ -9177,7 +9696,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "PromptScript",
@@ -9221,7 +9741,8 @@
             "Global install not supported."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Qoder",
@@ -9285,7 +9806,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Qoder CN",
@@ -9335,7 +9857,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Qwen Code",
@@ -9978,7 +10501,8 @@
           ],
           "docs": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/configuration/settings.md"
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Reasonix",
@@ -10026,7 +10550,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Replit",
@@ -10077,7 +10602,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Roo Code",
@@ -10525,7 +11051,8 @@
           ],
           "docs": "https://docs.roocode.com/features/settings-management"
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Rovo Dev",
@@ -10575,7 +11102,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Tabnine CLI",
@@ -10626,7 +11154,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Terramind",
@@ -10674,7 +11203,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Tinycloud",
@@ -10722,7 +11252,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Trae",
@@ -10773,7 +11304,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Trae CN",
@@ -10824,7 +11356,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Visual Studio Code",
@@ -11485,7 +12018,8 @@
           ],
           "docs": "https://code.visualstudio.com/docs/copilot/reference/copilot-settings"
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Warp",
@@ -11898,7 +12432,8 @@
           ],
           "docs": "https://docs.warp.dev/terminal/settings/all-settings/"
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Windsurf",
@@ -12337,7 +12872,8 @@
           ],
           "docs": "https://docs.devin.ai/desktop/enterprise-policies"
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Zed",
@@ -12725,7 +13261,8 @@
           ],
           "docs": "https://zed.dev/docs/ai/agent-settings"
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Zencoder",
@@ -12789,7 +13326,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     },
     {
       "name": "Zenflow",
@@ -12840,7 +13378,8 @@
             "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
           ]
         }
-      }
+      },
+      "behaviors": []
     }
   ]
 }
