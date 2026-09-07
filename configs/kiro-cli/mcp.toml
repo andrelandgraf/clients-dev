@@ -1,0 +1,64 @@
+status = "partial"
+verified = "2026-09-07"
+summary = "MCP configuration shared with Kiro IDE; command selects local servers and url selects remote servers."
+docs = "https://kiro.dev/docs/mcp/configuration/"
+transports = ["stdio", "http"]
+auth = ["headers", "oauth"]
+notes = ["Agent configuration overrides workspace entries, which override global entries.", "add-mcp writes remote timeout in milliseconds. The linked official configuration reference does not specify that field; timeout coverage remains unverified."]
+
+[[files]]
+path = ".kiro/settings/mcp.json"
+scope = "project"
+format = "json"
+key = "mcpServers"
+
+[[files]]
+path = "~/.kiro/settings/mcp.json"
+scope = "global"
+format = "json"
+key = "mcpServers"
+
+[[fields]]
+name = "command"
+type = "string"
+description = "Executable for a stdio server."
+
+[[fields]]
+name = "args"
+type = "string[]"
+description = "Arguments for the executable."
+
+[[fields]]
+name = "env"
+type = "record<string, string>"
+description = "Environment for the child process."
+
+[[fields]]
+name = "url"
+type = "string"
+description = "Remote endpoint."
+
+[[fields]]
+name = "headers"
+type = "record<string, string>"
+description = "HTTP request headers."
+
+[[fields]]
+name = "disabled"
+type = "boolean"
+description = "Disable this server."
+
+[[fields]]
+name = "autoApprove"
+type = "string[]"
+description = "Tools allowed without confirmation."
+
+[[fields]]
+name = "disabledTools"
+type = "string[]"
+description = "Tools to disable."
+
+[[fields]]
+name = "oauth"
+type = "object"
+description = "Remote OAuth settings."

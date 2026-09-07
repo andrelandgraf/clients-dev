@@ -150,3 +150,13 @@ code = '''
   }
 }
 '''
+
+[[files]]
+path = "opencode.jsonc"
+scope = "project"
+format = "jsonc"
+
+[[files]]
+path = "~/.config/opencode/opencode.jsonc"
+scope = "global"
+format = "jsonc"

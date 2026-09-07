@@ -1,0 +1,55 @@
+status = "supported"
+verified = "2026-09-07"
+summary = "MCP server tables in project and user config.toml files."
+docs = "https://docs.x.ai/build/features/mcp-servers"
+transports = ["stdio", "http"]
+auth = ["headers", "oauth"]
+notes = ["Project definitions replace same-name user servers.", "Remote OAuth is automatic. ${VAR} and ${VAR:-default} expand in connection fields.", "add-mcp 2.3.1 also advertises SSE; the linked official guide only explicitly documents HTTP and stdio."]
+
+[[files]]
+path = ".grok/config.toml"
+scope = "project"
+format = "toml"
+key = "mcp_servers"
+
+[[files]]
+path = "~/.grok/config.toml"
+scope = "global"
+format = "toml"
+key = "mcp_servers"
+note = "Relocatable with GROK_HOME; see https://docs.x.ai/build/settings."
+
+[[fields]]
+name = "command"
+type = "string"
+description = "Executable for a stdio server."
+
+[[fields]]
+name = "args"
+type = "string[]"
+description = "Arguments for the executable."
+
+[[fields]]
+name = "env"
+type = "record<string, string>"
+description = "Environment for the child process."
+
+[[fields]]
+name = "url"
+type = "string"
+description = "Remote endpoint."
+
+[[fields]]
+name = "headers"
+type = "record<string, string>"
+description = "HTTP request headers."
+
+[[fields]]
+name = "startup_timeout_sec"
+type = "number"
+description = "Startup limit in seconds; default 30."
+
+[[fields]]
+name = "tool_timeout_sec"
+type = "number"
+description = "Tool execution limit in seconds; default 6000."

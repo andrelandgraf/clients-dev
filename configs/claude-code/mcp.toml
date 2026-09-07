@@ -5,6 +5,7 @@ transports = ["stdio", "http", "sse", "ws"]
 auth = ["oauth", "headers", "headersHelper"]
 docs = "https://docs.claude.com/en/docs/claude-code/mcp"
 notes = [
+  "MCP approval uses permissions.allow in Claude settings, with mcp__<server> or mcp__<server>__<tool> rules; see https://code.claude.com/docs/en/permissions. add-mcp writes project approvals to .claude/settings.local.json and global approvals to ~/.claude/settings.json, separately from server definitions.",
   "Project scope uses .mcp.json (checked into version control, requires approval).",
   "Local and user scopes are stored in ~/.claude.json; type 'streamable-http' is an alias for 'http'.",
   "SSE transport is deprecated in favor of HTTP.",

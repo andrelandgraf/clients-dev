@@ -1,0 +1,4 @@
+name = "fx"
+type = "cli"
+vendor = "Vercel Labs"
+homepage = "https://fx.sh/"

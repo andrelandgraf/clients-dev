@@ -1,0 +1,4 @@
+name = "Grok Build"
+type = "cli"
+vendor = "xAI"
+homepage = "https://docs.x.ai/build"

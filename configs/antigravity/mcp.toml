@@ -1,12 +1,13 @@
 status = "supported"
-verified = "2026-06-21"
+verified = "2026-09-07"
 summary = "Configure MCP servers in JSON under the mcpServers key."
 transports = ["stdio", "http", "sse"]
 auth = ["headers"]
-notes = ["Remote entries use serverUrl (no type field)."]
+docs = "https://antigravity.google/docs/mcp"
+notes = ["Global config is shared with Antigravity CLI. Native clients also support workspace config; add-mcp 2.3.1 installs globally.", "Remote entries use serverUrl (no type field)."]
 
 [[files]]
-path = "~/.gemini/antigravity/mcp_config.json"
+path = "~/.gemini/config/mcp_config.json"
 scope = "global"
 format = "json"
 key = "mcpServers"
@@ -35,3 +36,9 @@ description = "Endpoint URL for a remote server."
 name = "headers"
 type = "record<string, string>"
 description = "HTTP headers for a remote server."
+
+[[files]]
+path = ".agents/mcp_config.json"
+scope = "project"
+format = "json"
+key = "mcpServers"

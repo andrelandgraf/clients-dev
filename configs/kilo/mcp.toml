@@ -1,10 +1,11 @@
 status = "supported"
-verified = "2026-07-12"
+verified = "2026-09-07"
 summary = "MCP servers configured under the top-level mcp key of kilo.jsonc (project or global). Local (STDIO) and remote (Streamable HTTP with SSE fallback) servers, with OAuth 2.0 for remote servers."
 transports = ["stdio", "http", "sse"]
 auth = ["oauth", "headers"]
-docs = "https://kilocode.ai/docs/features/mcp/using-mcp-in-kilo-code"
+docs = "https://kilo.ai/docs/automate/mcp/using-in-kilo-code"
 notes = [
+  "JSON and JSONC are supported. add-mcp 2.3.1 defaults new installs to kilo.json and reuses existing project/global files.",
   "Project-level configuration takes precedence over global configuration.",
   "For remote servers Kilo tries Streamable HTTP first, then falls back to SSE automatically.",
   "Remote servers supporting OAuth 2.0 trigger the auth flow automatically; disable with \"oauth\": false.",
@@ -118,3 +119,21 @@ code = '''
   }
 }
 '''
+
+[[files]]
+path = ".kilo/kilo.json"
+scope = "project"
+format = "json"
+key = "mcp"
+
+[[files]]
+path = "kilo.json"
+scope = "project"
+format = "json"
+key = "mcp"
+
+[[files]]
+path = "~/.config/kilo/kilo.json"
+scope = "global"
+format = "json"
+key = "mcp"

@@ -1,10 +1,11 @@
 status = "supported"
-verified = "2026-07-12"
-summary = "Configure MCP servers under the mcp key in opencode.json. Local servers run as commands; remote servers connect over HTTP with header or OAuth auth."
+verified = "2026-09-07"
+summary = "Configure MCP servers under the mcp key in opencode.json or opencode.jsonc. Local servers run as commands; remote servers connect over HTTP with header or OAuth auth."
 transports = ["stdio", "http"]
 auth = ["oauth", "headers"]
 docs = "https://opencode.ai/docs/mcp-servers/"
 notes = [
+  "add-mcp 2.3.1 defaults new installs to opencode.jsonc and reuses existing JSON/JSONC files. This installer selection is distinct from native config merge precedence; see https://opencode.ai/docs/config/.",
   "Local servers use type 'local' with command as an array; remote servers use type 'remote' with url.",
   "OAuth is automatic for remote servers: OpenCode detects 401 responses, uses Dynamic Client Registration (RFC 7591), and stores tokens in ~/.local/share/opencode/mcp-auth.json. Manage with `opencode mcp auth|list|logout|debug`.",
   "MCP tools register with the server name as prefix and can be enabled/disabled globally or per agent via the tools option with glob patterns (e.g. \"my-mcp*\": false).",
@@ -34,8 +35,7 @@ values = ["local", "remote"]
 [[fields]]
 name = "command"
 type = "string[]"
-required = true
-description = "For local servers: command and arguments to run the MCP server."
+description = "Required for local servers: command and arguments to run the MCP server."
 
 [[fields]]
 name = "environment"
@@ -50,8 +50,7 @@ description = "Working directory for a local server process. Relative paths reso
 [[fields]]
 name = "url"
 type = "string"
-required = true
-description = "For remote servers: URL of the remote MCP server."
+description = "Required for remote servers: URL of the remote MCP server."
 
 [[fields]]
 name = "headers"
@@ -111,3 +110,15 @@ code = '''
   }
 }
 '''
+
+[[files]]
+path = "opencode.jsonc"
+scope = "project"
+format = "jsonc"
+key = "mcp"
+
+[[files]]
+path = "~/.config/opencode/opencode.jsonc"
+scope = "global"
+format = "jsonc"
+key = "mcp"

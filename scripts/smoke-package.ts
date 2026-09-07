@@ -30,7 +30,7 @@ import { getClient, compareBehavior, identify } from '@agent-tooling/clients';
 import { Catalog } from '@agent-tooling/clients/validate';
 const catalog = Catalog.parse(raw);
 assert.equal(getClient(catalog, 'claude-code').id, single.id);
-assert.equal(compareBehavior(catalog, 'markdownPreference').length, 76);
+assert.equal(compareBehavior(catalog, 'markdownPreference').length, catalog.clients.length);
 assert.equal(identify(catalog, {headers:{'user-agent':'Claude-User/1.0'}}).status, 'candidates');
 assert.equal(schema.type, 'object');
 assert.equal(catalog.dataVersion, '${JSON.parse(readFileSync("src/data/catalog.json", "utf8")).dataVersion}');

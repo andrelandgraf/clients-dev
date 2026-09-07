@@ -1,0 +1,85 @@
+status = "supported"
+verified = "2026-09-07"
+summary = "Global MCP profiles and explicitly trusted project servers."
+docs = "https://fx.sh/docs/capabilities/mcp"
+transports = ["stdio", "http", "sse"]
+auth = ["headers", "env-secrets", "oauth"]
+notes = ["add-mcp 2.3.1 installs only the global profile; native fx also reads project .mcp.json.", "Global mcpServers is a compatibility alias for mcp. Project files require mcpServers.", "Project strings expand environment templates after trust approval. Global strings remain literal."]
+
+[[files]]
+path = "~/.fx/mcp.json"
+scope = "global"
+format = "json"
+key = "mcp"
+
+[[files]]
+path = ".mcp.json"
+scope = "project"
+format = "json"
+key = "mcpServers"
+note = "Claude-compatible project format; approval required before connection."
+
+[[fields]]
+name = "type"
+type = "\"local\" | \"http\" | \"sse\""
+description = "Transport selector."
+
+[[fields]]
+name = "command"
+type = "string | string[]"
+description = "Local executable; arrays include arguments."
+
+[[fields]]
+name = "args"
+type = "string[]"
+description = "Arguments with string commands."
+
+[[fields]]
+name = "environment"
+type = "record<string, string>"
+description = "Child environment; env is an alias."
+
+[[fields]]
+name = "url"
+type = "string"
+description = "Required for remote connections."
+
+[[fields]]
+name = "headers"
+type = "record<string, string>"
+description = "Static headers; literal Authorization is rejected."
+
+[[fields]]
+name = "header_env"
+type = "record<string, string>"
+description = "Header names mapped to environment variable names."
+
+[[fields]]
+name = "bearer_token_env"
+type = "string"
+description = "Environment variable containing a bearer token."
+
+[[fields]]
+name = "oauth"
+type = "object"
+description = "OAuth configuration."
+
+[[fields]]
+name = "enabled"
+type = "boolean"
+description = "Enable the server."
+
+[[fields]]
+name = "required"
+type = "boolean"
+description = "Wait for startup; global only."
+
+[[fields]]
+name = "startup_timeout_ms"
+type = "number"
+description = "Positive startup timeout; default 30000 ms."
+
+[[fields]]
+name = "operation_timeout_ms"
+type = "number"
+description = "Positive operation timeout; default 60000 ms."

@@ -1,10 +1,13 @@
 status = "supported"
-verified = "2026-07-12"
+verified = "2026-09-07"
 summary = "MCP servers are configured under the mcpServers key in ~/.copilot/mcp-config.json (user level) or in workspace .mcp.json / .github/mcp.json files, or managed with /mcp and copilot mcp commands. Supports stdio, Streamable HTTP, and legacy SSE with OAuth (including headless client_credentials)."
 transports = ["stdio", "http", "sse"]
 auth = ["oauth", "headers", "env-secrets", "oidc"]
 docs = "https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-mcp-servers"
 notes = [
+  "Project files accept mcpServers or a bare server-name map. They use strict JSON, not JSONC.",
+  "When both project files exist in one directory, .mcp.json wins. add-mcp 2.3.1 creates .mcp.json or reuses an existing .github/mcp.json.",
+  "A .mcp.json shared with Claude Code represents the same servers for both clients; editing or removing entries affects both.",
   "Loading priority: --additional-mcp-config flag > plugin-provided servers > workspace .mcp.json / .github/mcp.json (loaded from the working directory up to the Git root; requires folder trust) > ~/.copilot/mcp-config.json.",
   "Built-in servers: github-mcp-server, playwright, fetch, time, and (opt-in) computer-use. Disable with --disable-builtin-mcps or --disable-mcp-server.",
   "To migrate from VS Code's .vscode/mcp.json, remap the servers key to mcpServers in .mcp.json.",
@@ -52,8 +55,7 @@ description = "Arguments passed to the command."
 [[fields]]
 name = "tools"
 type = "string[]"
-required = true
-description = "Tools to enable: [\"*\"] for all, or a list of tool names."
+description = "User-level tool selection (optional in project configs): [\"*\"] for all, or a list of tool names."
 
 [[fields]]
 name = "env"

@@ -1,5 +1,5 @@
 status = "supported"
-verified = "2026-06-21"
+verified = "2026-09-07"
 summary = "MCP servers are defined as [mcp_servers.<name>] tables in config.toml. Supports stdio and Streamable HTTP, with bearer-token and OAuth auth."
 transports = ["stdio", "http"]
 auth = ["oauth", "bearer-token", "headers"]
@@ -119,3 +119,15 @@ url = "https://mcp.figma.com/mcp"
 bearer_token_env_var = "FIGMA_OAUTH_TOKEN"
 http_headers = { "X-Figma-Region" = "us-east-1" }
 '''
+
+[[fields]]
+name = "default_tools_approval_mode"
+type = '"auto" | "prompt" | "writes" | "approve"'
+values = ["auto", "prompt", "writes", "approve"]
+description = "Server-wide approval default. add-mcp --auto-approve writes approve."
+
+[[fields]]
+name = "tools.<tool>.approval_mode"
+type = '"auto" | "prompt" | "writes" | "approve"'
+values = ["auto", "prompt", "writes", "approve"]
+description = "Per-tool override of the server approval default. add-mcp --approve-tools writes approve for the selected tools."

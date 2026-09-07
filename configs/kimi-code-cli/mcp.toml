@@ -1,0 +1,85 @@
+status = "supported"
+verified = "2026-09-07"
+summary = "Project and user MCP definitions with per-server transport and timeouts."
+docs = "https://www.kimi.com/code/docs/en/kimi-code-cli/customization/mcp.html"
+transports = ["stdio", "http", "sse"]
+auth = ["headers", "env-secrets", "oauth"]
+notes = ["Project servers override same-name user entries and require workspace trust.", "Use /mcp-config login <server> for OAuth."]
+
+[[files]]
+path = ".kimi-code/mcp.json"
+scope = "project"
+format = "json"
+key = "mcpServers"
+
+[[files]]
+path = "~/.kimi-code/mcp.json"
+scope = "global"
+format = "json"
+key = "mcpServers"
+note = "KIMI_CODE_HOME overrides the directory."
+
+[[fields]]
+name = "command"
+type = "string"
+description = "Executable for a stdio server."
+
+[[fields]]
+name = "args"
+type = "string[]"
+description = "Arguments for the executable."
+
+[[fields]]
+name = "env"
+type = "record<string, string>"
+description = "Environment for the child process."
+
+[[fields]]
+name = "url"
+type = "string"
+description = "Remote endpoint."
+
+[[fields]]
+name = "headers"
+type = "record<string, string>"
+description = "HTTP request headers."
+
+[[fields]]
+name = "transport"
+type = "\"stdio\" | \"http\" | \"sse\""
+description = "Inferred from command or url; legacy SSE must be explicit."
+
+[[fields]]
+name = "cwd"
+type = "string"
+description = "Child working directory."
+
+[[fields]]
+name = "bearerTokenEnvVar"
+type = "string"
+description = "Environment variable holding a bearer token."
+
+[[fields]]
+name = "enabled"
+type = "boolean"
+description = "False disables this server."
+
+[[fields]]
+name = "startupTimeoutMs"
+type = "number"
+description = "Connection timeout, 1\u20132147483647 ms; default 30000."
+
+[[fields]]
+name = "toolTimeoutMs"
+type = "number"
+description = "Tool timeout, 1\u20132147483647 ms."
+
+[[fields]]
+name = "enabledTools"
+type = "string[]"
+description = "Tool allowlist."
+
+[[fields]]
+name = "disabledTools"
+type = "string[]"
+description = "Tool blocklist."

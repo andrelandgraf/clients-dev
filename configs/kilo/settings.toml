@@ -85,3 +85,18 @@ code = '''
   }
 }
 '''
+
+[[files]]
+path = ".kilo/kilo.json"
+scope = "project"
+format = "json"
+
+[[files]]
+path = "kilo.json"
+scope = "project"
+format = "json"
+
+[[files]]
+path = "~/.config/kilo/kilo.json"
+scope = "global"
+format = "json"

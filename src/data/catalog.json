@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0",
-  "dataVersion": "eff6aa72bba17e458292d9dcc233830424428fb6024252876a93f014e7f4a71c",
-  "generatedAt": "2026-09-06T19:39:03.728Z",
+  "dataVersion": "ee5de863c30bdbe4fe7dd3e07c7e22ea9bf4ab2248dbc7c35cdbf60bc28be1db",
+  "generatedAt": "2026-09-07T17:59:57.673Z",
   "evidence": [
     {
       "id": "claude-code-tools",
@@ -654,12 +654,18 @@
       "surfaces": {
         "mcp": {
           "status": "supported",
-          "verified": "2026-06-21",
+          "verified": "2026-09-07",
           "summary": "Configure MCP servers in JSON under the mcpServers key.",
           "files": [
             {
-              "path": "~/.gemini/antigravity/mcp_config.json",
+              "path": "~/.gemini/config/mcp_config.json",
               "scope": "global",
+              "format": "json",
+              "key": "mcpServers"
+            },
+            {
+              "path": ".agents/mcp_config.json",
+              "scope": "project",
               "format": "json",
               "key": "mcpServers"
             }
@@ -709,8 +715,10 @@
           "capabilities": [],
           "examples": [],
           "notes": [
+            "Global config is shared with Antigravity CLI. Native clients also support workspace config; add-mcp 2.3.1 installs globally.",
             "Remote entries use serverUrl (no type field)."
-          ]
+          ],
+          "docs": "https://antigravity.google/docs/mcp"
         },
         "skills": {
           "status": "supported",
@@ -1109,6 +1117,7 @@
             }
           ],
           "notes": [
+            "MCP approval uses permissions.allow in Claude settings, with mcp__<server> or mcp__<server>__<tool> rules; see https://code.claude.com/docs/en/permissions. add-mcp writes project approvals to .claude/settings.local.json and global approvals to ~/.claude/settings.json, separately from server definitions.",
             "Project scope uses .mcp.json (checked into version control, requires approval).",
             "Local and user scopes are stored in ~/.claude.json; type 'streamable-http' is an alias for 'http'.",
             "SSE transport is deprecated in favor of HTTP."
@@ -2441,7 +2450,7 @@
       "surfaces": {
         "mcp": {
           "status": "supported",
-          "verified": "2026-06-21",
+          "verified": "2026-09-07",
           "summary": "MCP servers are defined as [mcp_servers.<name>] tables in config.toml. Supports stdio and Streamable HTTP, with bearer-token and OAuth auth.",
           "files": [
             {
@@ -2548,6 +2557,30 @@
               "type": "string[]",
               "required": false,
               "description": "OAuth scopes to request when authenticating."
+            },
+            {
+              "name": "default_tools_approval_mode",
+              "type": "\"auto\" | \"prompt\" | \"writes\" | \"approve\"",
+              "required": false,
+              "description": "Server-wide approval default. add-mcp --auto-approve writes approve.",
+              "values": [
+                "auto",
+                "prompt",
+                "writes",
+                "approve"
+              ]
+            },
+            {
+              "name": "tools.<tool>.approval_mode",
+              "type": "\"auto\" | \"prompt\" | \"writes\" | \"approve\"",
+              "required": false,
+              "description": "Per-tool override of the server approval default. add-mcp --approve-tools writes approve for the selected tools.",
+              "values": [
+                "auto",
+                "prompt",
+                "writes",
+                "approve"
+              ]
             }
           ],
           "transports": [
@@ -5173,6 +5206,136 @@
       "behaviors": []
     },
     {
+      "name": "fx",
+      "type": "cli",
+      "vendor": "Vercel Labs",
+      "homepage": "https://fx.sh/",
+      "id": "fx",
+      "surfaces": {
+        "mcp": {
+          "status": "supported",
+          "verified": "2026-09-07",
+          "summary": "Global MCP profiles and explicitly trusted project servers.",
+          "files": [
+            {
+              "path": "~/.fx/mcp.json",
+              "scope": "global",
+              "format": "json",
+              "key": "mcp"
+            },
+            {
+              "path": ".mcp.json",
+              "scope": "project",
+              "format": "json",
+              "key": "mcpServers",
+              "note": "Claude-compatible project format; approval required before connection."
+            }
+          ],
+          "fields": [
+            {
+              "name": "type",
+              "type": "\"local\" | \"http\" | \"sse\"",
+              "required": false,
+              "description": "Transport selector."
+            },
+            {
+              "name": "command",
+              "type": "string | string[]",
+              "required": false,
+              "description": "Local executable; arrays include arguments."
+            },
+            {
+              "name": "args",
+              "type": "string[]",
+              "required": false,
+              "description": "Arguments with string commands."
+            },
+            {
+              "name": "environment",
+              "type": "record<string, string>",
+              "required": false,
+              "description": "Child environment; env is an alias."
+            },
+            {
+              "name": "url",
+              "type": "string",
+              "required": false,
+              "description": "Required for remote connections."
+            },
+            {
+              "name": "headers",
+              "type": "record<string, string>",
+              "required": false,
+              "description": "Static headers; literal Authorization is rejected."
+            },
+            {
+              "name": "header_env",
+              "type": "record<string, string>",
+              "required": false,
+              "description": "Header names mapped to environment variable names."
+            },
+            {
+              "name": "bearer_token_env",
+              "type": "string",
+              "required": false,
+              "description": "Environment variable containing a bearer token."
+            },
+            {
+              "name": "oauth",
+              "type": "object",
+              "required": false,
+              "description": "OAuth configuration."
+            },
+            {
+              "name": "enabled",
+              "type": "boolean",
+              "required": false,
+              "description": "Enable the server."
+            },
+            {
+              "name": "required",
+              "type": "boolean",
+              "required": false,
+              "description": "Wait for startup; global only."
+            },
+            {
+              "name": "startup_timeout_ms",
+              "type": "number",
+              "required": false,
+              "description": "Positive startup timeout; default 30000 ms."
+            },
+            {
+              "name": "operation_timeout_ms",
+              "type": "number",
+              "required": false,
+              "description": "Positive operation timeout; default 60000 ms."
+            }
+          ],
+          "transports": [
+            "stdio",
+            "http",
+            "sse"
+          ],
+          "auth": [
+            "headers",
+            "env-secrets",
+            "oauth"
+          ],
+          "invocation": [],
+          "events": [],
+          "capabilities": [],
+          "examples": [],
+          "notes": [
+            "add-mcp 2.3.1 installs only the global profile; native fx also reads project .mcp.json.",
+            "Global mcpServers is a compatibility alias for mcp. Project files require mcpServers.",
+            "Project strings expand environment templates after trust approval. Global strings remain literal."
+          ],
+          "docs": "https://fx.sh/docs/capabilities/mcp"
+        }
+      },
+      "behaviors": []
+    },
+    {
       "name": "Gemini CLI",
       "type": "cli",
       "vendor": "Google",
@@ -6212,7 +6375,7 @@
       "surfaces": {
         "mcp": {
           "status": "supported",
-          "verified": "2026-07-12",
+          "verified": "2026-09-07",
           "summary": "MCP servers are configured under the mcpServers key in ~/.copilot/mcp-config.json (user level) or in workspace .mcp.json / .github/mcp.json files, or managed with /mcp and copilot mcp commands. Supports stdio, Streamable HTTP, and legacy SSE with OAuth (including headless client_credentials).",
           "files": [
             {
@@ -6259,8 +6422,8 @@
             {
               "name": "tools",
               "type": "string[]",
-              "required": true,
-              "description": "Tools to enable: [\"*\"] for all, or a list of tool names."
+              "required": false,
+              "description": "User-level tool selection (optional in project configs): [\"*\"] for all, or a list of tool names."
             },
             {
               "name": "env",
@@ -6359,6 +6522,9 @@
             }
           ],
           "notes": [
+            "Project files accept mcpServers or a bare server-name map. They use strict JSON, not JSONC.",
+            "When both project files exist in one directory, .mcp.json wins. add-mcp 2.3.1 creates .mcp.json or reuses an existing .github/mcp.json.",
+            "A .mcp.json shared with Claude Code represents the same servers for both clients; editing or removing entries affects both.",
             "Loading priority: --additional-mcp-config flag > plugin-provided servers > workspace .mcp.json / .github/mcp.json (loaded from the working directory up to the Git root; requires folder trust) > ~/.copilot/mcp-config.json.",
             "Built-in servers: github-mcp-server, playwright, fetch, time, and (opt-in) computer-use. Disable with --disable-builtin-mcps or --disable-mcp-server.",
             "To migrate from VS Code's .vscode/mcp.json, remap the servers key to mcpServers in .mcp.json.",
@@ -7408,6 +7574,98 @@
       "behaviors": []
     },
     {
+      "name": "Grok Build",
+      "type": "cli",
+      "vendor": "xAI",
+      "homepage": "https://docs.x.ai/build",
+      "id": "grok-build",
+      "surfaces": {
+        "mcp": {
+          "status": "supported",
+          "verified": "2026-09-07",
+          "summary": "MCP server tables in project and user config.toml files.",
+          "files": [
+            {
+              "path": ".grok/config.toml",
+              "scope": "project",
+              "format": "toml",
+              "key": "mcp_servers"
+            },
+            {
+              "path": "~/.grok/config.toml",
+              "scope": "global",
+              "format": "toml",
+              "key": "mcp_servers",
+              "note": "Relocatable with GROK_HOME; see https://docs.x.ai/build/settings."
+            }
+          ],
+          "fields": [
+            {
+              "name": "command",
+              "type": "string",
+              "required": false,
+              "description": "Executable for a stdio server."
+            },
+            {
+              "name": "args",
+              "type": "string[]",
+              "required": false,
+              "description": "Arguments for the executable."
+            },
+            {
+              "name": "env",
+              "type": "record<string, string>",
+              "required": false,
+              "description": "Environment for the child process."
+            },
+            {
+              "name": "url",
+              "type": "string",
+              "required": false,
+              "description": "Remote endpoint."
+            },
+            {
+              "name": "headers",
+              "type": "record<string, string>",
+              "required": false,
+              "description": "HTTP request headers."
+            },
+            {
+              "name": "startup_timeout_sec",
+              "type": "number",
+              "required": false,
+              "description": "Startup limit in seconds; default 30."
+            },
+            {
+              "name": "tool_timeout_sec",
+              "type": "number",
+              "required": false,
+              "description": "Tool execution limit in seconds; default 6000."
+            }
+          ],
+          "transports": [
+            "stdio",
+            "http"
+          ],
+          "auth": [
+            "headers",
+            "oauth"
+          ],
+          "invocation": [],
+          "events": [],
+          "capabilities": [],
+          "examples": [],
+          "notes": [
+            "Project definitions replace same-name user servers.",
+            "Remote OAuth is automatic. ${VAR} and ${VAR:-default} expand in connection fields.",
+            "add-mcp 2.3.1 also advertises SSE; the linked official guide only explicitly documents HTTP and stdio."
+          ],
+          "docs": "https://docs.x.ai/build/features/mcp-servers"
+        }
+      },
+      "behaviors": []
+    },
+    {
       "name": "Hermes Agent",
       "id": "hermes-agent",
       "surfaces": {
@@ -7719,7 +7977,7 @@
       "surfaces": {
         "mcp": {
           "status": "supported",
-          "verified": "2026-07-12",
+          "verified": "2026-09-07",
           "summary": "MCP servers configured under the top-level mcp key of kilo.jsonc (project or global). Local (STDIO) and remote (Streamable HTTP with SSE fallback) servers, with OAuth 2.0 for remote servers.",
           "files": [
             {
@@ -7742,6 +8000,24 @@
               "format": "jsonc",
               "key": "mcp",
               "note": "Global config applying to all projects."
+            },
+            {
+              "path": ".kilo/kilo.json",
+              "scope": "project",
+              "format": "json",
+              "key": "mcp"
+            },
+            {
+              "path": "kilo.json",
+              "scope": "project",
+              "format": "json",
+              "key": "mcp"
+            },
+            {
+              "path": "~/.config/kilo/kilo.json",
+              "scope": "global",
+              "format": "json",
+              "key": "mcp"
             }
           ],
           "fields": [
@@ -7834,13 +8110,14 @@
             }
           ],
           "notes": [
+            "JSON and JSONC are supported. add-mcp 2.3.1 defaults new installs to kilo.json and reuses existing project/global files.",
             "Project-level configuration takes precedence over global configuration.",
             "For remote servers Kilo tries Streamable HTTP first, then falls back to SSE automatically.",
             "Remote servers supporting OAuth 2.0 trigger the auth flow automatically; disable with \"oauth\": false.",
             "Tool auto-approval uses the shared permission key with namespaced names ({server}_{tool}) and wildcard patterns.",
             "Config files support {env:VARIABLE_NAME} syntax to reference environment variables."
           ],
-          "docs": "https://kilocode.ai/docs/features/mcp/using-mcp-in-kilo-code"
+          "docs": "https://kilo.ai/docs/automate/mcp/using-in-kilo-code"
         },
         "skills": {
           "status": "supported",
@@ -8100,6 +8377,21 @@
               "scope": "project",
               "format": "jsonc",
               "note": "Project-root config alternative."
+            },
+            {
+              "path": ".kilo/kilo.json",
+              "scope": "project",
+              "format": "json"
+            },
+            {
+              "path": "kilo.json",
+              "scope": "project",
+              "format": "json"
+            },
+            {
+              "path": "~/.config/kilo/kilo.json",
+              "scope": "global",
+              "format": "json"
             }
           ],
           "fields": [
@@ -8186,6 +8478,125 @@
       "vendor": "Moonshot AI",
       "id": "kimi-code-cli",
       "surfaces": {
+        "mcp": {
+          "status": "supported",
+          "verified": "2026-09-07",
+          "summary": "Project and user MCP definitions with per-server transport and timeouts.",
+          "files": [
+            {
+              "path": ".kimi-code/mcp.json",
+              "scope": "project",
+              "format": "json",
+              "key": "mcpServers"
+            },
+            {
+              "path": "~/.kimi-code/mcp.json",
+              "scope": "global",
+              "format": "json",
+              "key": "mcpServers",
+              "note": "KIMI_CODE_HOME overrides the directory."
+            }
+          ],
+          "fields": [
+            {
+              "name": "command",
+              "type": "string",
+              "required": false,
+              "description": "Executable for a stdio server."
+            },
+            {
+              "name": "args",
+              "type": "string[]",
+              "required": false,
+              "description": "Arguments for the executable."
+            },
+            {
+              "name": "env",
+              "type": "record<string, string>",
+              "required": false,
+              "description": "Environment for the child process."
+            },
+            {
+              "name": "url",
+              "type": "string",
+              "required": false,
+              "description": "Remote endpoint."
+            },
+            {
+              "name": "headers",
+              "type": "record<string, string>",
+              "required": false,
+              "description": "HTTP request headers."
+            },
+            {
+              "name": "transport",
+              "type": "\"stdio\" | \"http\" | \"sse\"",
+              "required": false,
+              "description": "Inferred from command or url; legacy SSE must be explicit."
+            },
+            {
+              "name": "cwd",
+              "type": "string",
+              "required": false,
+              "description": "Child working directory."
+            },
+            {
+              "name": "bearerTokenEnvVar",
+              "type": "string",
+              "required": false,
+              "description": "Environment variable holding a bearer token."
+            },
+            {
+              "name": "enabled",
+              "type": "boolean",
+              "required": false,
+              "description": "False disables this server."
+            },
+            {
+              "name": "startupTimeoutMs",
+              "type": "number",
+              "required": false,
+              "description": "Connection timeout, 1–2147483647 ms; default 30000."
+            },
+            {
+              "name": "toolTimeoutMs",
+              "type": "number",
+              "required": false,
+              "description": "Tool timeout, 1–2147483647 ms."
+            },
+            {
+              "name": "enabledTools",
+              "type": "string[]",
+              "required": false,
+              "description": "Tool allowlist."
+            },
+            {
+              "name": "disabledTools",
+              "type": "string[]",
+              "required": false,
+              "description": "Tool blocklist."
+            }
+          ],
+          "transports": [
+            "stdio",
+            "http",
+            "sse"
+          ],
+          "auth": [
+            "headers",
+            "env-secrets",
+            "oauth"
+          ],
+          "invocation": [],
+          "events": [],
+          "capabilities": [],
+          "examples": [],
+          "notes": [
+            "Project servers override same-name user entries and require workspace trust.",
+            "Use /mcp-config login <server> for OAuth."
+          ],
+          "docs": "https://www.kimi.com/code/docs/en/kimi-code-cli/customization/mcp.html"
+        },
         "skills": {
           "status": "supported",
           "verified": "2026-06-21",
@@ -8238,6 +8649,98 @@
       "homepage": "https://kiro.dev/",
       "id": "kiro-cli",
       "surfaces": {
+        "mcp": {
+          "status": "partial",
+          "verified": "2026-09-07",
+          "summary": "MCP configuration shared with Kiro IDE; command selects local servers and url selects remote servers.",
+          "files": [
+            {
+              "path": ".kiro/settings/mcp.json",
+              "scope": "project",
+              "format": "json",
+              "key": "mcpServers"
+            },
+            {
+              "path": "~/.kiro/settings/mcp.json",
+              "scope": "global",
+              "format": "json",
+              "key": "mcpServers"
+            }
+          ],
+          "fields": [
+            {
+              "name": "command",
+              "type": "string",
+              "required": false,
+              "description": "Executable for a stdio server."
+            },
+            {
+              "name": "args",
+              "type": "string[]",
+              "required": false,
+              "description": "Arguments for the executable."
+            },
+            {
+              "name": "env",
+              "type": "record<string, string>",
+              "required": false,
+              "description": "Environment for the child process."
+            },
+            {
+              "name": "url",
+              "type": "string",
+              "required": false,
+              "description": "Remote endpoint."
+            },
+            {
+              "name": "headers",
+              "type": "record<string, string>",
+              "required": false,
+              "description": "HTTP request headers."
+            },
+            {
+              "name": "disabled",
+              "type": "boolean",
+              "required": false,
+              "description": "Disable this server."
+            },
+            {
+              "name": "autoApprove",
+              "type": "string[]",
+              "required": false,
+              "description": "Tools allowed without confirmation."
+            },
+            {
+              "name": "disabledTools",
+              "type": "string[]",
+              "required": false,
+              "description": "Tools to disable."
+            },
+            {
+              "name": "oauth",
+              "type": "object",
+              "required": false,
+              "description": "Remote OAuth settings."
+            }
+          ],
+          "transports": [
+            "stdio",
+            "http"
+          ],
+          "auth": [
+            "headers",
+            "oauth"
+          ],
+          "invocation": [],
+          "events": [],
+          "capabilities": [],
+          "examples": [],
+          "notes": [
+            "Agent configuration overrides workspace entries, which override global entries.",
+            "add-mcp writes remote timeout in milliseconds. The linked official configuration reference does not specify that field; timeout coverage remains unverified."
+          ],
+          "docs": "https://kiro.dev/docs/mcp/configuration/"
+        },
         "skills": {
           "status": "supported",
           "verified": "2026-06-21",
@@ -8912,8 +9415,8 @@
       "surfaces": {
         "mcp": {
           "status": "supported",
-          "verified": "2026-07-12",
-          "summary": "Configure MCP servers under the mcp key in opencode.json. Local servers run as commands; remote servers connect over HTTP with header or OAuth auth.",
+          "verified": "2026-09-07",
+          "summary": "Configure MCP servers under the mcp key in opencode.json or opencode.jsonc. Local servers run as commands; remote servers connect over HTTP with header or OAuth auth.",
           "files": [
             {
               "path": "opencode.json",
@@ -8926,6 +9429,18 @@
               "path": "~/.config/opencode/opencode.json",
               "scope": "global",
               "format": "json",
+              "key": "mcp"
+            },
+            {
+              "path": "opencode.jsonc",
+              "scope": "project",
+              "format": "jsonc",
+              "key": "mcp"
+            },
+            {
+              "path": "~/.config/opencode/opencode.jsonc",
+              "scope": "global",
+              "format": "jsonc",
               "key": "mcp"
             }
           ],
@@ -8943,8 +9458,8 @@
             {
               "name": "command",
               "type": "string[]",
-              "required": true,
-              "description": "For local servers: command and arguments to run the MCP server."
+              "required": false,
+              "description": "Required for local servers: command and arguments to run the MCP server."
             },
             {
               "name": "environment",
@@ -8961,8 +9476,8 @@
             {
               "name": "url",
               "type": "string",
-              "required": true,
-              "description": "For remote servers: URL of the remote MCP server."
+              "required": false,
+              "description": "Required for remote servers: URL of the remote MCP server."
             },
             {
               "name": "headers",
@@ -9019,6 +9534,7 @@
             }
           ],
           "notes": [
+            "add-mcp 2.3.1 defaults new installs to opencode.jsonc and reuses existing JSON/JSONC files. This installer selection is distinct from native config merge precedence; see https://opencode.ai/docs/config/.",
             "Local servers use type 'local' with command as an array; remote servers use type 'remote' with url.",
             "OAuth is automatic for remote servers: OpenCode detects 401 responses, uses Dynamic Client Registration (RFC 7591), and stores tokens in ~/.local/share/opencode/mcp-auth.json. Manage with `opencode mcp auth|list|logout|debug`.",
             "MCP tools register with the server name as prefix and can be enabled/disabled globally or per agent via the tools option with glob patterns (e.g. \"my-mcp*\": false).",
@@ -9365,6 +9881,16 @@
               "scope": "project",
               "format": "json",
               "note": "TUI-specific settings; also available globally at ~/.config/opencode/tui.json."
+            },
+            {
+              "path": "opencode.jsonc",
+              "scope": "project",
+              "format": "jsonc"
+            },
+            {
+              "path": "~/.config/opencode/opencode.jsonc",
+              "scope": "global",
+              "format": "jsonc"
             }
           ],
           "fields": [
