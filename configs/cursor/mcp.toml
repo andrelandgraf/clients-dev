@@ -1,9 +1,14 @@
 status = "supported"
-verified = "2026-06-21"
+verified = "2026-09-27"
 summary = "Configure MCP servers via mcp.json. Supports stdio, SSE, and Streamable HTTP, with OAuth and config interpolation."
 transports = ["stdio", "sse", "http"]
 auth = ["oauth", "headers", "static-oauth"]
-docs = "https://cursor.com/docs/context/mcp"
+docs = "https://cursor.com/docs/mcp"
+notes = [
+  "Config interpolation resolves variables in command, args, env, url, headers, and auth values: ${env:NAME}, ${userHome}, ${workspaceFolder}, ${workspaceFolderBasename}, ${pathSeparator}, ${/}.",
+  "OAuth uses fixed redirect URLs: https://www.cursor.com/agents/mcp/oauth/callback (web and Cursor Agents) and http://localhost:8787/callback (desktop app).",
+  "Project and global mcp.json files are merged; the project entry wins when a server name appears in both (https://cursor.com/help/customization/mcp).",
+]
 
 [[files]]
 path = ".cursor/mcp.json"
@@ -21,13 +26,13 @@ key = "mcpServers"
 name = "type"
 type = "\"stdio\""
 required = false
-description = "Server connection type for local command servers."
+description = "Server connection type for local command servers. The STDIO field table marks it required, but the documented stdio examples omit it."
 
 [[fields]]
 name = "command"
 type = "string"
 required = false
-description = "Command to start a stdio server executable (e.g. npx, node, python, docker)."
+description = "Command to start a stdio server executable (e.g. npx, node, python, docker). Required for stdio servers."
 
 [[fields]]
 name = "args"

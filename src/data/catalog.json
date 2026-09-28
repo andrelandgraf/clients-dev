@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0",
-  "dataVersion": "ee5de863c30bdbe4fe7dd3e07c7e22ea9bf4ab2248dbc7c35cdbf60bc28be1db",
-  "generatedAt": "2026-09-07T17:59:57.673Z",
+  "dataVersion": "994ef0e89c3bf041861c73728b0439be930ab944fb67feebee734de7b6660cbf",
+  "generatedAt": "2026-09-28T03:09:21.745Z",
   "evidence": [
     {
       "id": "claude-code-tools",
@@ -3783,7 +3783,7 @@
       "surfaces": {
         "mcp": {
           "status": "supported",
-          "verified": "2026-06-21",
+          "verified": "2026-09-27",
           "summary": "Configure MCP servers via mcp.json. Supports stdio, SSE, and Streamable HTTP, with OAuth and config interpolation.",
           "files": [
             {
@@ -3804,13 +3804,13 @@
               "name": "type",
               "type": "\"stdio\"",
               "required": false,
-              "description": "Server connection type for local command servers."
+              "description": "Server connection type for local command servers. The STDIO field table marks it required, but the documented stdio examples omit it."
             },
             {
               "name": "command",
               "type": "string",
               "required": false,
-              "description": "Command to start a stdio server executable (e.g. npx, node, python, docker)."
+              "description": "Command to start a stdio server executable (e.g. npx, node, python, docker). Required for stdio servers."
             },
             {
               "name": "args",
@@ -3900,8 +3900,12 @@
               "code": "{\n  \"mcpServers\": {\n    \"server-name\": {\n      \"url\": \"http://localhost:3000/mcp\",\n      \"headers\": { \"API_KEY\": \"value\" }\n    }\n  }\n}\n"
             }
           ],
-          "notes": [],
-          "docs": "https://cursor.com/docs/context/mcp"
+          "notes": [
+            "Config interpolation resolves variables in command, args, env, url, headers, and auth values: ${env:NAME}, ${userHome}, ${workspaceFolder}, ${workspaceFolderBasename}, ${pathSeparator}, ${/}.",
+            "OAuth uses fixed redirect URLs: https://www.cursor.com/agents/mcp/oauth/callback (web and Cursor Agents) and http://localhost:8787/callback (desktop app).",
+            "Project and global mcp.json files are merged; the project entry wins when a server name appears in both (https://cursor.com/help/customization/mcp)."
+          ],
+          "docs": "https://cursor.com/docs/mcp"
         },
         "skills": {
           "status": "supported",
