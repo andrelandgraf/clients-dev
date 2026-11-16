@@ -2,7 +2,7 @@ status = "supported"
 verified = "2026-07-12"
 summary = "Slash commands in Agent Mode combine built-in static commands (/init, /agent, /model, /add-mcp, ...) with user-defined Agent Prompts saved in Warp Drive and skills invoked as /{skill-name}."
 invocation = ["/command-name", "/skill-name", "command palette"]
-docs = "https://docs.warp.dev/agent-platform/capabilities/slash-commands/"
+docs = "https://docs.warp.dev/agents/capabilities/slash-commands/"
 notes = [
   "Built-in static commands include /agent, /new, /init, /index, /model, /add-mcp, /add-prompt, /add-rule, /prompts, /queue, /create-environment, and more.",
   "Custom reusable prompts are Warp Drive Prompts — parameterized natural-language queries stored in Warp Drive (cloud objects, not local files) and runnable from the slash menu, Command Palette, or Warp Drive.",
