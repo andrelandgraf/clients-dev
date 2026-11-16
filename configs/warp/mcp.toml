@@ -3,7 +3,7 @@ verified = "2026-07-12"
 summary = "MCP servers configured in Settings > Agents > MCP servers, in Warp Drive, or via file-based .warp/.mcp.json config. Warp also picks up MCP config from Claude Code, Codex, and other agent providers."
 transports = ["stdio", "sse", "http"]
 auth = ["oauth", "headers", "env"]
-docs = "https://docs.warp.dev/agent-platform/capabilities/mcp/"
+docs = "https://docs.warp.dev/agents/capabilities/mcp/"
 notes = [
   "Global Warp-managed servers auto-spawn by default; global servers from third-party providers (Claude Code ~/.claude.json, Codex ~/.codex/config.toml, other agents ~/.agents/.mcp.json) require the Auto-spawn servers from third-party agents toggle.",
   "Project-scoped servers from any provider never auto-spawn and must be approved/toggled on per session.",

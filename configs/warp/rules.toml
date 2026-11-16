@@ -1,7 +1,7 @@
 status = "supported"
 verified = "2026-07-12"
 summary = "Project Rules in AGENTS.md (or legacy WARP.md) files at repo root and subdirectories, plus cloud-managed Global Rules in Warp Drive."
-docs = "https://docs.warp.dev/agent-platform/capabilities/rules/"
+docs = "https://docs.warp.dev/agents/capabilities/rules/"
 notes = [
   "AGENTS.md is the default project rules file; existing WARP.md files remain fully supported and take priority if both exist in the same directory.",
   "The filename must be all caps (AGENTS.md, not agents.md).",

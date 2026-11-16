@@ -2,7 +2,7 @@ status = "supported"
 verified = "2026-07-12"
 summary = "SKILL.md skills (Agent Skills format) discovered from .agents/skills/ and many compatible directories, invocable by the agent or directly via /{skill-name} with argument placeholders."
 invocation = ["/skill-name", "automatic"]
-docs = "https://docs.warp.dev/agent-platform/capabilities/skills/"
+docs = "https://docs.warp.dev/agents/capabilities/skills/"
 notes = [
   "Warp scans many skill directory names at both project and home scope: .agents/skills/ (recommended), .warp/skills/, .claude/skills/, .codex/skills/, .cursor/skills/, .gemini/skills/, .copilot/skills/, .factory/skills/, .github/skills/, .opencode/skills/.",
   "Skill discovery is based on the cwd; for git repos Warp includes all skills from the current directory up through the repository root.",

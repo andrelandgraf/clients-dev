@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0",
-  "dataVersion": "8861b800bff80f4615078e5358e603611ec107a2e3b1dfbc4f8527008ed2aed7",
-  "generatedAt": "2026-11-16T21:49:39.713Z",
+  "dataVersion": "00dc0a42aac11de31b00b82735c974ef67617e098fec05917603dd37a8922da8",
+  "generatedAt": "2026-11-16T21:57:07.637Z",
   "evidence": [
     {
       "id": "claude-code-tools",
@@ -7725,7 +7725,7 @@
       "name": "Grok Build",
       "type": "cli",
       "vendor": "xAI",
-      "homepage": "https://docs.x.ai/build",
+      "homepage": "https://docs.x.ai/build/overview",
       "id": "grok-build",
       "surfaces": {
         "mcp": {
@@ -12800,7 +12800,7 @@
             "Servers can be shared with teammates via Warp Drive; env secrets are scrubbed and replaced with variables on share.",
             "Set working_directory explicitly when command/args include relative paths."
           ],
-          "docs": "https://docs.warp.dev/agent-platform/capabilities/mcp/"
+          "docs": "https://docs.warp.dev/agents/capabilities/mcp/"
         },
         "skills": {
           "status": "supported",
@@ -12869,7 +12869,7 @@
             "Edit skills with the /open-skill slash command; bundled skills live in ~/.warp/skills/.",
             "Warp maintains ready-to-use skills in the warpdotdev/oz-skills repository; skills can also drive cloud agents (Skills as Agents)."
           ],
-          "docs": "https://docs.warp.dev/agent-platform/capabilities/skills/"
+          "docs": "https://docs.warp.dev/agents/capabilities/skills/"
         },
         "rules": {
           "status": "supported",
@@ -12910,7 +12910,7 @@
             "/init generates an AGENTS.md or links an existing rules file (CLAUDE.md, .cursorrules, AGENT.md, GEMINI.md, .clinerules, .windsurfrules, .github/copilot-instructions.md); /add-rule creates a Global Rule; /open-project-rules opens project rules in Warp's editor.",
             "Global Rules are managed in Warp Drive (Personal > Rules), not as local files; rules usage can be toggled with the agents.knowledge.rules_enabled setting."
           ],
-          "docs": "https://docs.warp.dev/agent-platform/capabilities/rules/"
+          "docs": "https://docs.warp.dev/agents/capabilities/rules/"
         },
         "hooks": {
           "status": "unsupported",
@@ -12976,7 +12976,7 @@
             "Skills are also user-invocable as slash commands with argument support (see Skills).",
             "Slash command availability in the terminal input is controlled by the terminal.input.enable_slash_commands_in_terminal setting."
           ],
-          "docs": "https://docs.warp.dev/agent-platform/capabilities/slash-commands/"
+          "docs": "https://docs.warp.dev/agents/capabilities/slash-commands/"
         },
         "settings": {
           "status": "supported",
