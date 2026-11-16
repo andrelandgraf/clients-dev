@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0",
-  "dataVersion": "ee5de863c30bdbe4fe7dd3e07c7e22ea9bf4ab2248dbc7c35cdbf60bc28be1db",
-  "generatedAt": "2026-09-07T17:59:57.673Z",
+  "dataVersion": "7b43ed64f2dff4c653d205fb7f07f871e8d0195134d9d5e0c25228b271d92095",
+  "generatedAt": "2026-11-16T20:32:10.654Z",
   "evidence": [
     {
       "id": "claude-code-tools",
@@ -79,8 +79,8 @@
       "surfaces": {
         "skills": {
           "status": "supported",
-          "verified": "2026-06-21",
-          "summary": "SKILL.md skills following the open Agent Skills standard.",
+          "verified": "2026-11-16",
+          "summary": "Markdown skills with YAML frontmatter, loaded on demand when relevant to a task.",
           "files": [
             {
               "path": ".adal/skills/<name>/SKILL.md",
@@ -98,26 +98,29 @@
               "name": "name",
               "type": "string",
               "required": true,
-              "description": "Skill identifier (required by the Agent Skills standard)."
+              "description": "Skill name in YAML frontmatter; use lowercase words separated by hyphens."
             },
             {
               "name": "description",
               "type": "string",
               "required": true,
-              "description": "What the skill does and when to use it."
+              "description": "Brief description of what the skill does and when to use it."
             }
           ],
           "transports": [],
           "auth": [],
           "invocation": [
-            "/skill-name"
+            "automatic"
           ],
           "events": [],
           "capabilities": [],
           "examples": [],
           "notes": [
-            "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
-          ]
+            "/skills opens the skills browser; /plugin manages marketplace skills. Skills are used automatically, not documented as /skill-name commands.",
+            "For duplicate names, first-loaded wins: personal, then project, then plugin skills. Plugin repositories are stored in ~/.adal/plugin-cache/.",
+            "The official authoring guide requires YAML frontmatter with at least name and description: https://github.com/SylphAI-Inc/skills/blob/main/skills/create-skill/SKILL.md"
+          ],
+          "docs": "https://docs.sylph.ai/customize/plugins-and-skills"
         }
       },
       "behaviors": []
@@ -129,8 +132,8 @@
       "surfaces": {
         "skills": {
           "status": "supported",
-          "verified": "2026-06-21",
-          "summary": "SKILL.md skills following the open Agent Skills standard.",
+          "verified": "2026-11-16",
+          "summary": "SKILL.md instructions with YAML frontmatter, discovered and activated on demand in Agent Mode.",
           "files": [
             {
               "path": ".aider-desk/skills/<name>/SKILL.md",
@@ -148,26 +151,44 @@
               "name": "name",
               "type": "string",
               "required": true,
-              "description": "Skill identifier (required by the Agent Skills standard)."
+              "description": "Non-empty skill identifier in YAML frontmatter."
             },
             {
               "name": "description",
               "type": "string",
               "required": true,
-              "description": "What the skill does and when to use it."
+              "description": "Non-empty description of what the skill does and when to use it."
+            },
+            {
+              "name": "disable-model-invocation",
+              "type": "boolean",
+              "required": false,
+              "description": "When true, omit this skill from the agent's activate-skill tool description. Defaults to false (since 0.85.0)."
+            },
+            {
+              "name": "user-invocable",
+              "type": "boolean",
+              "required": false,
+              "description": "Whether the skill is offered in /skill: autocomplete. Defaults to true (since 0.85.0)."
             }
           ],
           "transports": [],
           "auth": [],
           "invocation": [
-            "/skill-name"
+            "automatic",
+            "/skill:<name>"
           ],
           "events": [],
           "capabilities": [],
           "examples": [],
           "notes": [
-            "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
-          ]
+            "Enable Use Skills Tools for the active agent profile or task so the agent can discover and load skills.",
+            "Duplicate-name precedence: extension-provided, project, home, then built-in skills.",
+            "Manual /skill: activation was added in 0.81.0; disable-model-invocation and user-invocable frontmatter in 0.85.0: https://github.com/magiksoft/aider-desk/blob/v0.92.0/CHANGELOG.md",
+            "Required metadata and boolean defaults are verified in the 0.92.0 parser: https://github.com/magiksoft/aider-desk/blob/v0.92.0/src/main/skills/skill-manager.ts",
+            "Model-visible skill filtering: https://github.com/magiksoft/aider-desk/blob/v0.92.0/src/main/agent/tools/skills.ts ; manual command autocomplete: https://github.com/magiksoft/aider-desk/blob/v0.92.0/src/renderer/src/components/PromptField/PromptField.tsx"
+          ],
+          "docs": "https://aiderdesk.dev/docs/agent-mode/skills"
         }
       },
       "behaviors": []
@@ -653,9 +674,9 @@
       "id": "antigravity",
       "surfaces": {
         "mcp": {
-          "status": "supported",
-          "verified": "2026-09-07",
-          "summary": "Configure MCP servers in JSON under the mcpServers key.",
+          "status": "partial",
+          "verified": "2026-11-16",
+          "summary": "JSON MCP server configuration under mcpServers. Current docs establish stdio and Streamable HTTP; historical IDE SSE support remains unverified.",
           "files": [
             {
               "path": "~/.gemini/config/mcp_config.json",
@@ -675,55 +696,121 @@
               "name": "command",
               "type": "string",
               "required": false,
-              "description": "Command to start a local (stdio) server."
+              "description": "Executable used to launch a local stdio server; required for stdio instead of serverUrl."
             },
             {
               "name": "args",
               "type": "string[]",
               "required": false,
-              "description": "Arguments passed to the command."
+              "description": "Command-line arguments for a local stdio server. Defaults to an empty array."
             },
             {
               "name": "env",
               "type": "record<string, string>",
               "required": false,
-              "description": "Environment variables for the server."
+              "description": "Environment variables injected into the local stdio process."
+            },
+            {
+              "name": "cwd",
+              "type": "string",
+              "required": false,
+              "description": "Working directory for the local stdio process."
             },
             {
               "name": "serverUrl",
               "type": "string",
               "required": false,
-              "description": "Endpoint URL for a remote server."
+              "description": "Streamable HTTP endpoint; required for a remote server instead of command. url is also accepted."
+            },
+            {
+              "name": "url",
+              "type": "string",
+              "required": false,
+              "description": "Alias for serverUrl."
             },
             {
               "name": "headers",
               "type": "record<string, string>",
               "required": false,
-              "description": "HTTP headers for a remote server."
+              "description": "Custom HTTP headers for a remote server, such as Authorization or API key headers."
+            },
+            {
+              "name": "authProviderType",
+              "type": "string",
+              "required": false,
+              "description": "Set to google_credentials to attach Google Application Default Credentials (ADC).",
+              "values": [
+                "google_credentials"
+              ]
+            },
+            {
+              "name": "oauth",
+              "type": "object",
+              "required": false,
+              "description": "Manual OAuth 2.0 credentials: clientId and optional clientSecret, for servers without CIMD or Dynamic Client Registration."
+            },
+            {
+              "name": "disabled",
+              "type": "boolean",
+              "required": false,
+              "description": "Suspend this server without deleting its configuration. Defaults to false."
+            },
+            {
+              "name": "enabledTools",
+              "type": "string[]",
+              "required": false,
+              "description": "Allowlist of tools exposed to the agent; other tools from the server are hidden."
+            },
+            {
+              "name": "disabledTools",
+              "type": "string[]",
+              "required": false,
+              "description": "Denylist of tools withheld from the agent. Defaults to an empty array."
+            },
+            {
+              "name": "tools",
+              "type": "object",
+              "required": false,
+              "description": "Per-tool settings keyed by tool name: eager (boolean) registers a tool upfront; background (off or always) selects foreground or background execution."
+            },
+            {
+              "name": "timeoutSeconds",
+              "type": "integer",
+              "required": false,
+              "description": "Positive seconds replace both connection and tool-call timeouts; negative disables both. Zero or unset keeps defaults: 300 seconds to connect and list tools, 180 seconds per tool call."
             }
           ],
           "transports": [
             "stdio",
-            "http",
-            "sse"
+            "http"
           ],
           "auth": [
-            "headers"
+            "headers",
+            "oauth",
+            "google-credentials"
           ],
           "invocation": [],
           "events": [],
-          "capabilities": [],
+          "capabilities": [
+            {
+              "name": "Legacy SSE transport",
+              "status": "missing",
+              "note": "Current CLI exclusion is not evidence of historical IDE removal; IDE SSE support has not been verified. See https://antigravity.google/docs/mcp"
+            }
+          ],
           "examples": [],
           "notes": [
-            "Global config is shared with Antigravity CLI. Native clients also support workspace config; add-mcp 2.3.1 installs globally.",
-            "Remote entries use serverUrl (no type field)."
+            "The standalone IDE reads global ~/.gemini/config/mcp_config.json and workspace .agents/mcp_config.json. The global path is shared with the CLI.",
+            "Remote entries use serverUrl (url is an alias); no type field is required by the documented configuration structure.",
+            "The old catalog listed SSE without client-specific evidence. Current docs explicitly reject legacy HTTP+SSE for the CLI, but do not establish whether older IDE versions supported it or when that changed. SSE is left unknown, not marked unsupported for the IDE.",
+            "OAuth supports manual client credentials, Client ID Metadata Documents (CIMD), and Dynamic Client Registration. CIMD requires Antigravity IDE 2.6.0 or later: https://antigravity.google/docs/mcp#client-id-metadata-document-cimd"
           ],
           "docs": "https://antigravity.google/docs/mcp"
         },
         "skills": {
-          "status": "supported",
-          "verified": "2026-06-21",
-          "summary": "SKILL.md skills following the open Agent Skills standard.",
+          "status": "partial",
+          "verified": "2026-11-16",
+          "summary": "SKILL.md instructions with YAML frontmatter, loaded automatically when relevant. IDE paths and basic metadata are documented; advanced skill frontmatter remains unverified.",
           "files": [
             {
               "path": ".agents/skills/<name>/SKILL.md",
@@ -731,49 +818,69 @@
               "format": "markdown"
             },
             {
-              "path": "~/.gemini/antigravity/skills/<name>/SKILL.md",
+              "path": ".agent/skills/<name>/SKILL.md",
+              "scope": "project",
+              "format": "markdown",
+              "note": "Backward-compatible directory; use .agents/skills for new skills."
+            },
+            {
+              "path": "~/.gemini/config/skills/<name>/SKILL.md",
               "scope": "global",
               "format": "markdown"
+            },
+            {
+              "path": "~/.gemini/antigravity/skills/<name>/SKILL.md",
+              "scope": "global",
+              "format": "markdown",
+              "note": "Legacy IDE location, still supported."
             }
           ],
           "fields": [
             {
               "name": "name",
               "type": "string",
-              "required": true,
-              "description": "Skill identifier (required by the Agent Skills standard)."
+              "required": false,
+              "description": "Unique lowercase, hyphenated skill identifier. Defaults to the folder name when omitted."
             },
             {
               "name": "description",
               "type": "string",
               "required": true,
-              "description": "What the skill does and when to use it."
+              "description": "What the skill does and when to use it; the agent uses this to decide when to load the instructions."
             }
           ],
           "transports": [],
           "auth": [],
           "invocation": [
-            "/skill-name"
+            "automatic",
+            "mention skill by name"
           ],
           "events": [],
           "capabilities": [
             {
               "name": "allowed-tools",
-              "status": "supported"
+              "status": "missing",
+              "note": "Not verified in the official skill frontmatter documentation."
             },
             {
               "name": "context: fork",
-              "status": "unsupported"
+              "status": "missing",
+              "note": "Not verified in the official skill frontmatter documentation."
             },
             {
               "name": "Hooks",
-              "status": "unsupported"
+              "status": "missing",
+              "note": "Skill-level hooks are unverified; product-level lifecycle hooks do not establish skill frontmatter support."
             }
           ],
           "examples": [],
           "notes": [
-            "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
-          ]
+            "This entry describes the standalone Antigravity IDE. Inspect active skills in the agent side panel's Customizations menu.",
+            "The shared global directory is ~/.gemini/config/skills/; the IDE's legacy ~/.gemini/antigravity/skills/ remains supported.",
+            "The current guide explicitly documents manual /<skill-name> commands for the App and CLI, not for the standalone IDE; IDE slash invocation remains unverified.",
+            "The official frontmatter table documents name and description. It does not establish allowed-tools, context: fork, or skill-level hooks support; these remain unknown rather than unsupported."
+          ],
+          "docs": "https://antigravity.google/docs/skills"
         }
       },
       "behaviors": []
@@ -786,8 +893,8 @@
       "surfaces": {
         "skills": {
           "status": "supported",
-          "verified": "2026-06-21",
-          "summary": "SKILL.md skills following the open Agent Skills standard.",
+          "verified": "2026-11-16",
+          "summary": "SKILL.md instructions with YAML frontmatter, loaded automatically and converted into interactive CLI slash commands.",
           "files": [
             {
               "path": ".agents/skills/<name>/SKILL.md",
@@ -795,36 +902,60 @@
               "format": "markdown"
             },
             {
-              "path": "~/.gemini/antigravity-cli/skills/<name>/SKILL.md",
+              "path": ".agent/skills/<name>/SKILL.md",
+              "scope": "project",
+              "format": "markdown",
+              "note": "Backward-compatible directory; use .agents/skills for new skills."
+            },
+            {
+              "path": "~/.gemini/config/skills/<name>/SKILL.md",
               "scope": "global",
               "format": "markdown"
+            },
+            {
+              "path": "~/.gemini/antigravity-cli/skills/<name>/SKILL.md",
+              "scope": "global",
+              "format": "markdown",
+              "note": "Additional CLI location; not read by the Antigravity App."
+            },
+            {
+              "path": "~/.gemini/skills/<name>/SKILL.md",
+              "scope": "global",
+              "format": "markdown",
+              "note": "Additional CLI location; not read by the Antigravity App."
             }
           ],
           "fields": [
             {
               "name": "name",
               "type": "string",
-              "required": true,
-              "description": "Skill identifier (required by the Agent Skills standard)."
+              "required": false,
+              "description": "SKILL.md frontmatter: unique lowercase, hyphenated identifier. Defaults to the folder name when omitted."
             },
             {
               "name": "description",
               "type": "string",
               "required": true,
-              "description": "What the skill does and when to use it."
+              "description": "SKILL.md frontmatter: what the skill does and when to use it. Used by the agent to select relevant skills."
             }
           ],
           "transports": [],
           "auth": [],
           "invocation": [
+            "automatic",
             "/skill-name"
           ],
           "events": [],
           "capabilities": [],
           "examples": [],
           "notes": [
-            "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
-          ]
+            "Global skills in ~/.gemini/config/skills/ are shared with the Antigravity App. The CLI also reads ~/.gemini/antigravity-cli/skills/ and ~/.gemini/skills/.",
+            "After adding a skill while the CLI is running, use /skills reload or start a new conversation to refresh slash commands.",
+            "Workspace .agents/ folders are read up to the repository root; .agent/, _agents/, and _agent/ are also recognized. Discovery manifests can add nonstandard or nested locations: https://antigravity.google/docs/customization-discovery",
+            "Optional JSON discovery manifests .agents/skills.json and ~/.gemini/config/skills.json use entries, inherits, and exclude, not the SKILL.md frontmatter fields below: https://antigravity.google/docs/customization-discovery#manifest-fields",
+            "Skills can also be supplied by enabled plugins in ~/.gemini/config/plugins/<plugin-folder>/skills/ and managed with agy plugin."
+          ],
+          "docs": "https://antigravity.google/docs/skills"
         }
       },
       "behaviors": []
@@ -835,45 +966,58 @@
       "surfaces": {
         "skills": {
           "status": "supported",
-          "verified": "2026-06-21",
-          "summary": "SKILL.md skills following the open Agent Skills standard.",
+          "verified": "2026-11-16",
+          "summary": "Agent Skills instruction bundles supported since v4.13.0, selected by the agent and read on demand.",
           "files": [
             {
               "path": "data/skills/<name>/SKILL.md",
               "scope": "project",
-              "format": "markdown"
+              "format": "markdown",
+              "note": "Relative to AstrBot's runtime root, not an arbitrary source-code project."
             },
             {
               "path": "~/.astrbot/data/skills/<name>/SKILL.md",
               "scope": "global",
-              "format": "markdown"
+              "format": "markdown",
+              "note": "Default packaged-desktop location, or when ASTRBOT_ROOT points to that directory; not an independent global search directory."
+            },
+            {
+              "path": "data/workspaces/<normalized_umo>/skills/<name>/SKILL.md",
+              "scope": "project",
+              "format": "markdown",
+              "note": "Usual session-workspace location relative to runtime root. Local runtime only; UMO identifies the session and is normalized for its directory name."
             }
           ],
           "fields": [
             {
               "name": "name",
               "type": "string",
-              "required": true,
-              "description": "Skill identifier (required by the Agent Skills standard)."
+              "required": false,
+              "description": "Included in the documented SKILL.md frontmatter format. The inspected loader uses the directory name as the skill identifier, not this field."
             },
             {
               "name": "description",
               "type": "string",
-              "required": true,
-              "description": "What the skill does and when to use it."
+              "required": false,
+              "description": "Recommended YAML frontmatter describing when to use the skill. The loader accepts a missing description and lists it as empty."
             }
           ],
           "transports": [],
           "auth": [],
           "invocation": [
-            "/skill-name"
+            "automatic",
+            "mention skill by name"
           ],
           "events": [],
           "capabilities": [],
           "examples": [],
           "notes": [
-            "Skill discovery paths from the open skills CLI (vercel-labs/skills)."
-          ]
+            "Use Local or Sandbox Computer Use for practical file access. Skill availability also depends on enablement, persona selection, and runtime permissions; installing a skill grants no permissions.",
+            "Local skills live under <runtime-root>/data/skills/. ASTRBOT_ROOT overrides the root; otherwise packaged desktop uses ~/.astrbot and other runtimes use the working directory: https://github.com/AstrBotDevs/AstrBot/blob/v4.29.4/astrbot/core/utils/astrbot_path.py",
+            "Request-time name precedence is workspace, local, plugin, then sandbox-only. Workspace skills are discovered per request in Local runtime, not in the global management list.",
+            "The documented Agent Skills format recommends name and description, but the v4.29.4 loader identifies skills by directory name and tolerates an absent description: https://github.com/AstrBotDevs/AstrBot/blob/v4.29.4/astrbot/core/skills/skill_manager.py"
+          ],
+          "docs": "https://github.com/AstrBotDevs/AstrBot/blob/v4.29.4/docs/en/use/skills.md"
         }
       },
       "behaviors": []

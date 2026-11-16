@@ -1,8 +1,14 @@
-status = "supported"
-verified = "2026-06-21"
-summary = "SKILL.md skills following the open Agent Skills standard."
-invocation = ["/skill-name"]
-notes = ["Skill discovery paths from the open skills CLI (vercel-labs/skills)."]
+status = "partial"
+verified = "2026-11-16"
+summary = "SKILL.md instructions with YAML frontmatter, loaded automatically when relevant. IDE paths and basic metadata are documented; advanced skill frontmatter remains unverified."
+invocation = ["automatic", "mention skill by name"]
+docs = "https://antigravity.google/docs/skills"
+notes = [
+  "This entry describes the standalone Antigravity IDE. Inspect active skills in the agent side panel's Customizations menu.",
+  "The shared global directory is ~/.gemini/config/skills/; the IDE's legacy ~/.gemini/antigravity/skills/ remains supported.",
+  "The current guide explicitly documents manual /<skill-name> commands for the App and CLI, not for the standalone IDE; IDE slash invocation remains unverified.",
+  "The official frontmatter table documents name and description. It does not establish allowed-tools, context: fork, or skill-level hooks support; these remain unknown rather than unsupported.",
+]
 
 [[files]]
 path = ".agents/skills/<name>/SKILL.md"
@@ -10,30 +16,45 @@ scope = "project"
 format = "markdown"
 
 [[files]]
+path = ".agent/skills/<name>/SKILL.md"
+scope = "project"
+format = "markdown"
+note = "Backward-compatible directory; use .agents/skills for new skills."
+
+[[files]]
+path = "~/.gemini/config/skills/<name>/SKILL.md"
+scope = "global"
+format = "markdown"
+
+[[files]]
 path = "~/.gemini/antigravity/skills/<name>/SKILL.md"
 scope = "global"
 format = "markdown"
+note = "Legacy IDE location, still supported."
 
 [[fields]]
 name = "name"
 type = "string"
-required = true
-description = "Skill identifier (required by the Agent Skills standard)."
+required = false
+description = "Unique lowercase, hyphenated skill identifier. Defaults to the folder name when omitted."
 
 [[fields]]
 name = "description"
 type = "string"
 required = true
-description = "What the skill does and when to use it."
+description = "What the skill does and when to use it; the agent uses this to decide when to load the instructions."
 
 [[capabilities]]
 name = "allowed-tools"
-status = "supported"
+status = "missing"
+note = "Not verified in the official skill frontmatter documentation."
 
 [[capabilities]]
 name = "context: fork"
-status = "unsupported"
+status = "missing"
+note = "Not verified in the official skill frontmatter documentation."
 
 [[capabilities]]
 name = "Hooks"
-status = "unsupported"
+status = "missing"
+note = "Skill-level hooks are unverified; product-level lifecycle hooks do not establish skill frontmatter support."

@@ -1,8 +1,15 @@
 status = "supported"
-verified = "2026-06-21"
-summary = "SKILL.md skills following the open Agent Skills standard."
-invocation = ["/skill-name"]
-notes = ["Skill discovery paths from the open skills CLI (vercel-labs/skills)."]
+verified = "2026-11-16"
+summary = "SKILL.md instructions with YAML frontmatter, discovered and activated on demand in Agent Mode."
+invocation = ["automatic", "/skill:<name>"]
+docs = "https://aiderdesk.dev/docs/agent-mode/skills"
+notes = [
+  "Enable Use Skills Tools for the active agent profile or task so the agent can discover and load skills.",
+  "Duplicate-name precedence: extension-provided, project, home, then built-in skills.",
+  "Manual /skill: activation was added in 0.81.0; disable-model-invocation and user-invocable frontmatter in 0.85.0: https://github.com/magiksoft/aider-desk/blob/v0.92.0/CHANGELOG.md",
+  "Required metadata and boolean defaults are verified in the 0.92.0 parser: https://github.com/magiksoft/aider-desk/blob/v0.92.0/src/main/skills/skill-manager.ts",
+  "Model-visible skill filtering: https://github.com/magiksoft/aider-desk/blob/v0.92.0/src/main/agent/tools/skills.ts ; manual command autocomplete: https://github.com/magiksoft/aider-desk/blob/v0.92.0/src/renderer/src/components/PromptField/PromptField.tsx",
+]
 
 [[files]]
 path = ".aider-desk/skills/<name>/SKILL.md"
@@ -18,10 +25,20 @@ format = "markdown"
 name = "name"
 type = "string"
 required = true
-description = "Skill identifier (required by the Agent Skills standard)."
+description = "Non-empty skill identifier in YAML frontmatter."
 
 [[fields]]
 name = "description"
 type = "string"
 required = true
-description = "What the skill does and when to use it."
+description = "Non-empty description of what the skill does and when to use it."
+
+[[fields]]
+name = "disable-model-invocation"
+type = "boolean"
+description = "When true, omit this skill from the agent's activate-skill tool description. Defaults to false (since 0.85.0)."
+
+[[fields]]
+name = "user-invocable"
+type = "boolean"
+description = "Whether the skill is offered in /skill: autocomplete. Defaults to true (since 0.85.0)."

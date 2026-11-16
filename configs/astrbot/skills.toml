@@ -1,27 +1,41 @@
 status = "supported"
-verified = "2026-06-21"
-summary = "SKILL.md skills following the open Agent Skills standard."
-invocation = ["/skill-name"]
-notes = ["Skill discovery paths from the open skills CLI (vercel-labs/skills)."]
+verified = "2026-11-16"
+summary = "Agent Skills instruction bundles supported since v4.13.0, selected by the agent and read on demand."
+invocation = ["automatic", "mention skill by name"]
+docs = "https://github.com/AstrBotDevs/AstrBot/blob/v4.29.4/docs/en/use/skills.md"
+notes = [
+  "Use Local or Sandbox Computer Use for practical file access. Skill availability also depends on enablement, persona selection, and runtime permissions; installing a skill grants no permissions.",
+  "Local skills live under <runtime-root>/data/skills/. ASTRBOT_ROOT overrides the root; otherwise packaged desktop uses ~/.astrbot and other runtimes use the working directory: https://github.com/AstrBotDevs/AstrBot/blob/v4.29.4/astrbot/core/utils/astrbot_path.py",
+  "Request-time name precedence is workspace, local, plugin, then sandbox-only. Workspace skills are discovered per request in Local runtime, not in the global management list.",
+  "The documented Agent Skills format recommends name and description, but the v4.29.4 loader identifies skills by directory name and tolerates an absent description: https://github.com/AstrBotDevs/AstrBot/blob/v4.29.4/astrbot/core/skills/skill_manager.py",
+]
 
 [[files]]
 path = "data/skills/<name>/SKILL.md"
 scope = "project"
 format = "markdown"
+note = "Relative to AstrBot's runtime root, not an arbitrary source-code project."
 
 [[files]]
 path = "~/.astrbot/data/skills/<name>/SKILL.md"
 scope = "global"
 format = "markdown"
+note = "Default packaged-desktop location, or when ASTRBOT_ROOT points to that directory; not an independent global search directory."
+
+[[files]]
+path = "data/workspaces/<normalized_umo>/skills/<name>/SKILL.md"
+scope = "project"
+format = "markdown"
+note = "Usual session-workspace location relative to runtime root. Local runtime only; UMO identifies the session and is normalized for its directory name."
 
 [[fields]]
 name = "name"
 type = "string"
-required = true
-description = "Skill identifier (required by the Agent Skills standard)."
+required = false
+description = "Included in the documented SKILL.md frontmatter format. The inspected loader uses the directory name as the skill identifier, not this field."
 
 [[fields]]
 name = "description"
 type = "string"
-required = true
-description = "What the skill does and when to use it."
+required = false
+description = "Recommended YAML frontmatter describing when to use the skill. The loader accepts a missing description and lists it as empty."

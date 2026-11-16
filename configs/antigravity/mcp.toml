@@ -1,10 +1,15 @@
-status = "supported"
-verified = "2026-09-07"
-summary = "Configure MCP servers in JSON under the mcpServers key."
-transports = ["stdio", "http", "sse"]
-auth = ["headers"]
+status = "partial"
+verified = "2026-11-16"
+summary = "JSON MCP server configuration under mcpServers. Current docs establish stdio and Streamable HTTP; historical IDE SSE support remains unverified."
+transports = ["stdio", "http"]
+auth = ["headers", "oauth", "google-credentials"]
 docs = "https://antigravity.google/docs/mcp"
-notes = ["Global config is shared with Antigravity CLI. Native clients also support workspace config; add-mcp 2.3.1 installs globally.", "Remote entries use serverUrl (no type field)."]
+notes = [
+  "The standalone IDE reads global ~/.gemini/config/mcp_config.json and workspace .agents/mcp_config.json. The global path is shared with the CLI.",
+  "Remote entries use serverUrl (url is an alias); no type field is required by the documented configuration structure.",
+  "The old catalog listed SSE without client-specific evidence. Current docs explicitly reject legacy HTTP+SSE for the CLI, but do not establish whether older IDE versions supported it or when that changed. SSE is left unknown, not marked unsupported for the IDE.",
+  "OAuth supports manual client credentials, Client ID Metadata Documents (CIMD), and Dynamic Client Registration. CIMD requires Antigravity IDE 2.6.0 or later: https://antigravity.google/docs/mcp#client-id-metadata-document-cimd",
+]
 
 [[files]]
 path = "~/.gemini/config/mcp_config.json"
@@ -12,33 +17,84 @@ scope = "global"
 format = "json"
 key = "mcpServers"
 
-[[fields]]
-name = "command"
-type = "string"
-description = "Command to start a local (stdio) server."
-
-[[fields]]
-name = "args"
-type = "string[]"
-description = "Arguments passed to the command."
-
-[[fields]]
-name = "env"
-type = "record<string, string>"
-description = "Environment variables for the server."
-
-[[fields]]
-name = "serverUrl"
-type = "string"
-description = "Endpoint URL for a remote server."
-
-[[fields]]
-name = "headers"
-type = "record<string, string>"
-description = "HTTP headers for a remote server."
-
 [[files]]
 path = ".agents/mcp_config.json"
 scope = "project"
 format = "json"
 key = "mcpServers"
+
+[[fields]]
+name = "command"
+type = "string"
+description = "Executable used to launch a local stdio server; required for stdio instead of serverUrl."
+
+[[fields]]
+name = "args"
+type = "string[]"
+description = "Command-line arguments for a local stdio server. Defaults to an empty array."
+
+[[fields]]
+name = "env"
+type = "record<string, string>"
+description = "Environment variables injected into the local stdio process."
+
+[[fields]]
+name = "cwd"
+type = "string"
+description = "Working directory for the local stdio process."
+
+[[fields]]
+name = "serverUrl"
+type = "string"
+description = "Streamable HTTP endpoint; required for a remote server instead of command. url is also accepted."
+
+[[fields]]
+name = "url"
+type = "string"
+description = "Alias for serverUrl."
+
+[[fields]]
+name = "headers"
+type = "record<string, string>"
+description = "Custom HTTP headers for a remote server, such as Authorization or API key headers."
+
+[[fields]]
+name = "authProviderType"
+type = "string"
+values = ["google_credentials"]
+description = "Set to google_credentials to attach Google Application Default Credentials (ADC)."
+
+[[fields]]
+name = "oauth"
+type = "object"
+description = "Manual OAuth 2.0 credentials: clientId and optional clientSecret, for servers without CIMD or Dynamic Client Registration."
+
+[[fields]]
+name = "disabled"
+type = "boolean"
+description = "Suspend this server without deleting its configuration. Defaults to false."
+
+[[fields]]
+name = "enabledTools"
+type = "string[]"
+description = "Allowlist of tools exposed to the agent; other tools from the server are hidden."
+
+[[fields]]
+name = "disabledTools"
+type = "string[]"
+description = "Denylist of tools withheld from the agent. Defaults to an empty array."
+
+[[fields]]
+name = "tools"
+type = "object"
+description = "Per-tool settings keyed by tool name: eager (boolean) registers a tool upfront; background (off or always) selects foreground or background execution."
+
+[[fields]]
+name = "timeoutSeconds"
+type = "integer"
+description = "Positive seconds replace both connection and tool-call timeouts; negative disables both. Zero or unset keeps defaults: 300 seconds to connect and list tools, 180 seconds per tool call."
+
+[[capabilities]]
+name = "Legacy SSE transport"
+status = "missing"
+note = "Current CLI exclusion is not evidence of historical IDE removal; IDE SSE support has not been verified. See https://antigravity.google/docs/mcp"
