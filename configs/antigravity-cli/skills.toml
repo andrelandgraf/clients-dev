@@ -1,8 +1,15 @@
 status = "supported"
-verified = "2026-06-21"
-summary = "SKILL.md skills following the open Agent Skills standard."
-invocation = ["/skill-name"]
-notes = ["Skill discovery paths from the open skills CLI (vercel-labs/skills)."]
+verified = "2026-11-16"
+summary = "SKILL.md instructions with YAML frontmatter, loaded automatically and converted into interactive CLI slash commands."
+invocation = ["automatic", "/skill-name"]
+docs = "https://antigravity.google/docs/skills"
+notes = [
+  "Global skills in ~/.gemini/config/skills/ are shared with the Antigravity App. The CLI also reads ~/.gemini/antigravity-cli/skills/ and ~/.gemini/skills/.",
+  "After adding a skill while the CLI is running, use /skills reload or start a new conversation to refresh slash commands.",
+  "Workspace .agents/ folders are read up to the repository root; .agent/, _agents/, and _agent/ are also recognized. Discovery manifests can add nonstandard or nested locations: https://antigravity.google/docs/customization-discovery",
+  "Optional JSON discovery manifests .agents/skills.json and ~/.gemini/config/skills.json use entries, inherits, and exclude, not the SKILL.md frontmatter fields below: https://antigravity.google/docs/customization-discovery#manifest-fields",
+  "Skills can also be supplied by enabled plugins in ~/.gemini/config/plugins/<plugin-folder>/skills/ and managed with agy plugin.",
+]
 
 [[files]]
 path = ".agents/skills/<name>/SKILL.md"
@@ -10,18 +17,36 @@ scope = "project"
 format = "markdown"
 
 [[files]]
+path = ".agent/skills/<name>/SKILL.md"
+scope = "project"
+format = "markdown"
+note = "Backward-compatible directory; use .agents/skills for new skills."
+
+[[files]]
+path = "~/.gemini/config/skills/<name>/SKILL.md"
+scope = "global"
+format = "markdown"
+
+[[files]]
 path = "~/.gemini/antigravity-cli/skills/<name>/SKILL.md"
 scope = "global"
 format = "markdown"
+note = "Additional CLI location; not read by the Antigravity App."
+
+[[files]]
+path = "~/.gemini/skills/<name>/SKILL.md"
+scope = "global"
+format = "markdown"
+note = "Additional CLI location; not read by the Antigravity App."
 
 [[fields]]
 name = "name"
 type = "string"
-required = true
-description = "Skill identifier (required by the Agent Skills standard)."
+required = false
+description = "SKILL.md frontmatter: unique lowercase, hyphenated identifier. Defaults to the folder name when omitted."
 
 [[fields]]
 name = "description"
 type = "string"
 required = true
-description = "What the skill does and when to use it."
+description = "SKILL.md frontmatter: what the skill does and when to use it. Used by the agent to select relevant skills."

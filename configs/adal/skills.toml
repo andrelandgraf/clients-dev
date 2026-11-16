@@ -1,8 +1,13 @@
 status = "supported"
-verified = "2026-06-21"
-summary = "SKILL.md skills following the open Agent Skills standard."
-invocation = ["/skill-name"]
-notes = ["Skill discovery paths from the open skills CLI (vercel-labs/skills)."]
+verified = "2026-11-16"
+summary = "Markdown skills with YAML frontmatter, loaded on demand when relevant to a task."
+invocation = ["automatic"]
+docs = "https://docs.sylph.ai/customize/plugins-and-skills"
+notes = [
+  "/skills opens the skills browser; /plugin manages marketplace skills. Skills are used automatically, not documented as /skill-name commands.",
+  "For duplicate names, first-loaded wins: personal, then project, then plugin skills. Plugin repositories are stored in ~/.adal/plugin-cache/.",
+  "The official authoring guide requires YAML frontmatter with at least name and description: https://github.com/SylphAI-Inc/skills/blob/main/skills/create-skill/SKILL.md",
+]
 
 [[files]]
 path = ".adal/skills/<name>/SKILL.md"
@@ -18,10 +23,10 @@ format = "markdown"
 name = "name"
 type = "string"
 required = true
-description = "Skill identifier (required by the Agent Skills standard)."
+description = "Skill name in YAML frontmatter; use lowercase words separated by hyphens."
 
 [[fields]]
 name = "description"
 type = "string"
 required = true
-description = "What the skill does and when to use it."
+description = "Brief description of what the skill does and when to use it."
